@@ -1,4 +1,3 @@
-<!-- Botón del menú (☰) -->
 <button 
   class="menu-button" 
   (click)="toggleMenu()"
@@ -9,14 +8,13 @@
   <span class="hamburger"></span>
 </button>
 
-<!-- Overlay oscuro (solo cuando está abierto) -->
-<div 
-  class="overlay" 
-  *ngIf="isOpen"
-  (click)="closeMenu()"
-></div>
+@if (isOpen) {
+  <div 
+    class="overlay" 
+    (click)="closeMenu()"
+  ></div>
+}
 
-<!-- Menú lateral -->
 <aside 
   class="sidebar" 
   [class.open]="isOpen"

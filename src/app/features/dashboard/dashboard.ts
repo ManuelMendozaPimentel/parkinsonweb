@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { SidebarMenu } from '../../shared/components/sidebar-menu/sidebar-menu';
-import { Logo } from '../../shared/components/logo/logo';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [SidebarMenu, Logo],
+  imports: [SidebarMenu],
   templateUrl: './dashboard.html',
   styleUrl: './dashboard.css',
 })
