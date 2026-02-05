@@ -16,7 +16,7 @@ export class Login {
   password = '**********';
 
   constructor(private router: Router) {}
-: 
+
   onForgotPassword() {
     console.log('Forgot Password clicked');
   }
