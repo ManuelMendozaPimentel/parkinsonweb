@@ -1,0 +1,9 @@
+<button
+  [class.primary]="variant === 'primary'"
+  [class.link]="variant === 'link'"
+  [disabled]="disabled"
+  (click)="onClick()"
+  class="btn"
+>
+  <ng-content></ng-content>
+</button>

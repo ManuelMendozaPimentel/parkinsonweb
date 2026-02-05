@@ -1,0 +1,86 @@
+<!-- Contenedor principal -->
+<div class="dashboard-container" [class.menu-open]="isMenuOpen">
+  <!-- El menú se renderiza aquí (fuera del contenedor para que pueda salir del flujo) -->
+  <app-sidebar-menu (menuToggle)="onMenuToggle($event)"></app-sidebar-menu>
+
+  <!-- Contenido principal -->
+  <main class="main-content">
+    <header class="dashboard-header">
+      <h1>DASHBOARD PRINCIPAL</h1>
+    </header>
+
+    <!-- Cards estadísticos -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <h3>Pacientes activos</h3>
+        <p class="value">40</p>
+      </div>
+      <div class="stat-card">
+        <h3>Alertas de hoy</h3>
+        <p class="value">2</p>
+      </div>
+      <div class="stat-card">
+        <h3>Pacientes sin evaluación</h3>
+        <p class="value">3</p>
+      </div>
+    </div>
+
+    <!-- Gráfica y Citas -->
+    <div class="content-row">
+      <div class="chart-section">
+        <h3>Gráfica de actividad y temblor semanal</h3>
+        <div class="chart-placeholder">
+          <!-- Aquí iría tu gráfica (por ahora placeholder) -->
+          <svg width="100%" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
+            <rect x="40" y="100" width="40" height="60" fill="#d32f2f"></rect>
+            <rect x="100" y="80" width="40" height="80" fill="#d32f2f"></rect>
+            <rect x="160" y="90" width="40" height="70" fill="#d32f2f"></rect>
+            <rect x="220" y="60" width="40" height="100" fill="#d32f2f"></rect>
+            <text x="20" y="180" font-size="12" fill="#666">Manuel Morales</text>
+            <text x="80" font-size="12" fill="#666">Gricelda Robles</text>
+            <text x="140" y="180" font-size="12" fill="#666">Ana Flores</text>
+            <text x="200" y="180" font-size="12" fill="#666">Ana Juarez</text>
+            <text x="20" y="20" font-size="12" fill="#666">Frecuencia</text>
+          </svg>
+        </div>
+      </div>
+
+      <div class="appointments-section">
+        <h3>CITAS PROGRAMADAS PARA HOY</h3>
+        <table class="appointments-table">
+          <thead>
+            <tr>
+              <th>PACIENTE</th>
+              <th>HORA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Manuel Morales</td><td>8:00 hrs</td></tr>
+            <tr><td>Gricelda Robles</td><td>10:00 hrs</td></tr>
+            <tr><td>Josefina Vasquez</td><td>12:00 hrs</td></tr>
+            <tr><td>Maritza Martinez</td><td>14:00 hrs</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Alertas -->
+    <div class="alerts-section">
+      <h3>ALERTAS</h3>
+      <table class="alerts-table">
+        <thead>
+          <tr>
+            <th>TIPO DE ALERTA</th>
+            <th>DESCRIPCIÓN</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Sobre paciente</td>
+            <td>El paciente Faustino Morales Robles, presenta una alergia con un medicamento externo</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</div>

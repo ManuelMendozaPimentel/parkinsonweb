@@ -1,0 +1,109 @@
+.dashboard-container {
+  position: relative;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.dashboard-container.menu-open .main-content {
+  margin-left: 280px;
+}
+
+.main-content {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  padding: 2rem;
+}
+
+.dashboard-header {
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #222;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: #e0e9f0;
+  border-radius: 8px;
+  padding: 1.25rem;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.stat-card h3 {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 0 0 0.5rem 0;
+}
+
+.stat-card .value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #222;
+  margin: 0;
+}
+
+.content-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.chart-section, .appointments-section {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.chart-placeholder {
+  background: #f9f9f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.appointments-table, .alerts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.appointments-table th,
+.alerts-table th {
+  text-align: left;
+  padding: 0.75rem;
+  background: #f2e9dd;
+  font-weight: 600;
+  color: #333;
+}
+
+.appointments-table td,
+.alerts-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #eee;
+}
+
+.appointments-table tr:last-child td,
+.alerts-table tr:last-child td {
+  border-bottom: none;
+}
+
+/* Para móviles (opcional) */
+@media (max-width: 768px) {
+  .content-row {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-container.menu-open .main-content {
+    margin-left: 0;
+  }
+}

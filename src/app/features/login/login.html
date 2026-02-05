@@ -1,0 +1,39 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>Bienvenido a NeuroTrack</h1>
+
+    <app-logo></app-logo>
+
+    <app-input-field
+      label="Correo:"
+      type="email"
+      placeholder="correo@ejemplo.com"
+      [value]="email"
+      (valueChange)="email = $event"
+    ></app-input-field>
+
+    <app-input-field
+      label="Contraseña:"
+      type="password"
+      placeholder="••••••••"
+      [value]="password"
+      (valueChange)="password = $event"
+    ></app-input-field>
+
+    <div class="links">
+      <app-button variant="link" (clickEvent)="onForgotPassword()">
+        Olvide mi contraseña
+      </app-button>
+    </div>
+
+    <div class="links">
+      <app-button variant="link" (clickEvent)="onRegister()">
+        No tienes una cuenta? regístrate
+      </app-button>
+    </div>
+
+    <app-button class="submit-btn" (clickEvent)="onLogin()">
+      Ingresar
+    </app-button>
+  </div>
+</div>

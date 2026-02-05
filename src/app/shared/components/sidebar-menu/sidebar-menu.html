@@ -1,0 +1,36 @@
+<!-- Botón del menú (☰) -->
+<button 
+  class="menu-button" 
+  (click)="toggleMenu()"
+  aria-label="Abrir menú"
+>
+  <span class="hamburger"></span>
+  <span class="hamburger"></span>
+  <span class="hamburger"></span>
+</button>
+
+<!-- Overlay oscuro (solo cuando está abierto) -->
+<div 
+  class="overlay" 
+  *ngIf="isOpen"
+  (click)="closeMenu()"
+></div>
+
+<!-- Menú lateral -->
+<aside 
+  class="sidebar" 
+  [class.open]="isOpen"
+>
+  <div class="sidebar-header">
+    <app-logo></app-logo>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a routerLink="/" (click)="closeMenu()" class="nav-item">Inicio</a>
+    <a routerLink="/pacientes" (click)="closeMenu()" class="nav-item">Pacientes</a>
+    <a routerLink="/reportes" (click)="closeMenu()" class="nav-item">Reportes</a>
+    <a routerLink="/alertas" (click)="closeMenu()" class="nav-item">Alertas</a>
+    <a routerLink="/grafica" (click)="closeMenu()" class="nav-item">Gráfica</a>
+    <a routerLink="/configuracion" (click)="closeMenu()" class="nav-item">Configuración</a>
+  </nav>
+</aside>
