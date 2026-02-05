@@ -1,1 +1,124 @@
-<p>register works!</p>
+<div class="register-container">
+  <div class="register-card">
+    <h1>Registro a NeuroTrack</h1>
+    <app-logo></app-logo>
+
+    <!-- Contenedor de 2 columnas -->
+    <div class="form-columns">
+      <!-- Columna izquierda -->
+      <div class="column">
+        <!-- Nombre -->
+        <app-input-field
+          label="Nombre Completo:"
+          placeholder="José Romero Pérez"
+          [value]="nombreCompleto"
+          (valueChange)="nombreCompleto = $event"
+          (blur)="onNombreBlur()"
+        ></app-input-field>
+        <p class="error-message" [class.error-visible]="nombreError">{{ nombreError || '' }}</p>
+
+        <!-- Cédula -->
+        <app-input-field
+          label="Cédula profesional:"
+          type="text"
+          placeholder="1234567"
+          [value]="cedulaProfesional"
+          (valueChange)="cedulaProfesional = $event"
+          (blur)="onCedulaBlur()"
+        ></app-input-field>
+        <p class="error-message" [class.error-visible]="cedulaError">{{ cedulaError || '' }}</p>
+
+        <!-- Institución -->
+        <app-input-field
+          label="Institución de procedencia:"
+          placeholder="Ejemplo: Hospital ABC, Consultorio particular, etc."
+          [value]="institucion"
+          (valueChange)="institucion = $event"
+          (blur)="onInstitucionBlur()"
+        ></app-input-field>
+        <p class="error-message" [class.error-visible]="institucionError">{{ institucionError || '' }}</p>
+      </div>
+
+      <!-- Columna derecha -->
+      <div class="column">
+        <!-- Correo -->
+        <app-input-field
+          label="Correo:"
+          type="email"
+          placeholder="correo@ejemplo.com"
+          [value]="correo"
+          (valueChange)="correo = $event"
+          (blur)="onCorreoBlur()"
+        ></app-input-field>
+        <p class="error-message" [class.error-visible]="correoError">{{ correoError || '' }}</p>
+
+        <!-- Contraseña -->
+        <app-input-field
+          label="Contraseña:"
+          type="password"
+          placeholder="••••••••"
+          [value]="contrasena"
+          (valueChange)="contrasena = $event"
+          (blur)="onContrasenaBlur()"
+        ></app-input-field>
+        <p class="error-message" [class.error-visible]="contrasenaError">{{ contrasenaError || '' }}</p>
+
+        <!-- Confirmar contraseña -->
+        <app-input-field
+          label="Confirmar contraseña:"
+          type="password"
+          placeholder="••••••••"
+          [value]="confirmarContrasena"
+          (valueChange)="confirmarContrasena = $event"
+          (blur)="onConfirmarContrasenaBlur()"
+        ></app-input-field>
+        <p class="error-message" [class.error-visible]="confirmarContrasenaError">{{ confirmarContrasenaError || '' }}</p>
+      </div>
+    </div>
+
+    <div class="terms-full">
+        <label class="checkbox-label">
+            <input
+            type="checkbox"
+            [checked]="aceptaPrivacidad"
+            (change)="aceptaPrivacidad = $event.target.checked"
+            />
+            Acepto el&nbsp;<a href="#" (click)="openPrivacyModal(); $event.preventDefault()">aviso de privacidad</a>
+        </label>
+    </div>
+    <p class="error-message terms-error" [class.error-visible]="!aceptaPrivacidad && (nombreTouched || correoTouched)">
+    Debes aceptar el aviso de privacidad
+    </p>
+
+    <app-button
+      class="submit-btn"
+      (clickEvent)="onRegister()"
+      [disabled]="!isValid()"
+      style="width: 100%; margin-top: 1rem;"
+    >
+      Ingresar
+    </app-button>
+
+    <div class="links" style="text-align: center;">
+        <app-button variant="link" (clickEvent)="goToLogin()" style="font-weight: normal;">
+            Ya tengo una cuenta? Inicia sesión
+        </app-button>
+    </div>
+  </div>
+
+  <!-- Modal y alerta -->
+  <app-privacy-notice
+    [isOpen]="showPrivacyModal"
+    (close)="closePrivacyModal()"
+  ></app-privacy-notice>
+
+  @if (showSuccessAlert) {
+    <div class="success-alert">
+      <div class="alert-content">
+        <h3>Registro exitoso</h3>
+        <p>Su solicitud será analizada, recibirá un correo de confirmación</p>
+        <div class="check-icon">✓</div>
+      </div>
+    </div>
+  }
+</div>

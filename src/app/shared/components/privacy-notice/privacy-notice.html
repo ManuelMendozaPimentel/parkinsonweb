@@ -1,1 +1,26 @@
-<p>privacy-notice works!</p>
+@if (isOpen) {
+  <div class="modal-overlay" (click)="onClose()"></div>
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Aviso de Privacidad</h3>
+      <button class="close-btn" (click)="onClose()">×</button>
+    </div>
+    <div class="modal-body">
+      <p>
+        En NeuroTrack, protegemos tus datos personales conforme a la Ley de Protección de Datos Personales.
+        Al registrarte, aceptas que usaremos tu información para:
+      </p>
+      <ul>
+        <li>Brindar servicios médicos y seguimiento neurológico.</li>
+        <li>Enviar comunicaciones relacionadas con tu cuenta.</li>
+        <li>Mejorar nuestra plataforma basado en tu uso.</li>
+      </ul>
+      <p>
+        No compartiremos tus datos con terceros sin tu consentimiento expreso.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-primary" (click)="onClose()">Aceptar</button>
+    </div>
+  </div>
+}

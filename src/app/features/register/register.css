@@ -1,0 +1,161 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  padding: 1rem;
+}
+
+.register-card {
+  background: #f2e9dd;
+  border-radius: 12px;
+  padding: 2.5rem;
+  width: 100%;
+  max-width: 800px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.register-card h1 {
+  text-align: center;
+  margin-top: 0;
+  color: #222;
+  font-size: 1.8rem;
+}
+
+.form-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin: 1.5rem 0;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; 
+}
+
+.error-message {
+  color: #d32f2f;
+  font-size: 0.875rem;
+  margin: 0;
+  min-height: 1.2rem;
+  line-height: 1.2;
+  padding: 0.1rem 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.error-message.error-visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.terms-full {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+  gap: 0.5rem;            
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0;
+  /* Asegura que el texto no sea negrita */
+  font-weight: normal;
+}
+
+.checkbox-label input[type="checkbox"] {
+  margin: 0; 
+  flex-shrink: 0;
+}
+
+.checkbox-label a {
+  color: #094130;
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: normal;
+}
+
+.checkbox-label a:hover {
+  color: #3a7060;
+}
+
+.login-link {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+  width: 100%;
+  display: block;
+}
+
+.login-link a {
+  color: #248e44;
+  text-decoration: none;
+  font-weight: normal;
+  display: inline-block;
+}
+
+.submit-btn {
+  width: 100%;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* Alerta de éxito */
+.success-alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+  z-index: 2000;
+  text-align: center;
+  max-width: 400px;
+  width: 90%;
+}
+
+.alert-content h3 {
+  margin: 0 0 0.5rem 0;
+  color: #222;
+  font-size: 1.2rem;
+}
+
+.alert-content p {
+  color: #444;
+  margin: 0 0 1rem 0;
+  font-size: 0.95rem;
+}
+
+.check-icon {
+  font-size: 3rem;
+  color: #2ecc71;
+  margin: 1rem 0;
+}
+
+@media (max-width: 768px) {
+  .form-columns {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .register-card {
+    max-width: 600px;
+    padding: 1.5rem;
+  }
+}
+
+.link-no-bold .btn,
+.link-no-bold button {
+  font-weight: normal !important;
+}

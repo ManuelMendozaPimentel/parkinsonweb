@@ -22,7 +22,7 @@ export class Login {
   }
 
   onRegister() {
-    console.log('Register clicked');
+    this.router.navigate(['/register']);
   } 
 
   onLogin() { 

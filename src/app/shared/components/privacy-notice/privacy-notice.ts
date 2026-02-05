@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-privacy-notice',
@@ -7,5 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './privacy-notice.css',
 })
 export class PrivacyNotice {
+  @Input() isOpen = false;
+  @Output() close = new EventEmitter<void>();
 
+  onClose() {
+    this.close.emit();
+  }
 }
