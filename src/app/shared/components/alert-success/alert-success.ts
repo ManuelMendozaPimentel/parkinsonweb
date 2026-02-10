@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-alert-success',
@@ -7,5 +7,13 @@ import { Component } from '@angular/core';
   styleUrl: './alert-success.css',
 })
 export class AlertSuccess {
+  @Input() message = '';
+  @Output() closed = new EventEmitter<void>();
 
+  ngOnInit() {
+    // Cerrar automáticamente después de 3 segundos
+    setTimeout(() => {
+      this.closed.emit();
+    }, 3000);
+  }
 }

@@ -1,3 +1,18 @@
+.dashboard-container {
+  position: relative;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.dashboard-container.menu-open .main-content {
+  margin-left: 280px;
+}
+
+.main-content {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+}
+
 .patients-container {
   padding: 2rem;
 }
@@ -64,5 +79,10 @@
   .header {
     flex-direction: column;
     gap: 1rem;
+  }
+
+  /* En móviles, no desplazar contenido cuando el menú está abierto */
+  .dashboard-container.menu-open .main-content {
+    margin-left: 0;
   }
 }

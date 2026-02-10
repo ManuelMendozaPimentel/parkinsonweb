@@ -1,0 +1,12 @@
+<div class="modal-content">
+  <h3>{{ title }}</h3>
+  @if (message) {
+    <p class="message">{{ message }}</p>
+  }
+  <div class="modal-actions">
+    <button class="btn btn-link" (click)="onCancel()">Cancelar</button>
+    @if (showConfirm) {
+      <button class="btn btn-primary" (click)="onConfirm()">Confirmar</button>
+    }
+  </div>
+</div>

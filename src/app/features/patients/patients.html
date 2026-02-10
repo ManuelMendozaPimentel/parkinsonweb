@@ -1,45 +1,90 @@
-<div class="patients-container">
-  <div class="header">
-    <h1>Pacientes</h1>
-    <app-button variant="primary" (clickEvent)="openRegisterForm()">
-      Registrar paciente
-    </app-button>
-  </div>
+<div class="dashboard-container" [class.menu-open]="isMenuOpen">
 
-  <table class="patients-table">
-    <thead>
-      <tr>
-        <th>Fecha creación</th>
-        <th>Nombre</th>
-        <th>Diagnóstico</th>
-        <th>Correo</th>
-        <th>Acción</th>
-      </tr>
-    </thead>
-    <tbody>
-      @for (patient of patients; track patient.id) {
-        <tr>
-          <td>{{ patient.fechaCreacion }}</td>
-          <td>{{ patient.nombre }}</td>
-          <td>{{ patient.diagnostico }}</td>
-          <td>{{ patient.correo }}</td>
-          <td class="actions">
-            <!-- Usamos variant="link" porque "secondary" no existe -->
-            <app-button variant="link" (clickEvent)="openEditForm(patient)">Actualizar</app-button>
-            <button class="btn-delete" (click)="onDelete(patient)">Eliminar</button>
-          </td>
-        </tr>
+  <app-sidebar-menu (menuToggle)="onMenuToggle($event)"></app-sidebar-menu>
+
+  <main class="main-content">
+    <div class="patients-container">
+      <div class="header">
+        <h1>Pacientes</h1>
+        <app-button variant="primary" (clickEvent)="openRegisterForm()">
+          Registrar paciente
+        </app-button>
+      </div>
+
+      <table class="patients-table">
+        <thead>
+          <tr>
+            <th>Fecha creación</th>
+            <th>Nombre</th>
+            <th>Diagnóstico</th>
+            <th>Correo</th>
+            <th>Acción</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (patient of patients; track patient.id) {
+            <tr>
+              <td>{{ patient.fechaCreacion }}</td>
+              <td>{{ patient.nombre }}</td>
+              <td>{{ patient.diagnostico }}</td>
+              <td>{{ patient.correo }}</td>
+              <td class="actions">
+                <app-button variant="link" (clickEvent)="openEditForm(patient)">Actualizar</app-button>
+                <button class="btn-delete" (click)="onDelete(patient)">Eliminar</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <!-- Modales -->
+      @if (showForm) {
+        <app-modal-overlay (close)="onCloseForm()">
+          <app-patient-form
+            [patient]="editingPatient"
+            (save)="onSavePatient($event)"
+            (cancel)="onCloseForm()"
+          ></app-patient-form>
+        </app-modal-overlay>
       }
-    </tbody>
-  </table>
 
-  @if (showForm) {
-    <app-modal-overlay (close)="onCloseForm()">
-      <app-patient-form
-        [patient]="editingPatient"
-        (save)="onSavePatient($event)"
-        (cancel)="onCloseForm()"
-      ></app-patient-form>
-    </app-modal-overlay>
-  }
+      @if (showConfirmDelete) {
+        <app-modal-overlay (close)="showConfirmDelete = false">
+          <app-confirm-modal
+            title="¿Estás seguro de eliminar el paciente?"
+            message="(Esta acción no se deshace)"
+            (confirm)="onConfirmDelete()"
+            (cancel)="showConfirmDelete = false"
+          ></app-confirm-modal>
+        </app-modal-overlay>
+      }
+
+      @if (showSuccessDelete) {
+        <app-modal-overlay (close)="showSuccessDelete = false">
+          <app-alert-success
+            message="Paciente eliminado correctamente"
+            (closed)="showSuccessDelete = false"
+          ></app-alert-success>
+        </app-modal-overlay>
+      }
+
+      @if (showSuccessUpdate) {
+        <app-modal-overlay (close)="showSuccessUpdate = false">
+          <app-alert-success
+            message="Paciente actualizado correctamente"
+            (closed)="showSuccessUpdate = false"
+          ></app-alert-success>
+        </app-modal-overlay>
+      }
+
+      @if (showSuccessCreate) {
+        <app-modal-overlay (close)="showSuccessCreate = false">
+          <app-alert-success
+            message="Paciente registrado correctamente"
+            (closed)="showSuccessCreate = false"
+          ></app-alert-success>
+        </app-modal-overlay>
+      }
+    </div>
+  </main>
 </div>

@@ -1,0 +1,20 @@
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  padding: 3rem 2rem;
+  max-width: 300px;
+  width: 100%;
+  text-align: center;
+}
+
+.modal-content h3 {
+  margin: 0 0 1.5rem 0;
+  color: #222;
+  font-size: 1.2rem;
+}
+
+.check-icon {
+  font-size: 4rem;
+  color: #2ecc71;
+  margin: 1rem 0;
+}
