@@ -1,9 +1,10 @@
 import { Component, Output, EventEmitter, HostListener } from '@angular/core';
 import { Logo } from '../logo/logo';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-sidebar-menu',
-  imports: [Logo],
+  imports: [Logo, RouterLink],
   templateUrl: './sidebar-menu.html',
   styleUrl: './sidebar-menu.css',
 })
