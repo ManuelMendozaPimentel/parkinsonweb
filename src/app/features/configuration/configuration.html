@@ -1,0 +1,25 @@
+<div class="configuration-container">
+  <header class="header">
+    <h1>Configuración de perfil</h1>
+    <div class="nav-tabs">
+      <button 
+        *ngFor="let tab of tabs"
+        class="tab" 
+        [class.active]="isActive(tab.id)"
+        (click)="setActiveTab(tab.id)">
+        {{ tab.label }}
+      </button>
+    </div>
+  </header>
+
+  <main class="configuration-content">
+    <!-- Perfil -->
+    <app-perfil *ngIf="isActive('perfil')"></app-perfil>
+    
+    <!-- Seguridad -->
+    <app-seguridad *ngIf="isActive('seguridad')"></app-seguridad>
+    
+    <!-- Consulta -->
+    <app-consulta *ngIf="isActive('consulta')"></app-consulta>
+  </main>
+</div>
