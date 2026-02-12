@@ -1,1 +1,66 @@
-<p>seguridad works!</p>
+<div class="seguridad-container">
+  <div class="seguridad-card">
+    <h2>Seguridad</h2>
+
+    <div class="info-row">
+      <span class="label">Correo de recuperación</span>
+      <span class="value">{{ seguridadData.correoRecuperacion }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Contraseña</span>
+      <span class="value">{{ seguridadData.contrasena }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Teléfono de recuperación</span>
+      <span class="value">{{ seguridadData.telefonoRecuperacion }}</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3>Información visible para los pacientes</h3>
+    
+    <div class="checkbox-group">
+      <div class="checkbox-item" (click)="toggleInfo('correo')">
+        <div class="checkbox" [class.checked]="seguridadData.infoVisible.correo">
+          @if (seguridadData.infoVisible.correo) {
+            <span>✓</span>
+          }
+        </div>
+        <span class="checkbox-label">Correo</span>
+      </div>
+
+      <div class="checkbox-item" (click)="toggleInfo('cedula')">
+        <div class="checkbox" [class.checked]="seguridadData.infoVisible.cedula">
+          @if (seguridadData.infoVisible.cedula) {
+            <span>✓</span>
+          }
+        </div>
+        <span class="checkbox-label">Cédula</span>
+      </div>
+
+      <div class="checkbox-item" (click)="toggleInfo('direccion')">
+        <div class="checkbox" [class.checked]="seguridadData.infoVisible.direccion">
+          @if (seguridadData.infoVisible.direccion) {
+            <span>✓</span>
+          }
+        </div>
+        <span class="checkbox-label">Dirección</span>
+      </div>
+
+      <div class="checkbox-item" (click)="toggleInfo('especialidad')">
+        <div class="checkbox" [class.checked]="seguridadData.infoVisible.especialidad">
+          @if (seguridadData.infoVisible.especialidad) {
+            <span>✓</span>
+          }
+        </div>
+        <span class="checkbox-label">Especialidad</span>
+      </div>
+    </div>
+
+    <div class="action-container">
+      <button class="btn-actualizar" (click)="actualizarSeguridad()">Actualizar</button>
+    </div>
+  </div>
+</div>

@@ -1,25 +1,39 @@
-<div class="configuration-container">
-  <header class="header">
-    <h1>Configuración de perfil</h1>
-    <div class="nav-tabs">
-      <button 
-        *ngFor="let tab of tabs"
-        class="tab" 
-        [class.active]="isActive(tab.id)"
-        (click)="setActiveTab(tab.id)">
-        {{ tab.label }}
-      </button>
-    </div>
-  </header>
+<!-- WRAPPER PRINCIPAL CON EL SIDEBAR -->
+<div class="configuration-wrapper" [class.menu-open]="isMenuOpen">
+  
+  <!-- SIDEBAR MENU -->
+  <app-sidebar-menu (menuToggle)="onMenuToggle($event)"></app-sidebar-menu>
 
-  <main class="configuration-content">
-    <!-- Perfil -->
-    <app-perfil *ngIf="isActive('perfil')"></app-perfil>
-    
-    <!-- Seguridad -->
-    <app-seguridad *ngIf="isActive('seguridad')"></app-seguridad>
-    
-    <!-- Consulta -->
-    <app-consulta *ngIf="isActive('consulta')"></app-consulta>
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="main-content">
+    <div class="configuration-container">
+      <header class="header">
+        <h1>Configuración de perfil</h1>
+        <div class="nav-tabs">
+          @for (tab of tabs; track tab.id) {
+            <button 
+              class="tab" 
+              [class.active]="isActive(tab.id)"
+              (click)="setActiveTab(tab.id)">
+              {{ tab.label }}
+            </button>
+          }
+        </div>
+      </header>
+
+      <div class="configuration-content">
+        @if (isActive('perfil')) {
+          <app-perfil />
+        }
+        
+        @if (isActive('seguridad')) {
+          <app-seguridad />
+        }
+        
+        @if (isActive('consulta')) {
+          <app-consulta />
+        }
+      </div>
+    </div>
   </main>
 </div>

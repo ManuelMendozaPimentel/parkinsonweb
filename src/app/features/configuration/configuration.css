@@ -1,10 +1,28 @@
+/* WRAPPER PRINCIPAL */
+.configuration-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f8f9fc;
+  transition: all 0.3s ease;
+}
+
+/* CONTENIDO PRINCIPAL */
+.main-content {
+  flex: 1;
+  transition: margin-left 0.3s ease;
+  margin-left: 80px; /* Ancho del menú cerrado */
+}
+
+.menu-open .main-content {
+  margin-left: 250px; /* Ancho del menú abierto */
+}
+
+/* TU CSS EXISTENTE */
 .configuration-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-color: #f8f9fc;
-  min-height: 100vh;
 }
 
 .header {
@@ -64,12 +82,36 @@
   }
 }
 
-@media (max-width: 640px) {
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .main-content {
+    margin-left: 60px;
+  }
+  
+  .menu-open .main-content {
+    margin-left: 200px;
+  }
+  
   .configuration-container {
     padding: 1rem;
   }
+  
   .tab {
     padding: 0.5rem 1rem;
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .main-content {
+    margin-left: 0;
+  }
+  
+  .menu-open .main-content {
+    margin-left: 0;
+  }
+  
+  .header h1 {
+    font-size: 1.5rem;
   }
 }

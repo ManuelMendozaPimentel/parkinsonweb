@@ -1,0 +1,142 @@
+.seguridad-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f8f9fc;
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.seguridad-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #1e293b;
+  font-weight: 600;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+h3 {
+  font-size: 1.1rem;
+  color: #334155;
+  font-weight: 500;
+  margin: 1.5rem 0 1rem;
+}
+
+.info-row {
+  display: flex;
+  align-items: baseline;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.label {
+  flex: 0 0 200px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #64748b;
+}
+
+.value {
+  flex: 1;
+  font-size: 1rem;
+  color: #0f172a;
+  font-weight: 400;
+}
+
+.divider {
+  height: 1px;
+  background: #e2e8f0;
+  margin: 1.5rem 0;
+}
+
+/* Checkbox personalizado */
+.checkbox-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 6px;
+  transition: background-color 0.2s;
+}
+
+.checkbox-item:hover {
+  background-color: #f8fafc;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #cbd5e1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.checkbox.checked {
+  background-color: #2563eb;
+  border-color: #2563eb;
+}
+
+.checkbox-label {
+  font-size: 0.95rem;
+  color: #1e293b;
+}
+
+.action-container {
+  display: flex;
+  justify-content: flex-end;
+  border-top: 1px solid #e2e8f0;
+  padding-top: 1.5rem;
+  margin-top: 0.5rem;
+}
+
+.btn-actualizar {
+  background-color: #2563eb;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-actualizar:hover {
+  background-color: #1e40af;
+}
+
+@media (max-width: 640px) {
+  .seguridad-container {
+    padding: 1rem;
+  }
+  .seguridad-card {
+    padding: 1.5rem;
+  }
+  .info-row {
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .label {
+    flex: none;
+  }
+}
