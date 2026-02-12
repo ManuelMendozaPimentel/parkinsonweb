@@ -1,0 +1,151 @@
+.dashboard-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+}
+
+.main-content {
+  padding: 2rem;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.dashboard-header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.mes-wrapper {
+  position: relative;
+}
+
+.mes-display {
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.calendar {
+  position: absolute;
+  right: 0;
+  top: 25px;
+  width: 240px;
+  background: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.calendar-header button {
+  border: none;
+  background: #f2e9dd;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.chart-section {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.btn-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 2rem;
+}
+
+.btn-actualizar {
+  background-color: #6ea39b;
+  border: none;
+  padding: 0.7rem 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.calendar {
+  position: absolute;
+  right: 0;
+  top: 30px;
+  width: 260px;
+  background: white;
+  border-radius: 12px;
+  padding: 1rem;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.12);
+  z-index: 10;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  font-weight: 500;
+}
+
+.calendar-header button {
+  border: none;
+  background: #f2e9dd;
+  padding: 0.3rem 0.6rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.day-name {
+  font-weight: 600;
+  color: #666;
+}
+
+.day {
+  padding: 6px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.day:hover {
+  background: #f2e9dd;
+}
+
+.empty {
+  visibility: hidden;
+}
+
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+/* Contenido principal */
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+}
+
+/* Cuando el menú está abierto */
+.dashboard-container.menu-open .main-content {
+  margin-left: 250px; /* mismo ancho que tu sidebar */
+}

@@ -7,6 +7,9 @@ import { Configuration } from './features/configuration/configuration';
 import { Perfil } from './features/perfil/perfil';
 import { Seguridad } from './features/seguridad/seguridad';
 import { Consulta } from './features/consulta/consulta';
+import { Grafica } from './features/grafica/grafica';
+import { Alertas} from  './features/alertas/alertas';
+import { Reportes } from './features/reportes/reportes';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -17,5 +20,8 @@ export const routes: Routes = [
   { path: 'configuration', component: Configuration},
   { path: 'perfil', component: Perfil},
   { path: 'seguridad', component: Seguridad},
-  { path: 'consulta', component: Consulta}
+  { path: 'consulta', component: Consulta},
+  { path: 'grafica', component: Grafica},
+  { path: 'alertas', component: Alertas},
+  { path: 'reportes', component: Reportes}
 ];

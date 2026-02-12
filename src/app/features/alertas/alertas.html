@@ -1,1 +1,38 @@
-<p>alertas works!</p>
+<div class="dashboard-container" [class.menu-open]="isMenuOpen">
+
+  <!-- SIDEBAR -->
+  <app-sidebar-menu (menuToggle)="onMenuToggle($event)"></app-sidebar-menu>
+
+  <!-- CONTENIDO -->
+  <main class="main-content">
+
+    <header class="page-header">
+      <h1>Alertas</h1>
+    </header>
+
+    <div class="alerts-list">
+
+      <div class="alert-card" *ngFor="let alerta of alertas">
+
+        <div class="icon">
+          ⚠
+        </div>
+
+        <div class="alert-content">
+          <h3>{{ alerta.paciente }}</h3>
+          <p>{{ alerta.mensaje }}</p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="btn-container">
+      <button class="btn-actualizar" (click)="actualizar()">
+        Actualizar
+      </button>
+    </div>
+
+  </main>
+
+</div>

@@ -1,1 +1,82 @@
-<p>grafica works!</p>
+<div class="dashboard-container" [class.menu-open]="isMenuOpen">
+
+  <!-- SIDEBAR -->
+  <app-sidebar-menu (menuToggle)="onMenuToggle($event)"></app-sidebar-menu>
+
+  <!-- CONTENIDO -->
+  <main class="main-content">
+
+    <header class="dashboard-header">
+      <h1>Gráfica</h1>
+
+      <div class="mes-wrapper">
+        <div class="mes-display" (click)="toggleCalendario()">
+          {{ mesSeleccionado }} ▾
+        </div>
+
+        <div class="calendar" *ngIf="calendarioAbierto">
+
+          <div class="calendar-header">
+            <button (click)="cambiarMes(-1)">‹</button>
+            <span>{{ mesSeleccionado }}</span>
+            <button (click)="cambiarMes(1)">›</button>
+          </div>
+
+          <div class="calendar-grid">
+
+            <div class="day-name" *ngFor="let d of diasSemana">
+              {{ d }}
+            </div>
+
+            <div
+              class="day empty"
+              *ngFor="let e of [].constructor(primerDiaOffset)">
+            </div>
+
+            <div
+              class="day"
+              *ngFor="let dia of diasDelMes">
+              {{ dia }}
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </header>
+
+    <div class="chart-section">
+      <svg width="100%" height="250" viewBox="0 0 500 250">
+
+        <ng-container *ngFor="let item of datos; let i = index">
+
+          <rect
+            [attr.x]="50 + (i * 80)"
+            [attr.y]="calcularY(item.valor)"
+            width="40"
+            [attr.height]="calcularAltura(item.valor)"
+            fill="#d76d63"
+            rx="4">
+          </rect>
+
+          <text
+            [attr.x]="50 + (i * 80)"
+            y="230"
+            font-size="12"
+            fill="#444">
+            {{ item.nombre }}
+          </text>
+
+        </ng-container>
+
+      </svg>
+    </div>
+
+    <div class="btn-container">
+      <button class="btn-actualizar" (click)="actualizar()">
+        Actualizar
+      </button>
+    </div>
+
+  </main>
+</div>
