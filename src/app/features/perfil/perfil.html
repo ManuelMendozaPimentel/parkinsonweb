@@ -1,0 +1,41 @@
+<div class="perfil-container">
+  <div class="perfil-card">
+    <div class="perfil-header">
+      <div class="avatar">
+        <span class="avatar-text">JP</span>
+      </div>
+      <h2>Información del perfil</h2>
+    </div>
+
+    <div class="perfil-info">
+      <div class="info-row">
+        <span class="label">Nombre</span>
+        <span class="value">{{ perfilData.nombre }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Teléfono</span>
+        <span class="value">{{ perfilData.telefono }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Especialidad</span>
+        <span class="value">{{ perfilData.especialidad }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Biografía Breve</span>
+        <span class="value">{{ perfilData.biografiaBreve }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Cedula</span>
+        <span class="value">{{ perfilData.cedula }}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Correo</span>
+        <span class="value">{{ perfilData.correo }}</span>
+      </div>
+    </div>
+
+    <div class="action-container">
+      <button class="btn-actualizar" (click)="actualizarPerfil()">Actualizar</button>
+    </div>
+  </div>
+</div>

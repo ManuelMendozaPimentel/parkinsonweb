@@ -1,0 +1,40 @@
+<div class="consulta-container">
+  <div class="consulta-card">
+    <h2>Consulta</h2>
+
+    <div class="info-row">
+      <span class="label">Nombre de institución</span>
+      <span class="value">{{ consultaData.nombreInstitucion }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Dirección</span>
+      <span class="value">{{ consultaData.direccion }}</span>
+    </div>
+
+    <div class="info-row">
+      <span class="label">Horario de atención</span>
+      <span class="value">{{ consultaData.horarioAtencion }}</span>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3>Reglas de agenda</h3>
+    <ul class="reglas-lista">
+      @for (regla of consultaData.reglasAgenda; track regla) {
+        <li>{{ regla }}</li>
+      }
+    </ul>
+
+    <div class="divider"></div>
+
+    <div class="info-row">
+      <span class="label">Teléfono para cita</span>
+      <span class="value">{{ consultaData.telefonoCita }}</span>
+    </div>
+
+    <div class="action-container">
+      <button class="btn-actualizar" (click)="actualizarConsulta()">Actualizar</button>
+    </div>
+  </div>
+</div>

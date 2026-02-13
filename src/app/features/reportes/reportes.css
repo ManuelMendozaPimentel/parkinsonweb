@@ -1,0 +1,99 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-container.menu-open .main-content {
+  margin-left: 250px; /* ajusta si tu sidebar tiene otro ancho */
+}
+
+/* HEADER */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+  letter-spacing: 1px;
+}
+
+.btn-generar {
+  background-color: #2f6f6f;
+  color: white;
+  border: none;
+  padding: 0.8rem 1.8rem;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-generar:hover {
+  background-color: #265c5c;
+  transform: scale(1.03);
+}
+
+/* TABLA */
+.table-container {
+  background: #e0e0e0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  padding: 1rem 1.5rem;
+  align-items: center;
+}
+
+.table-header {
+  background: #d0d0d0;
+  font-weight: 600;
+  border-bottom: 1px solid #bdbdbd;
+}
+
+.table-row {
+  border-bottom: 1px solid #c5c5c5;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+/* BOTONES ESTADO */
+.estado-btn {
+  border: none;
+  padding: 0.6rem 1.5rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s ease;
+}
+
+.generado {
+  background-color: #6ea39b;
+  color: #000;
+}
+
+.descargar {
+  background-color: #a8b49c;
+  color: #000;
+}
+
+.estado-btn:hover {
+  transform: scale(1.05);
+}

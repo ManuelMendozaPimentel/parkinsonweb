@@ -1,0 +1,88 @@
+.dashboard-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  transition: all 0.3s ease;
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  transition: margin-left 0.3s ease;
+}
+
+.dashboard-container.menu-open .main-content {
+  margin-left: 250px; /* ajusta si tu sidebar es otro ancho */
+}
+
+/* Header */
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.page-header h1 {
+  margin: 0;
+  font-size: 1.6rem;
+}
+
+/* Lista */
+.alerts-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Tarjeta */
+.alert-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #e0e0e0;
+  padding: 1.2rem;
+  border-radius: 16px;
+  transition: 0.2s ease;
+}
+
+.alert-card:hover {
+  transform: translateY(-2px);
+  background: #d5d5d5;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+.alert-content h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.alert-content p {
+  margin: 0.3rem 0 0 0;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+/* Botón */
+.btn-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.btn-actualizar {
+  background-color: #2f6f6f;
+  color: white;
+  border: none;
+  padding: 0.9rem 3rem;
+  border-radius: 14px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.btn-actualizar:hover {
+  background-color: #265c5c;
+  transform: scale(1.03);
+}

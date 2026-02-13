@@ -1,0 +1,101 @@
+.perfil-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;  /* Mismo fondo del dashboard */
+  padding: 2rem;
+}
+
+.perfil-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;  /* Misma radio del dashboard */
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);  /* Misma sombra del dashboard */
+  overflow: hidden;  /* Para mantener bordes redondeados */
+}
+
+.perfil-header {
+  background: #f2e9dd;  /* Mismo color que los headers de tablas */
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  border-bottom: 1px solid #eee;
+}
+
+.avatar {
+  width: 64px;
+  height: 64px;
+  background: #d32f2f;  /* Mismo color que btn-delete (rojo) */
+  border-radius: 8px;  /* Cuadrado con borde redondeado, más consistente */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-text {
+  color: white;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.perfil-header h2 {
+  margin: 0;
+  color: #222;  /* Mismo color que h1 del dashboard */
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.perfil-info {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.info-row {
+  display: flex;
+  padding: 1rem 0;
+  border-bottom: 1px solid #eee;  /* Misma línea que en tablas */
+}
+
+.info-row:last-child {
+  border-bottom: none;
+}
+
+.label {
+  flex: 0 0 140px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;  /* Mismo color que th del dashboard */
+}
+
+.value {
+  flex: 1;
+  font-size: 1rem;
+  color: #555;  /* Mismo color que h3 en stats */
+  font-weight: 400;
+}
+
+.action-container {
+  padding: 1.5rem 2rem;
+  background: white;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-actualizar {
+  background: #d32f2f;  /* Mismo rojo que btn-delete */
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 4px;  /* Mismo radio que botones del dashboard */
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-actualizar:hover {
+  background: #b71c1c;  /* Mismo hover que btn-delete */
+}

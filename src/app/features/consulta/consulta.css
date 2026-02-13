@@ -1,0 +1,119 @@
+.consulta-container {
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 2rem;
+}
+
+.consulta-card {
+  max-width: 800px;
+  margin: 0 auto;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.consulta-card h2 {
+  background: #f2e9dd;
+  margin: 0;
+  padding: 1.5rem 2rem;
+  color: #222;
+  font-size: 1.5rem;
+  font-weight: 700;
+  border-bottom: 1px solid #eee;
+}
+
+.consulta-content {
+  padding: 2rem;
+}
+
+.consulta-content h3 {
+  font-size: 1rem;
+  color: #333;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem 0;
+}
+
+.consulta-content h3:first-of-type {
+  margin-top: 0;
+}
+
+.info-row {
+  display: flex;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #eee;
+}
+
+.info-row:last-of-type {
+  border-bottom: none;
+}
+
+.label {
+  flex: 0 0 200px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.value {
+  flex: 1;
+  font-size: 1rem;
+  color: #555;
+}
+
+.divider {
+  height: 1px;
+  background: #eee;
+  margin: 1.5rem 0;
+}
+
+.reglas-lista {
+  list-style: none;
+  padding: 0;
+  margin: 0.5rem 0 1rem;
+}
+
+.reglas-lista li {
+  padding: 0.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #555;
+  border-bottom: 1px solid #eee;
+}
+
+.reglas-lista li:last-child {
+  border-bottom: none;
+}
+
+.reglas-lista li::before {
+  content: "•";
+  color: #d32f2f;  /* Rojo del dashboard */
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  font-size: 1.2rem;
+}
+
+.action-container {
+  padding: 1.5rem 0 0 0;
+  border-top: 1px solid #eee;
+  margin-top: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-actualizar {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.3s ease;
+}
+
+.btn-actualizar:hover {
+  background: #b71c1c;
+}
