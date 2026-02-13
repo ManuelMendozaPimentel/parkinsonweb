@@ -36,7 +36,6 @@ export class Patients {
   editingPatient: any = null;
   patientToDelete: any = null;
 
-  // === Formulario ===
   openRegisterForm() {
     this.editingPatient = null;
     this.showForm = true;
@@ -52,7 +51,7 @@ export class Patients {
     this.editingPatient = null;
   }
 
-  // === Eliminar ===
+  // Eliminar
   onDelete(patient: any) {
     this.patientToDelete = patient;
     this.showConfirmDelete = true;
@@ -68,7 +67,6 @@ export class Patients {
     }, 3000);
   }
 
-  // === Guardar (crear o actualizar) ===
   onSavePatient(data: any) {
     if (this.editingPatient) {
       // Actualizar

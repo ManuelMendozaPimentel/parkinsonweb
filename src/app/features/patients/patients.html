@@ -29,15 +29,14 @@
               <td>{{ patient.diagnostico }}</td>
               <td>{{ patient.correo }}</td>
               <td class="actions">
-                <app-button variant="link" (clickEvent)="openEditForm(patient)">Actualizar</app-button>
+                <button class="btn-update" (click)="openEditForm(patient)">Actualizar</button>
                 <button class="btn-delete" (click)="onDelete(patient)">Eliminar</button>
               </td>
             </tr>
           }
         </tbody>
       </table>
-
-      <!-- Modales -->
+      
       @if (showForm) {
         <app-modal-overlay (close)="onCloseForm()">
           <app-patient-form

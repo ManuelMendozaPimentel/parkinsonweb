@@ -35,7 +35,14 @@
   </div>
 
   <div class="modal-actions">
-    <button class="btn btn-link" (click)="onCancel()">Cancelar</button>
-    <button class="btn btn-primary" (click)="onSave()">Guardar</button>
-  </div>
+    <button class="btn btn-cancel" (click)="onCancel()">Cancelar</button>
+    <button 
+      class="btn"
+      [class.btn-save-registrar]="!patient"
+      [class.btn-save-actualizar]="patient"
+      (click)="onSave()"
+    >
+      {{ patient ? 'Guardar' : 'Guardar' }}
+    </button>
+ </div>
 </div>

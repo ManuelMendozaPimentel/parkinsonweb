@@ -1,3 +1,4 @@
+/*Layout con sidebar*/
 .dashboard-container {
   position: relative;
   min-height: 100vh;
@@ -11,8 +12,10 @@
 .main-content {
   margin-left: 0;
   transition: margin-left 0.3s ease;
+  padding: 0;
 }
 
+/*Contenido de pacientes*/
 .patients-container {
   padding: 2rem;
 }
@@ -28,12 +31,14 @@
   margin: 0;
   color: #222;
   font-size: 1.8rem;
+  text-align: center;
+  flex: 1;
 }
 
 .patients-table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
+  background: #e6e5e5;
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -42,36 +47,151 @@
 .patients-table th,
 .patients-table td {
   padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #eee;
+  text-align: center;
+  border-bottom: 1px solid #e6e5e5;
 }
 
+/* Encabezados centrados */
 .patients-table th {
-  background: #f2e9dd;
+  background: #e6e5e5;
   font-weight: 600;
   color: #333;
+  text-align: center; 
 }
 
+.patients-table th:last-child,
+.patients-table td:last-child {
+  text-align: center; 
+}
+
+/*Botones en tabla*/
 .actions {
   display: flex;
   gap: 0.5rem;
+  justify-content: center; 
 }
 
-.btn-delete {
-  background: #d32f2f;
+/* Botón Eliminar (en tabla) */
+.btn-delete,
+.app-button.variant-delete {
+  background: #67A39F;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-size: 0.875rem;
+  font-weight: 500;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.btn-delete:hover {
-  background: #b71c1c;
+.btn-delete:hover,
+.app-button.variant-delete:hover {
+  background: #548a82;
 }
 
-/* Para móviles */
+/* Botón Actualizar (en tabla) */
+.btn-update,
+.app-button.variant-update {
+  background: #BDCAB3;
+  color: #222;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-update:hover,
+.app-button.variant-update:hover {
+  background: #a8bfa0;
+}
+
+.app-button.variant-primary {
+  background: #2C7076;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+.app-button.variant-primary:hover {
+  background: #225a60;
+}
+
+/*Formulario de paciente*/
+.patient-form .btn-primary {
+  background: #CAECFF;
+  color: #222;
+}
+
+.patient-form .btn-update {
+  background: #2C7076; 
+  color: white;
+}
+
+.patient-form .btn-cancel {
+  background: #67A39F;
+  color: white;
+}
+
+.confirm-modal .btn-primary {
+  background: #BDCAB3;
+  color: #222;
+}
+
+.confirm-modal .btn-link {
+  background: #67A39F;
+  color: white;
+  text-decoration: none;
+}
+
+.app-button {
+  text-decoration: none !important;
+  cursor: pointer;
+}
+
+.app-button:not(.btn-link) {
+  border: none;
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.patient-form button {
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.patient-form .btn-cancel {
+  background: #67A39F;
+  color: white;
+}
+
+.patient-form .btn-save-registrar {
+  background: #CAECFF;
+  color: #222;
+}
+
+.patient-form .btn-save-actualizar {
+  background: #2C7076;
+  color: white;
+}
+
 @media (max-width: 768px) {
   .patients-table {
     font-size: 0.875rem;
@@ -79,10 +199,13 @@
   .header {
     flex-direction: column;
     gap: 1rem;
+    text-align: center;
   }
-
-  /* En móviles, no desplazar contenido cuando el menú está abierto */
-  .dashboard-container.menu-open .main-content {
-    margin-left: 0;
+  .header h1 {
+    text-align: center;
+  }
+  .actions {
+    flex-direction: column;
+    align-items: center;
   }
 }

@@ -21,7 +21,7 @@
 .modal-actions {
   display: flex;
   gap: 0.75rem;
-  justify-content: flex-end;
+  justify-content: center;
   margin-top: 1.5rem;
 }
 
@@ -31,15 +31,29 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
+  min-width: 100px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
 }
 
-.btn-primary {
-  background: #4a8b78;
+/* Cancelar*/
+.btn-cancel {
+  background: #67A39F;
   color: white;
 }
 
-.btn-link {
-  background: transparent;
-  color: #4a8b78;
-  text-decoration: underline;
+.btn-cancel:hover {
+  background: #548a82;
+}
+
+/* Confirmar*/
+.btn-confirm {
+  background: #BDCAB3;
+  color: #222;
+}
+
+.btn-confirm:hover {
+  background: #a8bfa0;
 }

@@ -7,7 +7,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
   standalone: true,
 })
 export class PatientForm {
-  @Input() patient: any = null; // usa `any` para evitar conflictos
+  @Input() patient: any = null;
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
 

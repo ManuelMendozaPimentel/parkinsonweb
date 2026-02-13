@@ -18,7 +18,7 @@ export class SidebarMenu {
     this.menuToggle.emit(this.isOpen);
   }
 
-  // Cerrar menú al hacer clic fuera (en el overlay o área principal)
+  // Cerrar menú al hacer clic fuera
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent) {
     const target = event.target as HTMLElement;
