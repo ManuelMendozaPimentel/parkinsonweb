@@ -1,41 +1,155 @@
 <div class="perfil-container">
-  <div class="perfil-card">
-    <div class="perfil-header">
-      <div class="avatar">
-        <span class="avatar-text">JP</span>
-      </div>
-      <h2>Información del perfil</h2>
-    </div>
 
-    <div class="perfil-info">
-      <div class="info-row">
-        <span class="label">Nombre</span>
-        <span class="value">{{ perfilData.nombre }}</span>
-      </div>
-      <div class="info-row">
-        <span class="label">Teléfono</span>
-        <span class="value">{{ perfilData.telefono }}</span>
-      </div>
-      <div class="info-row">
-        <span class="label">Especialidad</span>
-        <span class="value">{{ perfilData.especialidad }}</span>
-      </div>
-      <div class="info-row">
-        <span class="label">Biografía Breve</span>
-        <span class="value">{{ perfilData.biografiaBreve }}</span>
-      </div>
-      <div class="info-row">
-        <span class="label">Cedula</span>
-        <span class="value">{{ perfilData.cedula }}</span>
-      </div>
-      <div class="info-row">
-        <span class="label">Correo</span>
-        <span class="value">{{ perfilData.correo }}</span>
-      </div>
+  <!-- Estado de carga -->
+  @if (isLoading) {
+    <div class="loading-state">
+      <p>Cargando perfil...</p>
     </div>
+  }
 
-    <div class="action-container">
-      <button class="btn-actualizar" (click)="actualizarPerfil()">Actualizar</button>
+  <!-- Error de carga -->
+  @if (apiError && !isLoading) {
+    <div class="api-error-alert">
+      <p>❌ {{ apiError }}</p>
+      <button class="btn-retry" (click)="cargarPerfil()">Reintentar</button>
     </div>
-  </div>
+  }
+
+  <!-- Contenido principal -->
+  @if (perfil && !isLoading) {
+    <div class="perfil-card">
+      <div class="perfil-header">
+        <div class="avatar">
+          <span class="avatar-text">{{ iniciales }}</span>
+        </div>
+        <div>
+          <h2>Información del perfil</h2>
+          <p class="codigo-vinculacion">Código: {{ perfil.codigo_vinculacion }}</p>
+        </div>
+      </div>
+
+      <div class="perfil-info">
+        <div class="info-row">
+          <span class="label">Nombre</span>
+          <span class="value">{{ perfil.nombre_completo || '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Teléfono</span>
+          <span class="value">{{ perfil.telefono || '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Especialidad</span>
+          <span class="value">{{ perfil.especialidad || '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Institución</span>
+          <span class="value">{{ perfil.institucion_procedencia || '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Biografía</span>
+          <span class="value">{{ perfil.biografia_breve || '—' }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Cédula</span>
+          <span class="value cedula">{{ perfil.cedula_profesional }}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Correo</span>
+          <span class="value">{{ perfil.correo }}</span>
+        </div>
+      </div>
+
+      <div class="action-container">
+        <button class="btn-actualizar" (click)="abrirModal()">Editar perfil</button>
+      </div>
+    </div>
+  }
+
+  <!-- MODAL DE EDICIÓN -->
+  @if (showModal) {
+    <app-modal-overlay (close)="cerrarModal()">
+      <div class="modal-content">
+        <h2>Editar perfil</h2>
+
+        <div class="modal-form">
+          <div class="field-group">
+            <label>Nombre completo</label>
+            <input
+              type="text"
+              [(ngModel)]="form.nombre_completo"
+              placeholder="Nombre completo"
+              class="form-input"
+            />
+          </div>
+
+          <div class="field-group">
+            <label>Teléfono</label>
+            <input
+              type="text"
+              [(ngModel)]="form.telefono"
+              placeholder="Ej: 2281234567"
+              class="form-input"
+            />
+          </div>
+
+          <div class="field-group">
+            <label>Especialidad</label>
+            <input
+              type="text"
+              [(ngModel)]="form.especialidad"
+              placeholder="Ej: Neurología"
+              class="form-input"
+            />
+          </div>
+
+          <div class="field-group">
+            <label>Institución de procedencia</label>
+            <input
+              type="text"
+              [(ngModel)]="form.institucion_procedencia"
+              placeholder="Ej: Hospital General"
+              class="form-input"
+            />
+          </div>
+
+          <div class="field-group">
+            <label>Biografía breve</label>
+            <textarea
+              [(ngModel)]="form.biografia_breve"
+              placeholder="Descripción breve sobre tu práctica médica..."
+              class="form-input form-textarea"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <!-- Cédula: visible pero no editable -->
+          <div class="field-group">
+            <label>Cédula profesional <span class="field-note">(no editable)</span></label>
+            <input
+              type="text"
+              [value]="perfil?.cedula_profesional"
+              class="form-input"
+              disabled
+            />
+          </div>
+        </div>
+
+        @if (saveError) {
+          <div class="modal-error">❌ {{ saveError }}</div>
+        }
+        @if (saveSuccess) {
+          <div class="modal-success">✅ Perfil actualizado correctamente</div>
+        }
+
+        <div class="modal-actions">
+          <button class="btn-cancelar" (click)="cerrarModal()" [disabled]="isSaving">
+            Cancelar
+          </button>
+          <button class="btn-guardar" (click)="guardarPerfil()" [disabled]="isSaving">
+            {{ isSaving ? 'Guardando...' : 'Guardar cambios' }}
+          </button>
+        </div>
+      </div>
+    </app-modal-overlay>
+  }
 </div>

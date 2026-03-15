@@ -10,7 +10,9 @@
       placeholder="correo@ejemplo.com"
       [value]="email"
       (valueChange)="email = $event"
+      (blur)="onEmailBlur()"
     ></app-input-field>
+    <p class="error-message" [class.error-visible]="emailError">{{ emailError || '' }}</p>
 
     <app-input-field
       label="Contraseña:"
@@ -18,22 +20,35 @@
       placeholder="••••••••"
       [value]="password"
       (valueChange)="password = $event"
+      (blur)="onPasswordBlur()"
     ></app-input-field>
+    <p class="error-message" [class.error-visible]="passwordError">{{ passwordError || '' }}</p>
+
+    <!-- Error de API -->
+    @if (apiError) {
+      <div class="api-error-alert">
+        <p>❌ {{ apiError }}</p>
+      </div>
+    }
 
     <div class="links">
       <app-button variant="link" (clickEvent)="onForgotPassword()">
-        Olvide mi contraseña
+        Olvidé mi contraseña
       </app-button>
     </div>
 
     <div class="links">
       <app-button variant="link" (clickEvent)="onRegister()">
-        No tienes una cuenta? regístrate
+        ¿No tienes una cuenta? Regístrate
       </app-button>
     </div>
 
-    <app-button class="submit-btn" (clickEvent)="onLogin()">
-      Ingresar
+    <app-button
+      class="submit-btn"
+      (clickEvent)="onLogin()"
+      [disabled]="isLoading"
+    >
+      {{ isLoading ? 'Ingresando...' : 'Ingresar' }}
     </app-button>
   </div>
 </div>

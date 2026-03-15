@@ -1,10 +1,4 @@
-/* ============================================
-   CONFIGURATION COMPONENT
-   Paleta 100% consistente con Dashboard
-   Basado en la imagen proporcionada
-   ============================================ */
 
-/* WRAPPER PRINCIPAL */
 .configuration-wrapper {
   display: flex;
   min-height: 100vh;

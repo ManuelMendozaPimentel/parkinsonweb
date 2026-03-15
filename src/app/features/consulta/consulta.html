@@ -1,40 +1,213 @@
 <div class="consulta-container">
-  <div class="consulta-card">
-    <h2>Consulta</h2>
 
-    <div class="info-row">
-      <span class="label">Nombre de institución</span>
-      <span class="value">{{ consultaData.nombreInstitucion }}</span>
+  @if (isLoading) {
+    <div class="loading-state"><p>Cargando consultorios...</p></div>
+  }
+
+  @if (apiError && !isLoading) {
+    <div class="api-error-alert">
+      <p>❌ {{ apiError }}</p>
+      <button class="btn-retry" (click)="cargarConsultorios()">Reintentar</button>
+    </div>
+  }
+
+  @if (!isLoading) {
+    <div class="consulta-header">
+      <h2>Consultorios</h2>
+      <button class="btn-agregar" (click)="abrirCrear()">+ Agregar consultorio</button>
     </div>
 
-    <div class="info-row">
-      <span class="label">Dirección</span>
-      <span class="value">{{ consultaData.direccion }}</span>
-    </div>
+    <!-- Lista vacía -->
+    @if (consultorios.length === 0 && !apiError) {
+      <div class="empty-state">
+        <p>🏥 No tienes consultorios registrados.</p>
+        <p>Agrega tu primer consultorio para que los pacientes puedan encontrarte.</p>
+        <button class="btn-actualizar" (click)="abrirCrear()">Agregar consultorio</button>
+      </div>
+    }
 
-    <div class="info-row">
-      <span class="label">Horario de atención</span>
-      <span class="value">{{ consultaData.horarioAtencion }}</span>
-    </div>
+    <!-- Lista de consultorios -->
+    @for (c of consultorios; track c.id) {
+      <div class="consulta-card" [class.es-principal]="c.es_principal">
+        <div class="card-header">
+          <div class="card-title-row">
+            <h3>
+              {{ c.es_consultorio_particular ? 'Consultorio particular' : c.nombre_institucion }}
+            </h3>
+            @if (c.es_principal) {
+              <span class="badge-principal">Principal</span>
+            }
+          </div>
+          <div class="card-acciones">
+            <!-- Toggle visibilidad -->
+            <label class="toggle-label" (click)="$event.stopPropagation()">
+              <span class="toggle-text">{{ c.visible_para_pacientes ? 'Visible' : 'Oculto' }}</span>
+              <div class="toggle" [class.on]="c.visible_para_pacientes"
+                   (click)="toggleVisibilidad(c)">
+                <div class="toggle-thumb"></div>
+              </div>
+            </label>
+            <button class="btn-icono btn-editar" (click)="abrirEditar(c)" title="Editar">✏️</button>
+            <button class="btn-icono btn-eliminar" (click)="abrirEliminar(c)" title="Eliminar">🗑️</button>
+          </div>
+        </div>
 
-    <div class="divider"></div>
+        <div class="card-body">
+          @if (c.direccion_completa) {
+            <div class="info-row">
+              <span class="label">Dirección</span>
+              <span class="value">{{ c.direccion_completa }}</span>
+            </div>
+          }
+          @if (c.telefono_cita) {
+            <div class="info-row">
+              <span class="label">Teléfono cita</span>
+              <span class="value">{{ c.telefono_cita }}</span>
+            </div>
+          }
+          @if (c.horario_atencion) {
+            <div class="info-row">
+              <span class="label">Horario</span>
+              <span class="value">{{ c.horario_atencion }}</span>
+            </div>
+          }
+          @if (c.email_consultorio) {
+            <div class="info-row">
+              <span class="label">Email</span>
+              <span class="value">{{ c.email_consultorio }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    }
+  }
 
-    <h3>Reglas de agenda</h3>
-    <ul class="reglas-lista">
-      @for (regla of consultaData.reglasAgenda; track regla) {
-        <li>{{ regla }}</li>
-      }
-    </ul>
+  <!-- MODAL: Crear / Editar consultorio -->
+  @if (modalActivo === 'crear' || modalActivo === 'editar') {
+    <app-modal-overlay (close)="cerrarModal()">
+      <div class="modal-content modal-largo">
+        <h2>{{ modalActivo === 'crear' ? 'Nuevo consultorio' : 'Editar consultorio' }}</h2>
 
-    <div class="divider"></div>
+        <div class="modal-form">
+          <div class="field-group">
+            <label class="checkbox-inline">
+              <input type="checkbox" [(ngModel)]="form.es_consultorio_particular" />
+              Es consultorio particular
+            </label>
+          </div>
 
-    <div class="info-row">
-      <span class="label">Teléfono para cita</span>
-      <span class="value">{{ consultaData.telefonoCita }}</span>
-    </div>
+          @if (!form.es_consultorio_particular) {
+            <div class="field-group">
+              <label>Nombre de la institución</label>
+              <input type="text" [(ngModel)]="form.nombre_institucion"
+                placeholder="Ej: Hospital General" class="form-input" />
+            </div>
+          }
 
-    <div class="action-container">
-      <button class="btn-actualizar" (click)="actualizarConsulta()">Actualizar</button>
-    </div>
-  </div>
+          <div class="form-grid">
+            <div class="field-group">
+              <label>Calle</label>
+              <input type="text" [(ngModel)]="form.calle"
+                placeholder="Av. Insurgentes" class="form-input" />
+            </div>
+            <div class="field-group">
+              <label>Número exterior</label>
+              <input type="text" [(ngModel)]="form.numero_exterior"
+                placeholder="245" class="form-input" />
+            </div>
+            <div class="field-group">
+              <label>Colonia</label>
+              <input type="text" [(ngModel)]="form.colonia"
+                placeholder="Del Valle" class="form-input" />
+            </div>
+            <div class="field-group">
+              <label>C.P.</label>
+              <input type="text" [(ngModel)]="form.codigo_postal"
+                placeholder="03100" class="form-input" />
+            </div>
+            <div class="field-group">
+              <label>Ciudad *</label>
+              <input type="text" [(ngModel)]="form.ciudad"
+                placeholder="Ciudad de México" class="form-input" />
+            </div>
+            <div class="field-group">
+              <label>Estado *</label>
+              <input type="text" [(ngModel)]="form.estado"
+                placeholder="CDMX" class="form-input" />
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="field-group">
+              <label>Teléfono para citas</label>
+              <input type="text" [(ngModel)]="form.telefono_cita"
+                placeholder="5551234567" class="form-input" />
+            </div>
+            <div class="field-group">
+              <label>Email del consultorio</label>
+              <input type="email" [(ngModel)]="form.email_consultorio"
+                placeholder="consulta@ejemplo.com" class="form-input" />
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label>Horario de atención</label>
+            <input type="text" [(ngModel)]="form.horario_atencion"
+              placeholder="Lunes a Viernes 9:00 - 18:00" class="form-input" />
+          </div>
+
+          <div class="field-group checkboxes-fila">
+            <label class="checkbox-inline">
+              <input type="checkbox" [(ngModel)]="form.es_principal" />
+              Marcar como consultorio principal
+            </label>
+            <label class="checkbox-inline">
+              <input type="checkbox" [(ngModel)]="form.visible_para_pacientes" />
+              Visible para pacientes
+            </label>
+          </div>
+        </div>
+
+        @if (modalError) { <div class="modal-error">❌ {{ modalError }}</div> }
+
+        <div class="modal-actions">
+          <button class="btn-cancelar" (click)="cerrarModal()" [disabled]="isSubmitting">
+            Cancelar
+          </button>
+          <button
+            class="btn-guardar"
+            (click)="modalActivo === 'crear' ? submitCrear() : submitEditar()"
+            [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Guardando...' : (modalActivo === 'crear' ? 'Crear consultorio' : 'Guardar cambios') }}
+          </button>
+        </div>
+      </div>
+    </app-modal-overlay>
+  }
+
+  <!-- MODAL: Confirmar eliminación -->
+  @if (modalActivo === 'eliminar' && consultorioSeleccionado) {
+    <app-modal-overlay (close)="cerrarModal()">
+      <div class="modal-content modal-confirmar">
+        <div class="confirmar-icon">⚠️</div>
+        <h2>Eliminar consultorio</h2>
+        <p>¿Estás seguro de que deseas eliminar <strong>
+          {{ consultorioSeleccionado.es_consultorio_particular
+            ? 'el consultorio particular'
+            : consultorioSeleccionado.nombre_institucion }}
+        </strong>?</p>
+        <p class="confirmar-hint">Esta acción no se puede deshacer.</p>
+        @if (modalError) { <div class="modal-error">❌ {{ modalError }}</div> }
+        <div class="modal-actions">
+          <button class="btn-cancelar" (click)="cerrarModal()" [disabled]="isSubmitting">
+            Cancelar
+          </button>
+          <button class="btn-eliminar-confirm" (click)="submitEliminar()" [disabled]="isSubmitting">
+            {{ isSubmitting ? 'Eliminando...' : 'Sí, eliminar' }}
+          </button>
+        </div>
+      </div>
+    </app-modal-overlay>
+  }
+
 </div>

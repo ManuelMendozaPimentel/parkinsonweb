@@ -1,7 +1,8 @@
+/* Mantiene todos los estilos originales */
+
 .seguridad-container {
-  min-height: 100vh;
-  background-color: #f5f5f5;
-  padding: 2rem;
+  background-color: transparent;
+  padding: 0;
 }
 
 .seguridad-card {
@@ -11,11 +12,12 @@
   border-radius: 8px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   overflow: hidden;
+  padding: 0 0 1.5rem;
 }
 
 .seguridad-card h2 {
-  background: #f2e9dd;  /* Mismo color que headers de tablas */
-  margin: 0;
+  background: #f2e9dd;
+  margin: 0 0 1.5rem;
   padding: 1.5rem 2rem;
   color: #222;
   font-size: 1.5rem;
@@ -23,33 +25,29 @@
   border-bottom: 1px solid #eee;
 }
 
-.seguridad-content {
-  padding: 2rem;
+.seguridad-card h3 {
+  margin: 0 0 0.25rem;
+  padding: 1.5rem 2rem 0;
+  color: #222;
+  font-size: 1.1rem;
+  font-weight: 700;
 }
 
-.seguridad-content h3 {
-  font-size: 1rem;
-  color: #333;
-  font-weight: 600;
-  margin: 1.5rem 0 0.5rem 0;
-}
-
-.seguridad-content h3:first-of-type {
-  margin-top: 0;
+.section-hint {
+  margin: 0 0 1rem;
+  padding: 0 2rem;
+  color: #888;
+  font-size: 0.85rem;
 }
 
 .info-row {
   display: flex;
-  padding: 0.75rem 0;
+  padding: 0.85rem 2rem;
   border-bottom: 1px solid #eee;
 }
 
-.info-row:last-of-type {
-  border-bottom: none;
-}
-
 .label {
-  flex: 0 0 200px;
+  flex: 0 0 160px;
   font-size: 0.95rem;
   font-weight: 600;
   color: #333;
@@ -61,18 +59,36 @@
   color: #555;
 }
 
-.divider {
-  height: 1px;
-  background: #eee;
-  margin: 1.5rem 0;
+/* Botones de acción de cuenta */
+.cuenta-acciones {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1.25rem 2rem 0;
 }
 
-/* Checkbox personalizado - versión dashboard */
+.btn-secundario {
+  background: transparent;
+  border: 1px solid #d32f2f;
+  color: #d32f2f;
+  padding: 0.6rem 1.25rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-secundario:hover {
+  background: #d32f2f;
+  color: white;
+}
+
+/* Checkboxes */
 .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  margin: 0.5rem 0 1rem;
+  gap: 0.25rem;
+  padding: 0 2rem;
 }
 
 .checkbox-item {
@@ -80,25 +96,24 @@
   align-items: center;
   gap: 0.75rem;
   cursor: pointer;
-  padding: 0.5rem;
+  padding: 0.6rem 0.5rem;
   border-radius: 4px;
   transition: background-color 0.2s;
 }
 
-.checkbox-item:hover {
-  background-color: #f5f5f5;
-}
+.checkbox-item:hover { background-color: #f9f9f9; }
 
 .checkbox {
   width: 18px;
   height: 18px;
-  border: 2px solid #d32f2f;  /* Rojo del dashboard */
+  border: 2px solid #d32f2f;
   border-radius: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
   color: white;
   font-size: 12px;
+  flex-shrink: 0;
   transition: all 0.2s;
 }
 
@@ -113,7 +128,7 @@
 }
 
 .action-container {
-  padding: 1.5rem 0 0 0;
+  padding: 1.25rem 2rem 0;
   border-top: 1px solid #eee;
   margin-top: 1rem;
   display: flex;
@@ -132,6 +147,207 @@
   transition: background-color 0.3s ease;
 }
 
-.btn-actualizar:hover {
-  background: #b71c1c;
+.btn-actualizar:hover:not(:disabled) { background: #b71c1c; }
+.btn-actualizar:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Feedback inline */
+.inline-error {
+  margin: 0.75rem 2rem 0;
+  padding: 0.6rem 1rem;
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  border-radius: 4px;
+  color: #dc2626;
+  font-size: 0.875rem;
 }
+
+.inline-success {
+  margin: 0.75rem 2rem 0;
+  padding: 0.6rem 1rem;
+  background: #dcfce7;
+  border: 1px solid #4ade80;
+  border-radius: 4px;
+  color: #16a34a;
+  font-size: 0.875rem;
+}
+
+/* Estados */
+.loading-state {
+  text-align: center;
+  padding: 3rem;
+  color: #888;
+}
+
+.api-error-alert {
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.api-error-alert p { margin: 0; color: #dc2626; font-size: 0.9rem; }
+
+.btn-retry {
+  background: none;
+  border: 1px solid #dc2626;
+  color: #dc2626;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+/* Modal */
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90vw;
+  max-width: 460px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-content h2 {
+  margin: 0 0 0.5rem;
+  color: #222;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.modal-hint {
+  margin: 0 0 1.25rem;
+  color: #777;
+  font-size: 0.875rem;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field-group { display: flex; flex-direction: column; gap: 0.35rem; }
+
+.field-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.field-note {
+  font-weight: 400;
+  color: #aaa;
+  font-size: 0.78rem;
+}
+
+.form-input {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: #222;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 2px rgba(211,47,47,0.1);
+}
+
+/* Código de verificación */
+.modal-icon { font-size: 2.5rem; text-align: center; margin-bottom: 0.5rem; }
+
+.email-highlight {
+  background: #f9f5f0;
+  color: #333;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  margin: 0.5rem 0 1rem;
+  border: 1px solid #eee;
+  font-family: monospace;
+}
+
+.code-input-container { display: flex; justify-content: center; margin: 1rem 0; }
+
+.code-input {
+  width: 180px;
+  padding: 0.875rem;
+  font-size: 1.75rem;
+  text-align: center;
+  letter-spacing: 8px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  outline: none;
+  font-weight: 700;
+  transition: border-color 0.2s;
+}
+
+.code-input:focus { border-color: #d32f2f; }
+
+.modal-error {
+  margin-top: 1rem;
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.modal-success {
+  margin-top: 1rem;
+  background: #dcfce7;
+  border: 1px solid #4ade80;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: #16a34a;
+  font-size: 0.875rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eee;
+}
+
+.btn-cancelar {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #555;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-cancelar:hover:not(:disabled) { background: #f5f5f5; }
+
+.btn-guardar {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-guardar:hover:not(:disabled) { background: #b71c1c; }
+.btn-guardar:disabled,
+.btn-cancelar:disabled { opacity: 0.5; cursor: not-allowed; }

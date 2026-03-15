@@ -1,20 +1,21 @@
+/* Mantiene todos los estilos originales y agrega los nuevos */
+
 .perfil-container {
-  min-height: 100vh;
-  background-color: #f5f5f5;  /* Mismo fondo del dashboard */
-  padding: 2rem;
+  background-color: transparent;
+  padding: 0;
 }
 
 .perfil-card {
   max-width: 800px;
   margin: 0 auto;
   background: white;
-  border-radius: 8px;  /* Misma radio del dashboard */
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);  /* Misma sombra del dashboard */
-  overflow: hidden;  /* Para mantener bordes redondeados */
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  overflow: hidden;
 }
 
 .perfil-header {
-  background: #f2e9dd;  /* Mismo color que los headers de tablas */
+  background: #f2e9dd;
   padding: 1.5rem 2rem;
   display: flex;
   align-items: center;
@@ -25,11 +26,12 @@
 .avatar {
   width: 64px;
   height: 64px;
-  background: #d32f2f;  /* Mismo color que btn-delete (rojo) */
-  border-radius: 8px;  /* Cuadrado con borde redondeado, más consistente */
+  background: #d32f2f;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .avatar-text {
@@ -39,10 +41,18 @@
 }
 
 .perfil-header h2 {
-  margin: 0;
-  color: #222;  /* Mismo color que h1 del dashboard */
+  margin: 0 0 0.25rem;
+  color: #222;
   font-size: 1.5rem;
   font-weight: 700;
+}
+
+.codigo-vinculacion {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #888;
+  font-family: monospace;
+  letter-spacing: 0.05em;
 }
 
 .perfil-info {
@@ -55,25 +65,27 @@
 .info-row {
   display: flex;
   padding: 1rem 0;
-  border-bottom: 1px solid #eee;  /* Misma línea que en tablas */
+  border-bottom: 1px solid #eee;
 }
 
-.info-row:last-child {
-  border-bottom: none;
-}
+.info-row:last-child { border-bottom: none; }
 
 .label {
-  flex: 0 0 140px;
+  flex: 0 0 160px;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #333;  /* Mismo color que th del dashboard */
+  color: #333;
 }
 
 .value {
   flex: 1;
   font-size: 1rem;
-  color: #555;  /* Mismo color que h3 en stats */
-  font-weight: 400;
+  color: #555;
+}
+
+.value.cedula {
+  font-family: monospace;
+  color: #888;
 }
 
 .action-container {
@@ -85,17 +97,183 @@
 }
 
 .btn-actualizar {
-  background: #d32f2f;  /* Mismo rojo que btn-delete */
+  background: #d32f2f;
   color: white;
   border: none;
   padding: 0.75rem 2rem;
-  border-radius: 4px;  /* Mismo radio que botones del dashboard */
+  border-radius: 4px;
   cursor: pointer;
   font-size: 0.875rem;
   font-weight: 500;
   transition: background-color 0.3s ease;
 }
 
-.btn-actualizar:hover {
-  background: #b71c1c;  /* Mismo hover que btn-delete */
+.btn-actualizar:hover { background: #b71c1c; }
+
+/* ── Estados ── */
+.loading-state {
+  text-align: center;
+  padding: 3rem;
+  color: #888;
 }
+
+.api-error-alert {
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.api-error-alert p {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.9rem;
+}
+
+.btn-retry {
+  background: none;
+  border: 1px solid #dc2626;
+  color: #dc2626;
+  padding: 0.4rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+/* ── Modal ── */
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  width: 90vw;
+  max-width: 520px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-content h2 {
+  margin: 0 0 1.5rem;
+  color: #222;
+  font-size: 1.4rem;
+  font-weight: 700;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.field-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.field-note {
+  font-weight: 400;
+  color: #aaa;
+  font-size: 0.78rem;
+}
+
+.form-input {
+  padding: 0.6rem 0.85rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.95rem;
+  color: #222;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #d32f2f;
+  box-shadow: 0 0 0 2px rgba(211,47,47,0.1);
+}
+
+.form-input:disabled {
+  background: #f5f5f5;
+  color: #aaa;
+  cursor: not-allowed;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 80px;
+  font-family: inherit;
+}
+
+.modal-error {
+  margin-top: 1rem;
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: #dc2626;
+  font-size: 0.875rem;
+}
+
+.modal-success {
+  margin-top: 1rem;
+  background: #dcfce7;
+  border: 1px solid #4ade80;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  color: #16a34a;
+  font-size: 0.875rem;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eee;
+}
+
+.btn-cancelar {
+  background: transparent;
+  border: 1px solid #ddd;
+  color: #555;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.btn-cancelar:hover:not(:disabled) { background: #f5f5f5; }
+
+.btn-guardar {
+  background: #d32f2f;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.btn-guardar:hover:not(:disabled) { background: #b71c1c; }
+.btn-guardar:disabled,
+.btn-cancelar:disabled { opacity: 0.5; cursor: not-allowed; }
