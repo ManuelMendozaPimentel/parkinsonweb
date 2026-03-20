@@ -1,88 +1,193 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, NgZone, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { PatientForm } from '../../shared/components/patient-form/patient-form';
-import { Button } from '../../shared/components/button/button';
 import { ModalOverlay } from '../../shared/components/modal-overlay/modal-overlay';
 import { ConfirmModal } from '../../shared/components/confirm-modal/confirm-modal';
 import { AlertSuccess } from '../../shared/components/alert-success/alert-success';
 import { SidebarMenu } from '../../shared/components/sidebar-menu/sidebar-menu';
+import { PacientesService, Paciente } from '../../services/pacientes';
 
 @Component({
   selector: 'app-patients',
-  imports: [PatientForm, Button, ModalOverlay, ConfirmModal, AlertSuccess, SidebarMenu],
+  imports: [
+    CommonModule,
+    PatientForm,
+    ModalOverlay,
+    ConfirmModal,
+    AlertSuccess,
+    SidebarMenu
+  ],
   templateUrl: './patients.html',
   styleUrls: ['./patients.css'],
   standalone: true,
 })
-export class Patients {
+export class Patients implements OnInit {
+
   isMenuOpen = false;
 
-  onMenuToggle(open: boolean) {
-    this.isMenuOpen = open;
-  }
-  // Estado de modales
+  // Lista de pacientes
+  patients: Paciente[] = [];
+  isLoading = false;
+  apiError: string | null = null;
+
+  // Modales
   showForm = false;
   showConfirmDelete = false;
   showSuccessDelete = false;
   showSuccessUpdate = false;
-  showSuccessCreate = false;
 
-  // Datos
-  patients = [
-    { id: '1', fechaCreacion: '12-nov-2025', nombre: 'Juan Perez Reyes', diagnostico: 'Parkinson leve', correo: 'juan.perez@gmail.com' },
-    { id: '2', fechaCreacion: '10-oct-2025', nombre: 'María López Hernández', diagnostico: 'Temblor esencial', correo: 'maria.lopez@gmail.com' },
-    { id: '3', fechaCreacion: '04-oct-2025', nombre: 'Carlos Gómez Rivera', diagnostico: 'Alzheimer inicial', correo: 'carlos.gomez@gmail.com' },
-  ];
+  // Paciente seleccionado
+  editingPatient: Paciente | null = null;
+  patientToDelete: Paciente | null = null;
 
-  editingPatient: any = null;
-  patientToDelete: any = null;
+  // Estado de operaciones
+  isDeleting = false;
+  deleteError: string | null = null;
 
-  openRegisterForm() {
-    this.editingPatient = null;
-    this.showForm = true;
+  constructor(
+    private pacientesService: PacientesService,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarPacientes();
   }
 
-  openEditForm(patient: any) {
+  onMenuToggle(open: boolean): void {
+    this.isMenuOpen = open;
+  }
+
+  // ── Carga ─────────────────────────────────
+
+  cargarPacientes(): void {
+    this.isLoading = true;
+    this.apiError = null;
+
+    this.pacientesService.listarPacientes().subscribe({
+      next: (response) => {
+        this.ngZone.run(() => {
+          if (response.success && response.data) {
+            this.patients = response.data;
+          }
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        });
+      },
+      error: (error) => {
+        this.ngZone.run(() => {
+          this.apiError = error.message || 'Error al cargar los pacientes';
+          this.isLoading = false;
+          this.cdr.markForCheck();
+        });
+      }
+    });
+  }
+
+  // ── Formulario ────────────────────────────
+
+  openEditForm(patient: Paciente): void {
     this.editingPatient = patient;
     this.showForm = true;
   }
 
-  onCloseForm() {
+  onCloseForm(): void {
     this.showForm = false;
     this.editingPatient = null;
   }
 
-  // Eliminar
-  onDelete(patient: any) {
+  onSavePatient(datos: any): void {
+    if (!this.editingPatient) return;
+
+    this.pacientesService
+      .actualizarDatosClinicos(this.editingPatient.id, datos)
+      .subscribe({
+        next: (response) => {
+          this.ngZone.run(() => {
+            if (response.success) {
+              // Actualiza el paciente en la lista sin recargar todo
+              this.patients = this.patients.map(p =>
+                p.id === this.editingPatient!.id
+                  ? { ...p, ...datos }
+                  : p
+              );
+              this.onCloseForm();
+              this.showSuccessUpdate = true;
+              setTimeout(() => {
+                this.ngZone.run(() => {
+                  this.showSuccessUpdate = false;
+                  this.cdr.markForCheck();
+                });
+              }, 3000);
+            }
+            this.cdr.markForCheck();
+          });
+        },
+        error: (error) => {
+          this.ngZone.run(() => {
+            this.apiError = error.error?.message || error.message || 'Error al actualizar';
+            this.cdr.markForCheck();
+          });
+        }
+      });
+  }
+
+  // ── Desvincular ───────────────────────────
+
+  onDelete(patient: Paciente): void {
     this.patientToDelete = patient;
+    this.deleteError = null;
     this.showConfirmDelete = true;
   }
 
-  onConfirmDelete() {
-    this.patients = this.patients.filter(p => p.id !== this.patientToDelete.id);
-    this.showConfirmDelete = false;
-    this.showSuccessDelete = true;
-    setTimeout(() => {
-      this.showSuccessDelete = false;
-      this.patientToDelete = null;
-    }, 3000);
+  onConfirmDelete(): void {
+    if (!this.patientToDelete || this.isDeleting) return;
+
+    this.isDeleting = true;
+    this.deleteError = null;
+
+    this.pacientesService
+      .desvincularPaciente(this.patientToDelete.id)
+      .subscribe({
+        next: (response) => {
+          this.ngZone.run(() => {
+            if (response.success) {
+              this.patients = this.patients.filter(
+                p => p.id !== this.patientToDelete!.id
+              );
+              this.showConfirmDelete = false;
+              this.showSuccessDelete = true;
+              this.patientToDelete = null;
+              setTimeout(() => {
+                this.ngZone.run(() => {
+                  this.showSuccessDelete = false;
+                  this.cdr.markForCheck();
+                });
+              }, 3000);
+            }
+            this.isDeleting = false;
+            this.cdr.markForCheck();
+          });
+        },
+        error: (error) => {
+          this.ngZone.run(() => {
+            this.deleteError = error.error?.message || error.message || 'Error al desvincular';
+            this.isDeleting = false;
+            this.cdr.markForCheck();
+          });
+        }
+      });
   }
 
-  onSavePatient(data: any) {
-    if (this.editingPatient) {
-      // Actualizar
-      const index = this.patients.findIndex(p => p.id === this.editingPatient.id);
-      if (index !== -1) {
-        this.patients[index] = { ...data, id: this.editingPatient.id, fechaCreacion: this.editingPatient.fechaCreacion };
-      }
-      this.showSuccessUpdate = true;
-      setTimeout(() => this.showSuccessUpdate = false, 3000);
-    } else {
-      // Registrar
-      const newId = (this.patients.length + 1).toString();
-      this.patients = [{ ...data, id: newId, fechaCreacion: 'Hoy' }, ...this.patients];
-      this.showSuccessCreate = true;
-      setTimeout(() => this.showSuccessCreate = false, 3000);
-    }
-    this.onCloseForm();
+  // ── Helpers ───────────────────────────────
+
+  formatFecha(fechaISO: string): string {
+    if (!fechaISO) return '—';
+    const fecha = new Date(fechaISO);
+    return fecha.toLocaleDateString('es-MX', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
   }
 }

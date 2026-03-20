@@ -2,14 +2,61 @@
   background: white;
   border-radius: 8px;
   padding: 2rem;
-  max-width: 400px;
-  width: 100%;
+  width: 90vw;
+  max-width: 560px;
+  max-height: 90vh;
+  overflow-y: auto;
 }
 
 .modal-content h2 {
-  margin-top: 0;
+  margin: 0 0 1.25rem;
   color: #222;
+  font-size: 1.3rem;
+  font-weight: 700;
   text-align: center;
+}
+
+/* Datos del paciente — solo lectura */
+.paciente-readonly {
+  background: #f9f9f9;
+  border: 1px solid #eee;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.readonly-row {
+  display: flex;
+  align-items: baseline;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.readonly-row:last-child { border-bottom: none; }
+
+.readonly-label {
+  flex: 0 0 80px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.readonly-value {
+  flex: 1;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+/* Sección clínica */
+.seccion-clinica h3 {
+  margin: 0 0 1rem;
+  color: #2C7076;
+  font-size: 1rem;
+  font-weight: 700;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #2C7076;
 }
 
 .form-group {
@@ -19,23 +66,137 @@
 .form-group label {
   display: block;
   margin-bottom: 0.5rem;
-  font-weight: 500;
+  font-weight: 600;
+  font-size: 0.875rem;
   color: #333;
 }
 
 .input-field {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid #ddd;
   border-radius: 6px;
-  font-size: 1rem;
+  font-size: 0.9rem;
+  color: #222;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
 }
 
+.input-field:focus {
+  outline: none;
+  border-color: #2C7076;
+  box-shadow: 0 0 0 2px rgba(44, 112, 118, 0.1);
+}
+
+.textarea-notas {
+  width: 100%;
+  resize: vertical;
+  min-height: 70px;
+  font-family: inherit;
+}
+
+/* Selector de estadio */
+.estadio-options {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.estadio-btn {
+  width: 44px;
+  height: 44px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  background: white;
+  color: #555;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.estadio-btn:hover {
+  border-color: #2C7076;
+  color: #2C7076;
+}
+
+.estadio-btn.selected {
+  background: #2C7076;
+  border-color: #2C7076;
+  color: white;
+}
+
+.estadio-hint {
+  margin: 0.5rem 0 0;
+  font-size: 0.8rem;
+  color: #2C7076;
+  font-style: italic;
+}
+
+/* Medicamentos */
+.medicamento-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1.5fr auto;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.medicamento-row .input-field {
+  width: 100%;
+}
+
+.btn-quitar-med {
+  background: none;
+  border: 1px solid #ddd;
+  color: #aaa;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.btn-quitar-med:hover {
+  background: #fee2e2;
+  border-color: #ef4444;
+  color: #dc2626;
+}
+
+.btn-agregar-med {
+  background: none;
+  border: 1px dashed #2C7076;
+  color: #2C7076;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 500;
+  width: 100%;
+  margin-top: 0.25rem;
+  transition: all 0.2s;
+}
+
+.btn-agregar-med:hover {
+  background: rgba(44, 112, 118, 0.05);
+}
+
+/* Acciones */
 .modal-actions {
   display: flex;
   gap: 0.75rem;
-  justify-content: center;
+  justify-content: flex-end;
   margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #eee;
 }
 
 .btn {
@@ -44,38 +205,37 @@
   border-radius: 6px;
   cursor: pointer;
   font-weight: 600;
-  min-width: 100px;
+  font-size: 0.875rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
+  transition: all 0.2s;
 }
 
-/* Cancelar*/
 .btn-cancel {
-  background: #67A39F;
-  color: white;
+  background: #f5f5f5;
+  color: #555;
+  border: 1px solid #ddd;
 }
 
-.btn-cancel:hover {
-  background: #548a82;
-}
-
-/* Guardar*/
-.btn-save-registrar {
-  background: #CAECFF;
-  color: #222;
-}
-
-.btn-save-registrar:hover {
-  background: #a8d0e6;
-}
+.btn-cancel:hover { background: #e8e8e8; }
 
 .btn-save-actualizar {
   background: #2C7076;
   color: white;
 }
 
-.btn-save-actualizar:hover {
-  background: #225a60;
+.btn-save-actualizar:hover { background: #225a60; }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .medicamento-row {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+  }
+
+  .med-frecuencia { grid-column: 1 / -1; }
+  .btn-quitar-med { grid-column: 2; justify-self: end; }
+  .modal-actions { flex-direction: column; }
+  .btn { width: 100%; }
 }

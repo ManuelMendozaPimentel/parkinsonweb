@@ -1,48 +1,124 @@
 <div class="modal-content">
-  <h2>{{ patient ? 'Actualizar paciente' : 'Registrar paciente' }}</h2>
+  <h2>Datos clínicos</h2>
 
-  <div class="form-group">
-    <label>Nombre:</label>
-    <input
-      type="text"
-      [value]="formData.nombre"
-      (input)="onInputChange('nombre', $event.target.value)"
-      placeholder="Juan Pérez"
-      class="input-field"
-    />
+  <!-- Datos del paciente — solo lectura -->
+  <div class="paciente-readonly">
+    <div class="readonly-row">
+      <span class="readonly-label">Nombre</span>
+      <span class="readonly-value">{{ patient?.nombre_completo || '—' }}</span>
+    </div>
+    <div class="readonly-row">
+      <span class="readonly-label">Correo</span>
+      <span class="readonly-value">{{ patient?.correo || '—' }}</span>
+    </div>
+    <div class="readonly-row">
+      <span class="readonly-label">Teléfono</span>
+      <span class="readonly-value">{{ patient?.telefono || '—' }}</span>
+    </div>
+    @if (patient?.edad) {
+      <div class="readonly-row">
+        <span class="readonly-label">Edad</span>
+        <span class="readonly-value">{{ patient?.edad }} años</span>
+      </div>
+    }
   </div>
 
-  <div class="form-group">
-    <label>Diagnóstico:</label>
-    <input
-      type="text"
-      [value]="formData.diagnostico"
-      (input)="onInputChange('diagnostico', $event.target.value)"
-      placeholder="Parkinson leve"
-      class="input-field"
-    />
-  </div>
+  <div class="seccion-clinica">
+    <h3>Información clínica</h3>
 
-  <div class="form-group">
-    <label>Correo:</label>
-    <input
-      type="email"
-      [value]="formData.correo"
-      (input)="onInputChange('correo', $event.target.value)"
-      placeholder="correo@ejemplo.com"
-      class="input-field"
-    />
+    <!-- Diagnóstico -->
+    <div class="form-group">
+      <label>Diagnóstico</label>
+      <input
+        type="text"
+        [value]="formData.diagnostico"
+        (input)="onInputChange('diagnostico', $any($event.target).value)"
+        placeholder="Ej: Parkinson leve"
+        class="input-field"
+      />
+    </div>
+
+    <!-- Estadio Hoehn & Yahr -->
+    <div class="form-group">
+      <label>Estadio Hoehn & Yahr</label>
+      <div class="estadio-options">
+        @for (estadio of estadios; track estadio.valor) {
+          <button
+            type="button"
+            class="estadio-btn"
+            [class.selected]="formData.estadio_hoehn_yahr === estadio.valor"
+            (click)="seleccionarEstadio(estadio.valor)"
+            [title]="estadio.descripcion"
+          >
+            {{ estadio.valor }}
+          </button>
+        }
+      </div>
+      @if (formData.estadio_hoehn_yahr) {
+        <p class="estadio-hint">
+          {{ getDescripcionEstadio(formData.estadio_hoehn_yahr) }}
+        </p>
+      }
+    </div>
+
+    <!-- Medicamentos -->
+    <div class="form-group">
+      <label>Medicamentos actuales</label>
+
+      @for (med of formData.medicamentos; track $index) {
+        <div class="medicamento-row">
+          <input
+            type="text"
+            [value]="med.nombre"
+            (input)="onMedicamentoChange($index, 'nombre', $any($event.target).value)"
+            placeholder="Nombre"
+            class="input-field med-nombre"
+          />
+          <input
+            type="text"
+            [value]="med.dosis"
+            (input)="onMedicamentoChange($index, 'dosis', $any($event.target).value)"
+            placeholder="Dosis"
+            class="input-field med-dosis"
+          />
+          <input
+            type="text"
+            [value]="med.frecuencia"
+            (input)="onMedicamentoChange($index, 'frecuencia', $any($event.target).value)"
+            placeholder="Frecuencia"
+            class="input-field med-frecuencia"
+          />
+          <button
+            type="button"
+            class="btn-quitar-med"
+            (click)="quitarMedicamento($index)"
+            title="Quitar medicamento"
+          >✕</button>
+        </div>
+      }
+
+      <button type="button" class="btn-agregar-med" (click)="agregarMedicamento()">
+        + Agregar medicamento
+      </button>
+    </div>
+
+    <!-- Notas clínicas -->
+    <div class="form-group">
+      <label>Notas clínicas</label>
+      <textarea
+        [value]="formData.notas_clinicas"
+        (input)="onInputChange('notas_clinicas', $any($event.target).value)"
+        placeholder="Observaciones, evolución del paciente..."
+        class="input-field textarea-notas"
+        rows="3"
+      ></textarea>
+    </div>
   </div>
 
   <div class="modal-actions">
     <button class="btn btn-cancel" (click)="onCancel()">Cancelar</button>
-    <button 
-      class="btn"
-      [class.btn-save-registrar]="!patient"
-      [class.btn-save-actualizar]="patient"
-      (click)="onSave()"
-    >
-      {{ patient ? 'Guardar' : 'Guardar' }}
+    <button class="btn btn-save-actualizar" (click)="onSave()">
+      Guardar cambios
     </button>
- </div>
+  </div>
 </div>

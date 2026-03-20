@@ -4,40 +4,79 @@
 
   <main class="main-content">
     <div class="patients-container">
+
       <div class="header">
         <h1>Pacientes</h1>
-        <app-button variant="primary" (clickEvent)="openRegisterForm()">
-          Registrar paciente
-        </app-button>
       </div>
 
-      <table class="patients-table">
-        <thead>
-          <tr>
-            <th>Fecha creación</th>
-            <th>Nombre</th>
-            <th>Diagnóstico</th>
-            <th>Correo</th>
-            <th>Acción</th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (patient of patients; track patient.id) {
-            <tr>
-              <td>{{ patient.fechaCreacion }}</td>
-              <td>{{ patient.nombre }}</td>
-              <td>{{ patient.diagnostico }}</td>
-              <td>{{ patient.correo }}</td>
-              <td class="actions">
-                <button class="btn-update" (click)="openEditForm(patient)">Actualizar</button>
-                <button class="btn-delete" (click)="onDelete(patient)">Eliminar</button>
-              </td>
-            </tr>
-          }
-        </tbody>
-      </table>
-      
-      @if (showForm) {
+      <!-- Estado de carga -->
+      @if (isLoading) {
+        <div class="loading-state">
+          <p>Cargando pacientes...</p>
+        </div>
+      }
+
+      <!-- Error de carga -->
+      @if (apiError && !isLoading) {
+        <div class="api-error-alert">
+          <p>❌ {{ apiError }}</p>
+          <button class="btn-retry" (click)="cargarPacientes()">Reintentar</button>
+        </div>
+      }
+
+      <!-- Tabla de pacientes -->
+      @if (!isLoading && !apiError) {
+
+        @if (patients.length === 0) {
+          <div class="empty-state">
+            <p>No tienes pacientes vinculados aún.</p>
+            <p>Comparte tu código de vinculación <strong>con tus pacientes</strong> para que puedan conectarse desde la app móvil.</p>
+          </div>
+        }
+
+        @if (patients.length > 0) {
+          <table class="patients-table">
+            <thead>
+              <tr>
+                <th>Fecha vinculación</th>
+                <th>Nombre</th>
+                <th>Diagnóstico</th>
+                <th>Estadio H&Y</th>
+                <th>Correo</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (patient of patients; track patient.id) {
+                <tr>
+                  <td>{{ formatFecha(patient.fecha_vinculacion) }}</td>
+                  <td>{{ patient.nombre_completo }}</td>
+                  <td>{{ patient.diagnostico || '—' }}</td>
+                  <td>
+                    @if (patient.estadio_hoehn_yahr) {
+                      <span class="badge-estadio">{{ patient.estadio_hoehn_yahr }}</span>
+                    } @else {
+                      <span class="sin-dato">—</span>
+                    }
+                  </td>
+                  <td>{{ patient.correo || '—' }}</td>
+                  <td class="actions">
+                    <button class="btn-update" (click)="openEditForm(patient)">
+                      Actualizar
+                    </button>
+                    <button class="btn-delete" (click)="onDelete(patient)">
+                      Desvincular
+                    </button>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      }
+
+      <!-- MODAL: Editar datos clínicos -->
+      @if (showForm && editingPatient) {
         <app-modal-overlay (close)="onCloseForm()">
           <app-patient-form
             [patient]="editingPatient"
@@ -47,43 +86,38 @@
         </app-modal-overlay>
       }
 
+      <!-- MODAL: Confirmar desvinculación -->
       @if (showConfirmDelete) {
         <app-modal-overlay (close)="showConfirmDelete = false">
           <app-confirm-modal
-            title="¿Estás seguro de eliminar el paciente?"
-            message="(Esta acción no se deshace)"
+            title="¿Desvincular a este paciente?"
+            message="El paciente dejará de aparecer en tu lista. Esta acción no elimina su cuenta."
             (confirm)="onConfirmDelete()"
             (cancel)="showConfirmDelete = false"
           ></app-confirm-modal>
         </app-modal-overlay>
       }
 
+      <!-- MODAL: Éxito desvinculación -->
       @if (showSuccessDelete) {
         <app-modal-overlay (close)="showSuccessDelete = false">
           <app-alert-success
-            message="Paciente eliminado correctamente"
+            message="Paciente desvinculado correctamente"
             (closed)="showSuccessDelete = false"
           ></app-alert-success>
         </app-modal-overlay>
       }
 
+      <!-- MODAL: Éxito actualización -->
       @if (showSuccessUpdate) {
         <app-modal-overlay (close)="showSuccessUpdate = false">
           <app-alert-success
-            message="Paciente actualizado correctamente"
+            message="Datos clínicos actualizados correctamente"
             (closed)="showSuccessUpdate = false"
           ></app-alert-success>
         </app-modal-overlay>
       }
 
-      @if (showSuccessCreate) {
-        <app-modal-overlay (close)="showSuccessCreate = false">
-          <app-alert-success
-            message="Paciente registrado correctamente"
-            (closed)="showSuccessCreate = false"
-          ></app-alert-success>
-        </app-modal-overlay>
-      }
     </div>
   </main>
 </div>

@@ -1,0 +1,223 @@
+<div class="consulta-container">
+
+  <div class="page-header">
+    <h1>Nueva consulta</h1>
+    <p class="page-subtitle">Registra la información de la consulta y genera la receta médica</p>
+  </div>
+
+  <!-- 1. PACIENTE -->
+  <div class="seccion-card">
+    <div class="seccion-titulo">
+      <span class="seccion-num">1</span>
+      Paciente
+    </div>
+    @if (!pacienteSeleccionado) {
+      <div class="buscador-wrapper">
+        <div class="buscador-input-group">
+          <input type="text" class="buscador-input"
+            placeholder="Buscar paciente por nombre..."
+            [(ngModel)]="busqueda"
+            (input)="onBusqueda()"
+            (blur)="mostrarDropdown = false"
+            (focus)="onBusqueda()"
+            autocomplete="off" />
+          <span class="buscador-icon">🔍</span>
+        </div>
+        @if (mostrarDropdown && pacientesFiltrados.length > 0) {
+          <div class="dropdown-resultados">
+            @for (p of pacientesFiltrados; track p.id) {
+              <div class="dropdown-item" (mousedown)="seleccionarPaciente(p)">
+                <span class="dropdown-nombre">{{ p.nombre_completo }}</span>
+                <span class="dropdown-detalle">
+                  {{ p.edad }} años
+                  @if (p.diagnostico) { · {{ p.diagnostico }} }
+                </span>
+              </div>
+            }
+          </div>
+        }
+        @if (mostrarDropdown && busqueda && pacientesFiltrados.length === 0) {
+          <div class="dropdown-vacio">No se encontraron pacientes</div>
+        }
+      </div>
+    } @else {
+      <div class="paciente-seleccionado">
+        <div class="paciente-avatar">{{ inicialesPaciente }}</div>
+        <div class="paciente-datos">
+          <div class="paciente-nombre">{{ pacienteSeleccionado.nombre_completo }}</div>
+          <div class="paciente-meta">
+            {{ pacienteSeleccionado.edad }} años
+            @if (pacienteSeleccionado.diagnostico) { · {{ pacienteSeleccionado.diagnostico }} }
+            @if (pacienteSeleccionado.estadio_hoehn_yahr) { · Estadio {{ pacienteSeleccionado.estadio_hoehn_yahr }} }
+          </div>
+        </div>
+        <button class="btn-cambiar-paciente" (click)="limpiarPaciente()">Cambiar</button>
+      </div>
+    }
+  </div>
+
+  <!-- 2. SIGNOS VITALES -->
+  <div class="seccion-card">
+    <div class="seccion-titulo">
+      <span class="seccion-num">2</span>
+      Signos vitales
+      <span class="seccion-opcional">(opcional)</span>
+    </div>
+    <div class="signos-grid">
+      <div class="campo-grupo">
+        <label>Peso</label>
+        <div class="input-con-unidad">
+          <input type="number" placeholder="0.0" min="0"
+            [(ngModel)]="signosVitales.peso" (ngModelChange)="calcularIMC()" class="campo-input" />
+          <span class="unidad">kg</span>
+        </div>
+      </div>
+      <div class="campo-grupo">
+        <label>Talla</label>
+        <div class="input-con-unidad">
+          <input type="number" placeholder="170" min="0"
+            [(ngModel)]="signosVitales.talla" (ngModelChange)="calcularIMC()" class="campo-input" />
+          <span class="unidad">cm</span>
+        </div>
+      </div>
+      <div class="campo-grupo">
+        <label>IMC <span class="auto-badge">auto</span></label>
+        <div class="input-con-unidad">
+          <input type="text" [value]="signosVitales.imc || '—'" class="campo-input campo-readonly" readonly />
+          <span class="unidad">kg/m²</span>
+        </div>
+      </div>
+      <div class="campo-grupo">
+        <label>Presión arterial</label>
+        <div class="input-con-unidad">
+          <input type="text" placeholder="120/80" [(ngModel)]="signosVitales.presion_arterial" class="campo-input" />
+          <span class="unidad">mmHg</span>
+        </div>
+      </div>
+      <div class="campo-grupo">
+        <label>Frec. cardíaca</label>
+        <div class="input-con-unidad">
+          <input type="number" placeholder="72" min="0" [(ngModel)]="signosVitales.frecuencia_cardiaca" class="campo-input" />
+          <span class="unidad">lpm</span>
+        </div>
+      </div>
+      <div class="campo-grupo">
+        <label>Temperatura</label>
+        <div class="input-con-unidad">
+          <input type="number" placeholder="36.5" min="0" [(ngModel)]="signosVitales.temperatura" class="campo-input" />
+          <span class="unidad">°C</span>
+        </div>
+      </div>
+      <div class="campo-grupo">
+        <label>Glucosa</label>
+        <div class="input-con-unidad">
+          <input type="number" placeholder="90" min="0" [(ngModel)]="signosVitales.glucosa" class="campo-input" />
+          <span class="unidad">mg/dL</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. DATOS CLÍNICOS -->
+  <div class="seccion-card">
+    <div class="seccion-titulo">
+      <span class="seccion-num">3</span>
+      Datos clínicos
+    </div>
+    <div class="campo-grupo campo-full">
+      <label>Motivo de consulta <span class="required">*</span></label>
+      <textarea class="campo-textarea" placeholder="Describe el motivo principal de la consulta..."
+        [(ngModel)]="motivoConsulta" rows="3"></textarea>
+    </div>
+    <div class="campo-grupo campo-full mt-1">
+      <label>Diagnóstico <span class="required">*</span></label>
+      <input type="text" class="campo-input campo-input-standalone"
+        placeholder="Ej: Parkinson estadio II con predominio de temblor"
+        [(ngModel)]="diagnostico" />
+    </div>
+    <div class="campo-grupo campo-full mt-1">
+      <label>Plan de tratamiento</label>
+      <textarea class="campo-textarea" placeholder="Describe el plan de tratamiento indicado..."
+        [(ngModel)]="planTratamiento" rows="3"></textarea>
+    </div>
+  </div>
+
+  <!-- 4. MEDICAMENTOS -->
+  <div class="seccion-card">
+    <div class="seccion-titulo">
+      <span class="seccion-num">4</span>
+      Medicamentos <span class="required">*</span>
+    </div>
+    <div class="med-header-labels">
+      <span>Medicamento</span>
+      <span>Dosis</span>
+      <span>Frecuencia</span>
+      <span>Duración</span>
+      <span></span>
+    </div>
+    @for (med of medicamentos; track $index) {
+      <div class="med-fila">
+        <input type="text" class="campo-input campo-input-standalone"
+          placeholder="Nombre del medicamento" [(ngModel)]="med.nombre" />
+        <div class="input-con-unidad">
+          <input type="number" class="campo-input" placeholder="1" min="0" [(ngModel)]="med.dosis" />
+          <span class="unidad">Tableta</span>
+        </div>
+        <div class="input-con-unidad">
+          <span class="unidad unidad-prefix">Cada</span>
+          <input type="number" class="campo-input" placeholder="8" min="1" max="72" [(ngModel)]="med.frecuencia" />
+          <span class="unidad">hrs</span>
+        </div>
+        <div class="input-con-unidad">
+          <input type="number" class="campo-input" placeholder="30" min="1" [(ngModel)]="med.duracion" />
+          <span class="unidad">días</span>
+        </div>
+        <button class="btn-quitar-med" (click)="quitarMedicamento($index)"
+          [disabled]="medicamentos.length === 1" title="Quitar">✕</button>
+      </div>
+    }
+    <button class="btn-agregar-med" (click)="agregarMedicamento()">+ Agregar medicamento</button>
+  </div>
+
+  <!-- 5. INDICACIONES Y PRÓXIMA CITA -->
+  <div class="seccion-card">
+    <div class="seccion-titulo">
+      <span class="seccion-num">5</span>
+      Indicaciones y seguimiento
+    </div>
+    <div class="campo-grupo campo-full">
+      <label>Indicaciones generales</label>
+      <textarea class="campo-textarea"
+        placeholder="Indicaciones para el paciente: dieta, reposo, cuidados especiales..."
+        [(ngModel)]="indicaciones" rows="3"></textarea>
+    </div>
+    <div class="campo-grupo proxima-cita-grupo mt-1">
+      <label>Próxima cita</label>
+      <input type="date" class="campo-input campo-input-standalone"
+        [(ngModel)]="proximaCita" [min]="today" />
+    </div>
+  </div>
+
+  <!-- BOTÓN -->
+  <div class="acciones-finales">
+    @if (errorGuardar) {
+      <div class="error-guardar">❌ {{ errorGuardar }}</div>
+    }
+    @if (!formularioValido()) {
+      <p class="validacion-hint">
+        Para generar la receta necesitas: seleccionar un paciente, ingresar el motivo de consulta,
+        diagnóstico y al menos un medicamento.
+      </p>
+    }
+    <button
+      class="btn-generar-receta"
+      (click)="generarReceta()"
+      [disabled]="!formularioValido() || isGuardando || isGeneratingPDF"
+    >
+      @if (isGuardando) { Guardando consulta... }
+      @else if (isGeneratingPDF) { Generando PDF... }
+      @else { Generar receta médica (PDF) }
+    </button>
+  </div>
+
+</div>

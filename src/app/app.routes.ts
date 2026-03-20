@@ -10,6 +10,8 @@ import { Consulta } from './features/consulta/consulta';
 import { Grafica } from './features/grafica/grafica';
 import { Alertas} from  './features/alertas/alertas';
 import { Reportes } from './features/reportes/reportes';
+import { ConsultaPage } from './features/consultapage/consultapage';
+import { ConsultasList } from './features/consultaslist/consultaslist';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -20,8 +22,10 @@ export const routes: Routes = [
   { path: 'configuration', component: Configuration},
   { path: 'perfil', component: Perfil},
   { path: 'seguridad', component: Seguridad},
-  { path: 'consulta', component: Consulta},
+  { path: 'consulta', component: Consulta}, //configuracion de perfil datos de consultorio
   { path: 'grafica', component: Grafica},
   { path: 'alertas', component: Alertas},
-  { path: 'reportes', component: Reportes}
+  { path: 'reportes', component: Reportes},
+  { path: 'consultamedica', component: ConsultaPage },//llenado de receta
+  { path: 'consultas', component: ConsultasList },//listado de consultas realizadas
 ];
