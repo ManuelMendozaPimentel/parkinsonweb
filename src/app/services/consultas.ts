@@ -65,7 +65,7 @@ export interface ApiResponse<T = any> {
 
 @Injectable({ providedIn: 'root' })
 export class ConsultasService {
-  private apiUrl = 'http://localhost:3000/api/consultas';
+  private apiUrl = 'https://magapi-production.up.railway.app/api/consultas';
 
   constructor(
     private http: HttpClient,

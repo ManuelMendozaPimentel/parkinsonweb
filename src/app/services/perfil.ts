@@ -58,7 +58,7 @@ export interface ApiResponse<T = any> {
 
 @Injectable({ providedIn: 'root' })
 export class PerfilService {
-  private apiUrl = 'http://localhost:3000/api/perfil';
+  private apiUrl = 'https://magapi-production.up.railway.app/api/perfil';
 
   constructor(
     private http: HttpClient,

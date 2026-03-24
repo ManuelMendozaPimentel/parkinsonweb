@@ -16,7 +16,7 @@ interface Medicamento {
 @Component({
   selector: 'app-consulta-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, SidebarMenu],
+  imports: [CommonModule, FormsModule],
   templateUrl: './consultapage.html',
   styleUrl: './consultapage.css'
 })

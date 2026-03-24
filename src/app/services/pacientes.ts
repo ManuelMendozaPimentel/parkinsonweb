@@ -39,7 +39,7 @@ export interface ApiResponse<T = any> {
 
 @Injectable({ providedIn: 'root' })
 export class PacientesService {
-  private apiUrl = 'http://localhost:3000/api/pacientes';
+  private apiUrl = 'https://magapi-production.up.railway.app/api/pacientes';
 
   constructor(
     private http: HttpClient,
