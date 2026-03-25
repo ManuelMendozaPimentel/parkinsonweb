@@ -5,21 +5,25 @@ import { AuthService } from '../../services/auth';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    console.log('✅ AuthInterceptor instanciado');  // ← Agrega esta línea
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Obtener el token del localStorage
-    const token = this.authService.getToken();
+    console.log('🔐 Interceptor ejecutándose para:', req.url);  // ← Agrega esta línea
     
-    // Si hay token, clonar la petición y agregar el header Authorization
+    const token = this.authService.getToken();
+    console.log('🔐 Token existe?:', !!token);
+    
     if (token) {
       const clonedReq = req.clone({
         headers: req.headers.set('Authorization', `Bearer ${token}`)
       });
+      console.log('🔐 Token agregado a la petición');
       return next.handle(clonedReq);
     }
     
-    // Si no hay token, enviar la petición original
+    console.log('🔐 No hay token');
     return next.handle(req);
   }
 }
