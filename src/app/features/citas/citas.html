@@ -1,0 +1,371 @@
+<div class="dashboard-container" [class.menu-open]="false">
+  <div class="main-content">
+    <div class="consultas-container">
+
+      <!-- Header -->
+      <div class="header">
+        <h1>Gestión de Citas</h1>
+        <button class="btn-nueva-consulta" (click)="abrirModalCrear()">
+          + Nueva Cita
+        </button>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filtro-wrapper">
+        <div class="filtro-input-group">
+          <input
+            class="filtro-input"
+            type="text"
+            placeholder="Buscar por paciente, tipo o estado..."
+            [(ngModel)]="filtroTexto"
+            (input)="onFiltroTexto()"
+          />
+          <span *ngIf="!filtroTexto" class="filtro-icon">🔍</span>
+          <button *ngIf="filtroTexto" class="filtro-clear" (click)="filtroTexto=''; aplicarFiltros()">✕</button>
+        </div>
+
+        <select class="filtro-select" [(ngModel)]="filtroEstado" (change)="onFiltroEstado()">
+          <option value="">Todos los estados</option>
+          <option *ngFor="let e of estadosCita" [value]="e">{{ estadoLabel(e) }}</option>
+        </select>
+
+        <input
+          class="filtro-input"
+          type="date"
+          [(ngModel)]="filtroFecha"
+          (change)="onFiltroFecha()"
+          style="max-width:160px"
+        />
+
+        <button *ngIf="filtroTexto || filtroEstado || filtroFecha" class="btn-limpiar" (click)="limpiarFiltros()">
+          Limpiar filtros
+        </button>
+
+        <span class="filtro-resultado" *ngIf="!cargando">
+          {{ citasFiltradas.length }} de {{ totalRegistros }} citas
+        </span>
+      </div>
+
+      <!-- Error API -->
+      <div class="api-error-alert" *ngIf="errorApi">
+        <p>⚠️ {{ errorApi }}</p>
+        <button class="btn-retry" (click)="cargarCitas()">Reintentar</button>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading-state" *ngIf="cargando">
+        <p>Cargando citas...</p>
+      </div>
+
+      <!-- Tabla -->
+      <table class="consultas-table" *ngIf="!cargando && !errorApi && citasFiltradas.length > 0">
+        <thead>
+          <tr>
+            <th>Paciente</th>
+            <th>Fecha</th>
+            <th>Hora</th>
+            <th>Tipo</th>
+            <th>Estado</th>
+            <th>Duración</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let cita of citasFiltradas">
+            <td class="td-paciente">{{ cita.paciente_nombre }}</td>
+            <td [class.cita-pasada]="esPasada(cita.fecha_hora)">{{ cita.fecha }}</td>
+            <td>{{ cita.hora }}</td>
+            <td>{{ tipoLabel(cita.tipo) }}</td>
+            <td>
+              <span class="estado-badge" [ngClass]="estadoClass(cita.estado)">
+                {{ estadoLabel(cita.estado) }}
+              </span>
+            </td>
+            <td>{{ cita.duracion_minutos }} min</td>
+            <td>
+              <div class="actions">
+                <button class="btn-ver" (click)="verDetalle(cita)">Ver</button>
+                <button
+                  class="btn-accion btn-confirmar"
+                  *ngIf="puedeConfirmar(cita)"
+                  (click)="confirmarCita(cita, $event)"
+                  title="Confirmar">✔</button>
+                <button
+                  class="btn-accion btn-reprogramar"
+                  *ngIf="puedeReprogramar(cita)"
+                  (click)="abrirReprogramar(cita, $event)"
+                  title="Reprogramar">↺</button>
+                <button
+                  class="btn-accion btn-cancelar"
+                  *ngIf="puedeCancelar(cita)"
+                  (click)="abrirCancelar(cita, $event)"
+                  title="Cancelar">✕</button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty state -->
+      <div class="empty-state" *ngIf="!cargando && !errorApi && citasFiltradas.length === 0">
+        <p>No se encontraron citas</p>
+        <p *ngIf="filtroTexto || filtroEstado || filtroFecha">
+          Prueba con <strong>otros filtros</strong>
+        </p>
+        <button class="btn-limpiar" (click)="limpiarFiltros()">Limpiar filtros</button>
+      </div>
+
+      <!-- Paginación -->
+      <div class="paginacion" *ngIf="totalPaginas > 1 && !cargando">
+        <button class="btn-pag" [disabled]="!hayPaginaAnterior" (click)="paginaAnterior()">‹ Anterior</button>
+        <span class="pag-info">Página {{ paginaActual + 1 }} de {{ totalPaginas }}</span>
+        <button class="btn-pag" [disabled]="!hayPaginaSiguiente" (click)="paginaSiguiente()">Siguiente ›</button>
+      </div>
+
+    </div><!-- /consultas-container -->
+  </div><!-- /main-content -->
+</div><!-- /dashboard-container -->
+
+
+<!-- ══════════════════════════════════════════════
+     OVERLAY
+══════════════════════════════════════════════ -->
+<div class="modal-overlay" *ngIf="modalMode" (click)="cerrarModal()">
+  <div (click)="$event.stopPropagation()">
+
+
+    <!-- ── MODAL: CREAR CITA ────────────────────── -->
+    <div class="formulario-modal-wrapper" *ngIf="modalMode === 'crear'">
+      <div class="modal-header">
+        <h2>Nueva Cita</h2>
+        <button class="btn-cerrar-x" (click)="cerrarModal()">✕</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="error-banner" *ngIf="errorForm">⚠️ {{ errorForm }}</div>
+
+        <div class="form-grid">
+
+          <div class="form-group">
+            <label>ID del Paciente *</label>
+            <input
+              type="number"
+              class="form-input"
+              [(ngModel)]="form.paciente_id"
+              placeholder="Ej: 12"
+              min="1"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Tipo de Cita</label>
+            <select class="form-input" [(ngModel)]="form.tipo">
+              <option *ngFor="let t of tiposCita" [value]="t">{{ tipoLabel(t) }}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Fecha *</label>
+            <input
+              type="date"
+              class="form-input"
+              [(ngModel)]="formFecha"
+              [min]="minFecha"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Hora *</label>
+            <input
+              type="time"
+              class="form-input"
+              [(ngModel)]="formHora"
+            />
+          </div>
+
+          <div class="form-group">
+            <label>Duración (minutos)</label>
+            <select class="form-input" [(ngModel)]="form.duracion_minutos">
+              <option [value]="15">15 min</option>
+              <option [value]="20">20 min</option>
+              <option [value]="30">30 min</option>
+              <option [value]="45">45 min</option>
+              <option [value]="60">60 min</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>ID Consultorio (opcional)</label>
+            <input
+              type="number"
+              class="form-input"
+              [(ngModel)]="form.consultorio_id"
+              placeholder="Opcional"
+              min="1"
+            />
+          </div>
+
+          <div class="form-group form-group--full">
+            <label>Notas (opcional)</label>
+            <textarea
+              class="form-input form-textarea"
+              [(ngModel)]="form.notas"
+              rows="3"
+              placeholder="Motivo de la cita, indicaciones previas..."
+            ></textarea>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-cerrar-detalle" (click)="cerrarModal()" [disabled]="guardando">Cancelar</button>
+        <button class="btn-nueva-consulta" (click)="guardarCita()" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : 'Agendar Cita' }}
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ── MODAL: DETALLE CITA ──────────────────── -->
+    <div class="detalle-modal" *ngIf="modalMode === 'detalle'">
+
+      <div class="detalle-loading" *ngIf="cargandoDetalle">Cargando detalle...</div>
+      <div class="detalle-error"   *ngIf="errorDetalle"><p>⚠️ {{ errorDetalle }}</p></div>
+
+      <ng-container *ngIf="citaSeleccionada && !cargandoDetalle">
+        <div class="detalle-header">
+          <div>
+            <h2>Detalle de Cita</h2>
+            <p class="detalle-paciente">{{ citaSeleccionada.paciente_nombre }}</p>
+          </div>
+          <div
+            class="detalle-proxima-cita"
+            [class.cita-pasada]="esPasada(citaSeleccionada.fecha_hora)"
+          >
+            <span class="cita-label">Fecha</span>
+            <span class="cita-fecha">{{ citaSeleccionada.fecha }}</span>
+            <span class="cita-label" style="margin-top:4px">Hora</span>
+            <span class="cita-fecha">{{ citaSeleccionada.hora }}</span>
+          </div>
+        </div>
+
+        <div class="detalle-seccion">
+          <h3>Estado</h3>
+          <span class="estado-badge" [ngClass]="estadoClass(citaSeleccionada.estado)">
+            {{ estadoLabel(citaSeleccionada.estado) }}
+          </span>
+        </div>
+
+        <div class="detalle-seccion">
+          <h3>Información de la Cita</h3>
+          <div class="info-grid">
+            <div class="info-row"><span class="info-label">Tipo</span><span class="info-val">{{ tipoLabel(citaSeleccionada.tipo) }}</span></div>
+            <div class="info-row"><span class="info-label">Duración</span><span class="info-val">{{ citaSeleccionada.duracion_minutos }} minutos</span></div>
+            <div class="info-row" *ngIf="citaSeleccionada.consultorio"><span class="info-label">Consultorio</span><span class="info-val">{{ citaSeleccionada.consultorio }}</span></div>
+            <div class="info-row"><span class="info-label">Confirmación paciente</span><span class="info-val">{{ citaSeleccionada.confirmacion_paciente ? 'Sí' : 'No' }}</span></div>
+          </div>
+        </div>
+
+        <div class="detalle-seccion">
+          <h3>Datos del Paciente</h3>
+          <div class="info-grid">
+            <div class="info-row"><span class="info-label">Correo</span><span class="info-val">{{ citaSeleccionada.paciente_correo }}</span></div>
+            <div class="info-row"><span class="info-label">Teléfono</span><span class="info-val">{{ citaSeleccionada.paciente_telefono || '—' }}</span></div>
+          </div>
+        </div>
+
+        <div class="detalle-seccion" *ngIf="citaSeleccionada.notas">
+          <h3>Notas</h3>
+          <p class="detalle-texto">{{ citaSeleccionada.notas }}</p>
+        </div>
+
+        <div class="detalle-seccion" *ngIf="citaSeleccionada.motivo_cancelacion">
+          <h3>Motivo de cancelación</h3>
+          <p class="detalle-texto" style="color:#d32f2f">{{ citaSeleccionada.motivo_cancelacion }}</p>
+        </div>
+
+        <div class="detalle-acciones">
+          <button
+            class="btn-accion btn-reprogramar"
+            *ngIf="puedeReprogramar(citaSeleccionada)"
+            (click)="abrirReprogramar(citaSeleccionada)">
+            Reprogramar
+          </button>
+          <button
+            class="btn-accion btn-cancelar"
+            *ngIf="puedeCancelar(citaSeleccionada)"
+            (click)="abrirCancelar(citaSeleccionada)">
+            Cancelar cita
+          </button>
+          <button class="btn-cerrar-detalle" (click)="cerrarModal()">Cerrar</button>
+        </div>
+      </ng-container>
+    </div>
+
+
+    <!-- ── MODAL: REPROGRAMAR ───────────────────── -->
+    <div class="formulario-modal-wrapper" style="max-width:480px" *ngIf="modalMode === 'reprogramar'">
+      <div class="modal-header">
+        <h2>Reprogramar Cita</h2>
+        <button class="btn-cerrar-x" (click)="cerrarModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-subtitle" *ngIf="citaSeleccionada">
+          Paciente: <strong>{{ citaSeleccionada.paciente_nombre }}</strong><br>
+          Cita actual: {{ citaSeleccionada.fecha }} a las {{ citaSeleccionada.hora }}
+        </p>
+        <div class="error-banner" *ngIf="repError">⚠️ {{ repError }}</div>
+
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Nueva Fecha *</label>
+            <input type="date" class="form-input" [(ngModel)]="repFecha" [min]="minFecha"/>
+          </div>
+          <div class="form-group">
+            <label>Nueva Hora *</label>
+            <input type="time" class="form-input" [(ngModel)]="repHora"/>
+          </div>
+          <div class="form-group form-group--full">
+            <label>Motivo (opcional)</label>
+            <input type="text" class="form-input" [(ngModel)]="repMotivo" placeholder="Motivo del cambio..."/>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cerrar-detalle" (click)="cerrarModal()" [disabled]="guardando">Cancelar</button>
+        <button class="btn-nueva-consulta" (click)="guardarReprogramacion()" [disabled]="guardando">
+          {{ guardando ? 'Guardando...' : 'Confirmar Reprogramación' }}
+        </button>
+      </div>
+    </div>
+
+
+    <!-- ── MODAL: CANCELAR ──────────────────────── -->
+    <div class="formulario-modal-wrapper" style="max-width:440px" *ngIf="modalMode === 'cancelar'">
+      <div class="modal-header">
+        <h2>Cancelar Cita</h2>
+        <button class="btn-cerrar-x" (click)="cerrarModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <p class="modal-subtitle" *ngIf="citaSeleccionada">
+          ¿Deseas cancelar la cita de <strong>{{ citaSeleccionada.paciente_nombre }}</strong>
+          del <strong>{{ citaSeleccionada.fecha }}</strong> a las <strong>{{ citaSeleccionada.hora }}</strong>?
+        </p>
+        <div class="error-banner" *ngIf="cancelError">⚠️ {{ cancelError }}</div>
+        <div class="form-group" style="margin-top:1rem">
+          <label>Motivo de cancelación (opcional)</label>
+          <input type="text" class="form-input" [(ngModel)]="cancelMotivo" placeholder="Ej: Paciente no disponible"/>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cerrar-detalle" (click)="cerrarModal()" [disabled]="guardando">Volver</button>
+        <button class="btn-cancelar-confirm" (click)="guardarCancelacion()" [disabled]="guardando">
+          {{ guardando ? 'Cancelando...' : 'Cancelar Cita' }}
+        </button>
+      </div>
+    </div>
+
+
+  </div><!-- /stopPropagation -->
+</div><!-- /overlay -->

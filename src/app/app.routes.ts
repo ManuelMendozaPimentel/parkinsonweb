@@ -12,6 +12,7 @@ import { Alertas} from  './features/alertas/alertas';
 import { Reportes } from './features/reportes/reportes';
 import { ConsultaPage } from './features/consultapage/consultapage';
 import { ConsultasList } from './features/consultaslist/consultaslist';
+import { CitasComponent } from './features/citas/citas';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -28,4 +29,5 @@ export const routes: Routes = [
   { path: 'reportes', component: Reportes},
   { path: 'consultamedica', component: ConsultaPage },//llenado de receta
   { path: 'consultas', component: ConsultasList },//listado de consultas realizadas
+  { path: 'citas', component: CitasComponent}
 ];
