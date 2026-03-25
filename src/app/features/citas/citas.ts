@@ -10,17 +10,23 @@ import {
   CitasService, Cita, CitaDetalle, EstadoCita, TipoCita,
   CrearCitaRequest, FiltrosCitas
 } from '../../services/citas';
+import { SidebarMenu } from '../../shared/components/sidebar-menu/sidebar-menu';
 
 type ModalMode = 'crear' | 'detalle' | 'reprogramar' | 'cancelar' | null;
 
 @Component({
   selector: 'app-citas',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, SidebarMenu],
   templateUrl: './citas.html',
   styleUrls: ['./citas.css']
 })
 export class CitasComponent implements OnInit, OnDestroy {
+  isMenuOpen = false;
+
+  onMenuToggle(open: boolean): void {
+    this.isMenuOpen = open;
+  }
 
   // ── Lista ──────────────────────────────────────────────
   citas: Cita[]       = [];

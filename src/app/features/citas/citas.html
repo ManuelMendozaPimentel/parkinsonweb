@@ -1,4 +1,5 @@
 <div class="dashboard-container" [class.menu-open]="false">
+  <app-sidebar-menu (menuToggle)="onMenuToggle($event)"></app-sidebar-menu>
   <div class="main-content">
     <div class="consultas-container">
 
