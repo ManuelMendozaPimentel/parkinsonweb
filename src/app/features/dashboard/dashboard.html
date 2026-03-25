@@ -1,6 +1,5 @@
 <!-- Contenedor principal -->
 <div class="dashboard-container" [class.menu-open]="isMenuOpen">
-  <!-- El menú se renderiza aquí (fuera del contenedor para que pueda salir del flujo) -->
   <app-sidebar-menu (menuToggle)="onMenuToggle($event)"></app-sidebar-menu>
 
   <!-- Contenido principal -->
@@ -9,78 +8,150 @@
       <h1>DASHBOARD PRINCIPAL</h1>
     </header>
 
-    <!-- Cards estadísticos -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <h3>Pacientes activos</h3>
-        <p class="value">40</p>
-      </div>
-      <div class="stat-card">
-        <h3>Alertas de hoy</h3>
-        <p class="value">2</p>
-      </div>
-      <div class="stat-card">
-        <h3>Pacientes sin evaluación</h3>
-        <p class="value">3</p>
-      </div>
+    <!-- Estado de carga -->
+    <div *ngIf="loading" class="loading-state">
+      <p>Cargando datos...</p>
     </div>
 
-    <!-- Gráfica y Citas -->
-    <div class="content-row">
-      <div class="chart-section">
-        <h3>Gráfica de actividad y temblor semanal</h3>
-        <div class="chart-placeholder">
-          <!-- Aquí iría tu gráfica (por ahora placeholder) -->
-          <svg width="100%" height="200" viewBox="0 0 400 200" xmlns="http://www.w3.org/2000/svg">
-            <rect x="40" y="100" width="40" height="60" fill="#d32f2f"></rect>
-            <rect x="100" y="80" width="40" height="80" fill="#d32f2f"></rect>
-            <rect x="160" y="90" width="40" height="70" fill="#d32f2f"></rect>
-            <rect x="220" y="60" width="40" height="100" fill="#d32f2f"></rect>
-            <text x="20" y="180" font-size="12" fill="#666">Manuel Morales</text>
-            <text x="80" font-size="12" fill="#666">Gricelda Robles</text>
-            <text x="140" y="180" font-size="12" fill="#666">Ana Flores</text>
-            <text x="200" y="180" font-size="12" fill="#666">Ana Juarez</text>
-            <text x="20" y="20" font-size="12" fill="#666">Frecuencia</text>
-          </svg>
+    <!-- Error -->
+    <div *ngIf="error" class="error-state">
+      <p>{{ error }}</p>
+      <button (click)="cargarDashboard()">Reintentar</button>
+    </div>
+
+    <!-- Contenido del dashboard -->
+    <ng-container *ngIf="!loading && !error">
+      <!-- Cards estadísticos -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <h3>Pacientes activos</h3>
+          <p class="value">{{ totalPacientes }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Alertas pendientes</h3>
+          <p class="value">{{ alertas.length }}</p>
+        </div>
+        <div class="stat-card">
+          <h3>Pacientes sin evaluación</h3>
+          <p class="value">{{ pacientesSinEvaluacion }}</p>
         </div>
       </div>
 
-      <div class="appointments-section">
-        <h3>CITAS PROGRAMADAS PARA HOY</h3>
-        <table class="appointments-table">
-          <thead>
-            <tr>
-              <th>PACIENTE</th>
-              <th>HORA</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>Manuel Morales</td><td>8:00 hrs</td></tr>
-            <tr><td>Gricelda Robles</td><td>10:00 hrs</td></tr>
-            <tr><td>Josefina Vasquez</td><td>12:00 hrs</td></tr>
-            <tr><td>Maritza Martinez</td><td>14:00 hrs</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+      <!-- Gráfica y Citas -->
+      <div class="content-row">
+        <div class="chart-section">
+          <h3>Actividad semanal</h3>
+          <div class="chart-placeholder">
+            <div class="chart-bars">
+              <div *ngFor="let dia of actividadReciente" class="chart-bar-item">
+                <div class="bar-container">
+                  <div class="bar" [style.height.%]="getBarHeight(dia.consultas, getMaxConsultas())"></div>
+                </div>
+                <span class="bar-label">{{ dia.dia }}</span>
+                <span class="bar-value">{{ dia.consultas }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <!-- Alertas -->
-    <div class="alerts-section">
-      <h3>ALERTAS</h3>
-      <table class="alerts-table">
-        <thead>
-          <tr>
-            <th>TIPO DE ALERTA</th>
-            <th>DESCRIPCIÓN</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Sobre paciente</td>
-            <td>El paciente Faustino Morales Robles, presenta una alergia con un medicamento externo</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+        <div class="appointments-section">
+          <h3>CITAS PROGRAMADAS</h3>
+          <ng-container *ngIf="hayCitas; else sinCitas">
+            <div *ngIf="citasHoy.length > 0" class="citas-grupo">
+              <h4>📅 Hoy</h4>
+              <table class="appointments-table">
+                <thead>
+                  <tr>
+                    <th>PACIENTE</th>
+                    <th>HORA</th>
+                    <th>CONSULTORIO</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let cita of citasHoy">
+                    <td>{{ cita.paciente_nombre }}</td>
+                    <td>{{ cita.hora }} hrs</td>
+                    <td>{{ cita.consultorio || 'No asignado' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="citasManana.length > 0" class="citas-grupo">
+              <h4>📆 Mañana</h4>
+              <table class="appointments-table">
+                <thead>
+                  <tr>
+                    <th>PACIENTE</th>
+                    <th>HORA</th>
+                    <th>CONSULTORIO</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let cita of citasManana">
+                    <td>{{ cita.paciente_nombre }}</td>
+                    <td>{{ cita.hora }} hrs</td>
+                    <td>{{ cita.consultorio || 'No asignado' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div *ngIf="citasSemana.length > 0" class="citas-grupo">
+              <h4>🗓️ Esta semana</h4>
+              <table class="appointments-table">
+                <thead>
+                  <tr>
+                    <th>PACIENTE</th>
+                    <th>FECHA</th>
+                    <th>HORA</th>
+                    <th>CONSULTORIO</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let cita of citasSemana">
+                    <td>{{ cita.paciente_nombre }}</td>
+                    <td>{{ cita.fecha }}</td>
+                    <td>{{ cita.hora }} hrs</td>
+                    <td>{{ cita.consultorio || 'No asignado' }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </ng-container>
+          <ng-template #sinCitas>
+            <p class="no-data">No hay citas programadas en los próximos días</p>
+          </ng-template>
+        </div>
+      </div>
+
+      <!-- Alertas -->
+      <div class="alerts-section">
+        <h3>ALERTAS</h3>
+        <ng-container *ngIf="alertas.length > 0; else sinAlertas">
+          <table class="alerts-table">
+            <thead>
+              <tr>
+                <th>PACIENTE</th>
+                <th>TIPO DE ALERTA</th>
+                <th>DESCRIPCIÓN</th>
+                <th>SEVERIDAD</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let alerta of alertas">
+                <td>{{ alerta.paciente_nombre }}</td>
+                <td>{{ alerta.tipo === 'SIN_CONSULTA' ? 'Sin evaluación' : alerta.tipo }}</td>
+                <td>{{ alerta.mensaje }}</td>
+                <td><span class="severidad-badge" [ngClass]="getSeveridadClass(alerta.severidad)">{{ alerta.severidad }}</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </ng-container>
+        <ng-template #sinAlertas>
+          <p class="no-data">No hay alertas activas</p>
+        </ng-template>
+      </div>
+    </ng-container>
   </main>
 </div>
