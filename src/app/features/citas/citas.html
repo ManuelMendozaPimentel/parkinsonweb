@@ -137,96 +137,113 @@
 
     <!-- ── MODAL: CREAR CITA ────────────────────── -->
     <div class="formulario-modal-wrapper" *ngIf="modalMode === 'crear'">
-      <div class="modal-header">
+    <div class="modal-header">
         <h2>Nueva Cita</h2>
         <button class="btn-cerrar-x" (click)="cerrarModal()">✕</button>
-      </div>
+    </div>
 
-      <div class="modal-body">
+    <div class="modal-body">
         <div class="error-banner" *ngIf="errorForm">⚠️ {{ errorForm }}</div>
 
         <div class="form-grid">
 
-          <div class="form-group">
-            <label>ID del Paciente *</label>
+        <!-- Buscador de pacientes -->
+        <div class="form-group form-group--full">
+            <label>Paciente *</label>
+            <div class="buscador-paciente">
             <input
-              type="number"
-              class="form-input"
-              [(ngModel)]="form.paciente_id"
-              placeholder="Ej: 12"
-              min="1"
+                type="text"
+                class="form-input"
+                placeholder="Buscar paciente por nombre..."
+                [(ngModel)]="busquedaPaciente"
+                (input)="buscarPacientes()"
             />
-          </div>
+            <div class="resultados-busqueda" *ngIf="resultadosPacientes.length > 0">
+                <div 
+                *ngFor="let paciente of resultadosPacientes"
+                class="resultado-item"
+                (click)="seleccionarPaciente(paciente)"
+                >
+                <strong>{{ paciente.nombre_completo }}</strong>
+                <span class="paciente-info">{{ paciente.correo }} | {{ paciente.telefono || 'Sin teléfono' }}</span>
+                </div>
+            </div>
+            </div>
+            <div *ngIf="pacienteSeleccionado" class="paciente-seleccionado">
+            ✅ Paciente seleccionado: <strong>{{ pacienteSeleccionado.nombre_completo }}</strong>
+            </div>
+        </div>
 
-          <div class="form-group">
+        <div class="form-group">
             <label>Tipo de Cita</label>
             <select class="form-input" [(ngModel)]="form.tipo">
-              <option *ngFor="let t of tiposCita" [value]="t">{{ tipoLabel(t) }}</option>
+            <option *ngFor="let t of tiposCita" [value]="t">{{ tipoLabel(t) }}</option>
             </select>
-          </div>
+        </div>
 
-          <div class="form-group">
+        <div class="form-group">
             <label>Fecha *</label>
             <input
-              type="date"
-              class="form-input"
-              [(ngModel)]="formFecha"
-              [min]="minFecha"
+            type="date"
+            class="form-input"
+            [(ngModel)]="formFecha"
+            [min]="minFecha"
+            (change)="onFechaChange()"
             />
-          </div>
+        </div>
 
-          <div class="form-group">
+        <div class="form-group">
             <label>Hora *</label>
-            <input
-              type="time"
-              class="form-input"
-              [(ngModel)]="formHora"
-            />
-          </div>
-
-          <div class="form-group">
-            <label>Duración (minutos)</label>
-            <select class="form-input" [(ngModel)]="form.duracion_minutos">
-              <option [value]="15">15 min</option>
-              <option [value]="20">20 min</option>
-              <option [value]="30">30 min</option>
-              <option [value]="45">45 min</option>
-              <option [value]="60">60 min</option>
+            <select class="form-input" [(ngModel)]="formHora" [disabled]="!formFecha">
+            <option value="">Seleccionar hora</option>
+            <option 
+                *ngFor="let hora of horasDelDia" 
+                [value]="hora"
+                [disabled]="horaOcupada(hora)"
+            >
+                {{ hora }} {{ horaOcupada(hora) ? '(Ocupada)' : '' }}
+            </option>
             </select>
-          </div>
+            <small *ngIf="formFecha" class="horario-info">
+            Horarios disponibles de 8:00 a 18:00 hrs (cada 30 min)
+            </small>
+        </div>
 
-          <div class="form-group">
-            <label>ID Consultorio (opcional)</label>
-            <input
-              type="number"
-              class="form-input"
-              [(ngModel)]="form.consultorio_id"
-              placeholder="Opcional"
-              min="1"
-            />
-          </div>
+        <!-- Selector de consultorios -->
+        <div class="form-group form-group--full">
+            <label>Consultorio *</label>
+            <select class="form-input" [(ngModel)]="form.consultorio_id">
+            <option [value]="null">Seleccionar consultorio</option>
+            <option *ngFor="let c of consultorios" [value]="c.id">
+                {{ c.nombre_institucion }} - {{ c.direccion_completa || c.calle || 'Dirección no disponible' }}
+            </option>
+            </select>
+        </div>
 
-          <div class="form-group form-group--full">
+        <div class="form-group form-group--full">
             <label>Notas (opcional)</label>
             <textarea
-              class="form-input form-textarea"
-              [(ngModel)]="form.notas"
-              rows="3"
-              placeholder="Motivo de la cita, indicaciones previas..."
+            class="form-input form-textarea"
+            [(ngModel)]="form.notas"
+            rows="3"
+            placeholder="Motivo de la cita, indicaciones previas..."
             ></textarea>
-          </div>
+        </div>
 
         </div>
-      </div>
-
-      <div class="modal-footer">
-        <button class="btn-cerrar-detalle" (click)="cerrarModal()" [disabled]="guardando">Cancelar</button>
-        <button class="btn-nueva-consulta" (click)="guardarCita()" [disabled]="guardando">
-          {{ guardando ? 'Guardando...' : 'Agendar Cita' }}
-        </button>
-      </div>
     </div>
 
+    <div class="modal-footer">
+        <button class="btn-cerrar-detalle" (click)="cerrarModal()" [disabled]="guardando">Cancelar</button>
+        <button 
+        class="btn-nueva-consulta" 
+        (click)="guardarCita()" 
+        [disabled]="guardando || !pacienteSeleccionado || !formFecha || !formHora"
+        >
+        {{ guardando ? 'Guardando...' : 'Agendar Cita' }}
+        </button>
+    </div>
+    </div>
 
     <!-- ── MODAL: DETALLE CITA ──────────────────── -->
     <div class="detalle-modal" *ngIf="modalMode === 'detalle'">
