@@ -65,7 +65,7 @@ export interface ApiResponse<T = any> {
 
 @Injectable({ providedIn: 'root' })
 export class ConsultasService {
-  private apiUrl = 'http://neurotrack.us-east-2.elasticbeanstalk.com/api/consultas';
+  private apiUrl = 'https://neurotrack.us-east-2.elasticbeanstalk.com/api/consultas';
 
   constructor(
     private http: HttpClient,

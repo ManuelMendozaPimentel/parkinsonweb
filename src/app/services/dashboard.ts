@@ -92,7 +92,7 @@ export interface CitaAgrupada {
   providedIn: 'root'
 })
 export class DashboardService {
-  private apiUrl = 'http://neurotrack.us-east-2.elasticbeanstalk.com/api/dashboard';
+  private apiUrl = 'https://neurotrack.us-east-2.elasticbeanstalk.com/api/dashboard';
 
   constructor(
     private http: HttpClient,
