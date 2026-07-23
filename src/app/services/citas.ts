@@ -99,7 +99,7 @@ export interface ReprogramarResponse {
 
 @Injectable({ providedIn: 'root' })
 export class CitasService {
-  private apiUrl = 'https://magapi-production.up.railway.app/api/citas';
+  private apiUrl = 'http://neurotrack.us-east-2.elasticbeanstalk.com/api/citas';
 
   constructor(private http: HttpClient) {}
 
