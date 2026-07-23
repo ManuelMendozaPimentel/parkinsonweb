@@ -65,7 +65,7 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://magapi-production.up.railway.app/api/auth';
+  private apiUrl = 'http://neurotrack.us-east-2.elasticbeanstalk.com/api/auth';
 
   constructor(private http: HttpClient) {}
 
