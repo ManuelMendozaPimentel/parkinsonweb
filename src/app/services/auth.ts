@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
@@ -46,6 +47,7 @@ export interface ReenviarCodigoResponse {
     intentos_restantes: number;
   };
 }
+
 export interface LoginResponse {
   success: boolean;
   message: string;
@@ -66,12 +68,15 @@ export interface LoginResponse {
 })
 export class AuthService {
   private apiUrl = 'https://neurotrack.us-east-2.elasticbeanstalk.com/api/auth';
+  private isBrowser: boolean;
 
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
 
-  /**
-   * Registrar nuevo doctor
-   */
   registro(
     nombre_completo: string,
     correo: string,
@@ -92,16 +97,11 @@ export class AuthService {
     };
 
     return this.http.post<RegistroResponse>(`${this.apiUrl}/registro`, body).pipe(
-      tap(response => {
-        console.log('✅ Registro exitoso:', response);
-      }),
+      tap(response => console.log('✅ Registro exitoso:', response)),
       catchError(this.handleError)
     );
   }
 
-  /**
-   * Verificar código de 6 dígitos
-   */
   verificarCodigo(correo: string, codigo: string): Observable<VerificarCodigoResponse> {
     const body: VerificarCodigoRequest = { correo, codigo };
 
@@ -109,16 +109,11 @@ export class AuthService {
       `${this.apiUrl}/verificar-codigo`,
       body
     ).pipe(
-      tap(response => {
-        console.log('✅ Código verificado:', response);
-      }),
+      tap(response => console.log('✅ Código verificado:', response)),
       catchError(this.handleError)
     );
   }
 
-  /**
-   * Reenviar código de verificación
-   */
   reenviarCodigo(correo: string): Observable<ReenviarCodigoResponse> {
     const body: ReenviarCodigoRequest = { correo };
 
@@ -126,20 +121,18 @@ export class AuthService {
       `${this.apiUrl}/reenviar-codigo`,
       body
     ).pipe(
-      tap(response => {
-        console.log('✅ Código reenviado:', response);
-      }),
+      tap(response => console.log('✅ Código reenviado:', response)),
       catchError(this.handleError)
     );
   }
 
-   login(correo: string, password: string): Observable<LoginResponse> {
+  login(correo: string, password: string): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, { correo, password }).pipe(
       tap(response => {
-        if (response.success) {
+        if (response.success && this.isBrowser) {
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('doctor', JSON.stringify(response.data.doctor));
-          console.log(' Login exitoso:', response);
+          console.log('✅ Login exitoso:', response);
         }
       }),
       catchError(this.handleError)
@@ -147,11 +140,14 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('doctor');
+    if (this.isBrowser) {
+      localStorage.removeItem('token');
+      localStorage.removeItem('doctor');
+    }
   }
 
   getToken(): string | null {
+    if (!this.isBrowser) return null;
     return localStorage.getItem('token');
   }
 
@@ -160,10 +156,10 @@ export class AuthService {
   }
 
   getDoctorData() {
+    if (!this.isBrowser) return null;
     const data = localStorage.getItem('doctor');
     return data ? JSON.parse(data) : null;
   }
-  // ───────────────────────────────────────────────────────
 
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Error desconocido';
@@ -171,13 +167,15 @@ export class AuthService {
     if (error.error instanceof ErrorEvent) {
       errorMessage = `Error: ${error.error.message}`;
     } else {
-      if (error.status === 400)      errorMessage = error.error?.message || 'Datos inválidos';
-      else if (error.status === 401) errorMessage = error.error?.message || 'Correo o contraseña incorrectos';
-      else if (error.status === 403) errorMessage = error.error?.message || 'Cuenta no verificada o inactiva';
-      else if (error.status === 409) errorMessage = error.error?.message || 'El correo o cédula ya están registrados';
-      else if (error.status === 429) errorMessage = error.error?.message || 'Demasiados intentos. Intenta más tarde';
-      else if (error.status === 500) errorMessage = 'Error interno del servidor';
-      else                           errorMessage = `Error ${error.status}: ${error.message}`;
+      switch (error.status) {
+        case 400: errorMessage = error.error?.message || 'Datos inválidos'; break;
+        case 401: errorMessage = error.error?.message || 'Correo o contraseña incorrectos'; break;
+        case 403: errorMessage = error.error?.message || 'Cuenta no verificada o inactiva'; break;
+        case 409: errorMessage = error.error?.message || 'El correo o cédula ya están registrados'; break;
+        case 429: errorMessage = error.error?.message || 'Demasiados intentos. Intenta más tarde'; break;
+        case 500: errorMessage = 'Error interno del servidor'; break;
+        default: errorMessage = `Error ${error.status}: ${error.message}`;
+      }
     }
 
     console.error('❌ Error en API:', error);

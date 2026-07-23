@@ -1,0 +1,18 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist/parkinsonweb/browser",
+  "routes": [
+    {
+      "src": "/patients",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/consulta",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/consultamedica",
+      "dest": "/index.html"
+    }
+  ]
+}
