@@ -58,7 +58,7 @@ export interface ApiResponse<T = any> {
 
 @Injectable({ providedIn: 'root' })
 export class PerfilService {
-  private apiUrl = 'https://magapi-production.up.railway.app/api/perfil';
+  private apiUrl = 'http://neurotrack.us-east-2.elasticbeanstalk.com/api/perfil';
 
   constructor(
     private http: HttpClient,
