@@ -92,7 +92,7 @@ export interface CitaAgrupada {
   providedIn: 'root'
 })
 export class DashboardService {
-  private apiUrl = 'https://magapi-production.up.railway.app/api/dashboard';
+  private apiUrl = 'http://neurotrack.us-east-2.elasticbeanstalk.com/api/dashboard';
 
   constructor(
     private http: HttpClient,
