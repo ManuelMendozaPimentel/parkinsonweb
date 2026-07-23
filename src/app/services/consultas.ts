@@ -65,7 +65,7 @@ export interface ApiResponse<T = any> {
 
 @Injectable({ providedIn: 'root' })
 export class ConsultasService {
-  private apiUrl = 'https://magapi-production.up.railway.app/api/consultas';
+  private apiUrl = 'http://neurotrack.us-east-2.elasticbeanstalk.com/api/consultas';
 
   constructor(
     private http: HttpClient,
