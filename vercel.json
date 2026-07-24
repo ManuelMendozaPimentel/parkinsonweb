@@ -1,18 +1,17 @@
 {
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist/parkinsonweb/browser",
-  "routes": [
+  "version": 2,
+  "buildCommand": "ng build --configuration production",
+  "outputDirectory": "dist/mpwebapp/browser",
+  "framework": "angular",
+  "functions": {
+    "dist/mpwebapp/server/server.mjs": {
+      "includeFiles": "dist/mpwebapp/**"
+    }
+  },
+  "rewrites": [
     {
-      "src": "/patients",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/consulta",
-      "dest": "/index.html"
-    },
-    {
-      "src": "/consultamedica",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }

@@ -12,7 +12,13 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    // Solo ejecutar en el navegador, no en el servidor
+    // IMPORTANTE: Siempre permitir peticiones de login/registro sin autenticación
+    if (req.url.includes('/auth/login') || req.url.includes('/auth/registro') || 
+        req.url.includes('/auth/verificar-codigo') || req.url.includes('/auth/reenviar-codigo')) {
+      return next.handle(req);
+    }
+
+    // Solo ejecutar en el navegador
     if (isPlatformBrowser(this.platformId)) {
       const token = this.authService.getToken();
       
