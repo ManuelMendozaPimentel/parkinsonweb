@@ -67,7 +67,7 @@ export interface LoginResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://neurotrack.us-east-2.elasticbeanstalk.com/api/auth';
+  private apiUrl = '/api/auth';
   private isBrowser: boolean;
 
   constructor(

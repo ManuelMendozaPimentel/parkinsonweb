@@ -39,7 +39,7 @@ export interface ApiResponse<T = any> {
 
 @Injectable({ providedIn: 'root' })
 export class PacientesService {
-  private apiUrl = 'http://neurotrack.us-east-2.elasticbeanstalk.com/api/pacientes';
+  private apiUrl = '/api/pacientes';
 
   constructor(
     private http: HttpClient,

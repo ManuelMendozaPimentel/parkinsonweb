@@ -1,0 +1,9 @@
+{
+  "framework": "angular",
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "http://neurotrack.us-east-2.elasticbeanstalk.com/api/$1"
+    }
+  ]
+}
