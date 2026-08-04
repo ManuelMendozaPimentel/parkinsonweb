@@ -3,7 +3,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "http://neurotrack.us-east-2.elasticbeanstalk.com/api/$1"
+      "destination": "https://web-production-922f4.up.railway.app"
     }
   ]
 }
