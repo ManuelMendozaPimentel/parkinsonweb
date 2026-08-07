@@ -1,6 +1,6 @@
 .modal-content {
-  background: white;
-  border-radius: 8px;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
   padding: 2rem;
   width: 90vw;
   max-width: 560px;
@@ -10,53 +10,80 @@
 
 .modal-content h2 {
   margin: 0 0 1.25rem;
-  color: #222;
-  font-size: 1.3rem;
+  color: var(--ink-900, #201d18);
+  font-size: 1.35rem;
   font-weight: 700;
   text-align: center;
+  animation: fadeInUp 0.4s var(--ease-smooth) both;
 }
 
 /* Datos del paciente — solo lectura */
 .paciente-readonly {
-  background: #f9f9f9;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  padding: 0.75rem 1rem;
+  background: var(--sand-100, #f8f2e8);
+  border: 1px solid var(--sand-300, #e9dcc4);
+  border-radius: var(--radius-md, 12px);
+  padding: 0.85rem 1.1rem;
   margin-bottom: 1.5rem;
+  animation: fadeInUp 0.4s var(--ease-smooth) 0.05s both;
 }
 
 .readonly-row {
   display: flex;
   align-items: baseline;
-  padding: 0.35rem 0;
-  border-bottom: 1px solid #f0f0f0;
+  padding: 0.4rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  transition: padding-left var(--transition-fast, 0.15s);
 }
 
 .readonly-row:last-child { border-bottom: none; }
 
+.readonly-row:hover {
+  padding-left: 0.25rem;
+}
+
 .readonly-label {
   flex: 0 0 80px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #888;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--ink-400, #8f8b7d);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
 }
 
 .readonly-value {
   flex: 1;
-  font-size: 0.9rem;
-  color: #333;
+  font-size: 0.92rem;
+  color: var(--ink-800, #2d2a24);
+  font-weight: 500;
 }
 
 /* Sección clínica */
+.seccion-clinica {
+  animation: fadeInUp 0.4s var(--ease-smooth) 0.1s both;
+}
+
 .seccion-clinica h3 {
+  position: relative;
   margin: 0 0 1rem;
-  color: #2C7076;
-  font-size: 1rem;
+  color: var(--teal-500, #2c7076);
+  font-size: 1.02rem;
   font-weight: 700;
-  padding-bottom: 0.5rem;
-  border-bottom: 2px solid #2C7076;
+  padding-bottom: 0.6rem;
+  border-bottom: 2px solid var(--teal-100, #d7e9e7);
+  overflow: hidden;
+}
+
+.seccion-clinica h3::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 56px;
+  height: 2px;
+  background: var(--gradient-warm, var(--coral-500));
+  transform: scaleX(1);
+  transform-origin: left;
+  animation: underlineGrow 0.6s var(--ease-smooth) 0.25s both;
 }
 
 .form-group {
@@ -68,23 +95,29 @@
   margin-bottom: 0.5rem;
   font-weight: 600;
   font-size: 0.875rem;
-  color: #333;
+  color: var(--ink-700, #423e36);
 }
 
 .input-field {
-  padding: 0.6rem 0.85rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--ink-200, #d8d3c4);
+  border-radius: var(--radius-sm, 8px);
   font-size: 0.9rem;
-  color: #222;
-  transition: border-color 0.2s;
+  color: var(--ink-900, #201d18);
+  background: var(--surface, #fff);
+  transition: border-color var(--transition, 0.2s), box-shadow var(--transition, 0.2s), transform var(--transition-fast, 0.15s);
   box-sizing: border-box;
+}
+
+.input-field:hover {
+  border-color: var(--ink-300, #b3ae9f);
 }
 
 .input-field:focus {
   outline: none;
-  border-color: #2C7076;
-  box-shadow: 0 0 0 2px rgba(44, 112, 118, 0.1);
+  border-color: var(--teal-500, #2c7076);
+  box-shadow: var(--shadow-focus, 0 0 0 4px rgba(44, 112, 118, 0.16));
+  transform: translateY(-1px);
 }
 
 .textarea-notas {
@@ -104,35 +137,43 @@
 .estadio-btn {
   width: 44px;
   height: 44px;
-  border: 2px solid #ddd;
+  border: 2px solid var(--ink-200, #d8d3c4);
   border-radius: 50%;
-  background: white;
-  color: #555;
+  background: var(--surface, #fff);
+  color: var(--ink-600, #5a5548);
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: border-color var(--transition-fast, 0.2s), color var(--transition-fast, 0.2s), transform var(--transition-fast, 0.2s), box-shadow var(--transition-fast, 0.2s), background var(--transition-fast, 0.2s);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .estadio-btn:hover {
-  border-color: #2C7076;
-  color: #2C7076;
+  border-color: var(--teal-500, #2c7076);
+  color: var(--teal-500, #2c7076);
+  transform: translateY(-2px) scale(1.05);
+}
+
+.estadio-btn:active {
+  transform: translateY(0) scale(0.95);
 }
 
 .estadio-btn.selected {
-  background: #2C7076;
-  border-color: #2C7076;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
+  border-color: var(--teal-600, #205e63);
   color: white;
+  box-shadow: 0 4px 10px rgba(44, 112, 118, 0.35);
+  animation: popIn 0.35s var(--ease-out-back, cubic-bezier(0.34, 1.56, 0.64, 1));
 }
 
 .estadio-hint {
   margin: 0.5rem 0 0;
   font-size: 0.8rem;
-  color: #2C7076;
+  color: var(--teal-500, #2c7076);
   font-style: italic;
+  animation: fadeInUp 0.3s var(--ease-smooth) both;
 }
 
 /* Medicamentos */
@@ -142,6 +183,7 @@
   gap: 0.5rem;
   margin-bottom: 0.5rem;
   align-items: center;
+  animation: fadeInUp 0.35s var(--ease-smooth) both;
 }
 
 .medicamento-row .input-field {
@@ -150,8 +192,8 @@
 
 .btn-quitar-med {
   background: none;
-  border: 1px solid #ddd;
-  color: #aaa;
+  border: 1px solid var(--ink-200, #d8d3c4);
+  color: var(--ink-300, #b3ae9f);
   width: 28px;
   height: 28px;
   border-radius: 50%;
@@ -160,33 +202,38 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.15s;
+  transition: all var(--transition-fast, 0.15s);
   padding: 0;
   flex-shrink: 0;
 }
 
 .btn-quitar-med:hover {
-  background: #fee2e2;
-  border-color: #ef4444;
-  color: #dc2626;
+  background: var(--color-danger-bg, #fbe6e0);
+  border-color: var(--color-danger, #d3492f);
+  color: var(--color-danger, #d3492f);
+  transform: rotate(90deg);
 }
 
 .btn-agregar-med {
   background: none;
-  border: 1px dashed #2C7076;
-  color: #2C7076;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border: 1.5px dashed var(--teal-500, #2c7076);
+  color: var(--teal-500, #2c7076);
+  padding: 0.55rem 1rem;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-size: 0.85rem;
-  font-weight: 500;
+  font-weight: 600;
   width: 100%;
   margin-top: 0.25rem;
-  transition: all 0.2s;
+  transition: all var(--transition, 0.2s);
 }
 
 .btn-agregar-med:hover {
-  background: rgba(44, 112, 118, 0.05);
+  background: var(--teal-50, #eef6f5);
+  border-color: var(--teal-600, #205e63);
+  border-style: solid;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(44, 112, 118, 0.18);
 }
 
 /* Acciones */
@@ -196,36 +243,44 @@
   justify-content: flex-end;
   margin-top: 1.5rem;
   padding-top: 1.25rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--ink-100, #ece7db);
 }
 
 .btn {
   padding: 0.75rem 1.5rem;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-weight: 600;
   font-size: 0.875rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.2s;
+  transition: all var(--transition, 0.2s);
+}
+
+.btn:active {
+  transform: scale(0.96);
 }
 
 .btn-cancel {
-  background: #f5f5f5;
-  color: #555;
-  border: 1px solid #ddd;
+  background: var(--ink-50, #f6f3ec);
+  color: var(--ink-600, #5a5548);
+  border: 1px solid var(--ink-200, #d8d3c4);
 }
 
-.btn-cancel:hover { background: #e8e8e8; }
+.btn-cancel:hover { background: var(--ink-100, #ece7db); }
 
 .btn-save-actualizar {
-  background: #2C7076;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
   color: white;
+  box-shadow: 0 6px 16px rgba(44, 112, 118, 0.28);
 }
 
-.btn-save-actualizar:hover { background: #225a60; }
+.btn-save-actualizar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(44, 112, 118, 0.32);
+}
 
 /* Responsive */
 @media (max-width: 480px) {

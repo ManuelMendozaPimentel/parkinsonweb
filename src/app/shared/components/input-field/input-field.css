@@ -1,22 +1,51 @@
 .input-container {
-  margin-bottom: 1rem;
+  position: relative;
+  margin-bottom: 1.1rem;
+  animation: fadeInUp 0.5s var(--ease-smooth) both;
 }
 
 .label {
   display: block;
   text-align: left;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: #333;
+  font-weight: 600;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  color: var(--ink-700, #423e36);
+  transition: color var(--transition-fast, 0.15s);
+}
 
+.input-container:focus-within .label {
+  color: var(--teal-600, #205e63);
 }
 
 .input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ccc;
-  border-radius: 6px;
+  padding: 0.8rem 0.95rem;
+  border: 1.5px solid var(--ink-200, #d8d3c4);
+  border-radius: var(--radius-sm, 8px);
   font-size: 1rem;
+  color: var(--ink-900, #201d18);
+  background: var(--surface, #fff);
   box-sizing: border-box;
+  transition: border-color var(--transition, 0.2s), box-shadow var(--transition, 0.2s), transform var(--transition, 0.2s);
+}
 
+.input::placeholder {
+  color: var(--ink-300, #b3ae9f);
+  transition: opacity var(--transition-fast, 0.15s);
+}
+
+.input:hover {
+  border-color: var(--ink-300, #b3ae9f);
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--teal-500, #2c7076);
+  box-shadow: var(--shadow-focus, 0 0 0 4px rgba(44, 112, 118, 0.16));
+  transform: translateY(-1px);
+}
+
+.input:focus::placeholder {
+  opacity: 0.6;
 }

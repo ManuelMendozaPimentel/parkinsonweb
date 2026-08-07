@@ -1,7 +1,9 @@
 .dashboard-container {
   position: relative;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--surface-page, #fbf8f2);
+  background-image: var(--gradient-mesh);
+  background-attachment: fixed;
 }
 
 .dashboard-container.menu-open .main-content {
@@ -11,17 +13,35 @@
 .main-content {
   margin-left: 0;
   transition: margin-left 0.3s ease;
-  padding: 2rem;
+  padding: 2rem 2.25rem 3rem;
 }
 
 .dashboard-header {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
+  padding-left: 3rem;
+  animation: fadeInDown 0.5s var(--ease-smooth) both;
 }
 
 .dashboard-header h1 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #222;
+  position: relative;
+  display: inline-block;
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--forest-600, #0f3d2c);
+  letter-spacing: -0.01em;
+}
+
+.dashboard-header h1::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 46px;
+  height: 4px;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--gradient-hero);
+  background-size: 200% 100%;
+  animation: gradientShift 5s ease-in-out infinite, underlineGrow 0.6s var(--ease-smooth) 0.15s both;
 }
 
 /* ============================================ */
@@ -30,66 +50,130 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
+  gap: 1.1rem;
   margin-bottom: 2rem;
 }
 
 .stat-card {
-  background: #e0e9f0;
-  border-radius: 8px;
-  padding: 1.25rem;
-  text-align: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  position: relative;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
+  padding: 1.4rem 1.4rem 1.3rem;
+  text-align: left;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19, 46, 46, 0.07));
+  border: 1px solid var(--ink-100, #ece7db);
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(18px);
+  animation: fadeInUp 0.55s var(--ease-smooth) both;
+  transition: transform var(--transition, 0.2s), box-shadow var(--transition, 0.2s);
+}
+
+.stat-card:nth-child(1) { animation-delay: 0.05s; }
+.stat-card:nth-child(2) { animation-delay: 0.12s; }
+.stat-card:nth-child(3) { animation-delay: 0.19s; }
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--teal-500, #2c7076), var(--teal-300, #67a39f));
+}
+
+.stat-card:nth-child(2)::before {
+  background: linear-gradient(90deg, var(--coral-500, #d97056), var(--coral-400, #e6876b));
+}
+
+.stat-card:nth-child(3)::before {
+  background: linear-gradient(90deg, var(--sage-500, #8fa583), var(--sage-300, #bdcab3));
+}
+
+.stat-card:hover {
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(19, 46, 46, 0.1));
 }
 
 .stat-card h3 {
-  font-size: 0.9rem;
-  color: #555;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--ink-500, #746e5f);
   margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .stat-card .value {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #222;
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--ink-900, #201d18);
   margin: 0;
+  letter-spacing: -0.02em;
+  animation: scaleIn 0.5s var(--ease-out-back) 0.2s both;
 }
 
 /* ============================================ */
 /* ESTADOS DE CARGA Y ERROR */
 /* ============================================ */
 .loading-state, .error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
   text-align: center;
   padding: 3rem;
-  background: white;
-  border-radius: 12px;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
   margin: 2rem 0;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19, 46, 46, 0.07));
+  border: 1px solid var(--ink-100, #ece7db);
+  animation: fadeInUp 0.4s var(--ease-smooth) both;
+}
+
+.loading-state::before {
+  content: '';
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 3px solid var(--teal-100, #d7e9e7);
+  border-top-color: var(--teal-500, #2c7076);
+  animation: spinSlow 0.75s linear infinite;
 }
 
 .loading-state p {
-  color: #666;
+  color: var(--ink-500, #746e5f);
   font-size: 1rem;
+  margin: 0;
 }
 
 .error-state p {
-  color: #c62828;
-  margin-bottom: 1rem;
+  color: var(--color-danger-dark, #ad3520);
+  margin-bottom: 0;
 }
 
 .error-state button {
-  padding: 0.5rem 1.5rem;
-  background: #2c7a6b;
+  padding: 0.6rem 1.6rem;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
   color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-size: 0.875rem;
-  transition: background 0.2s;
+  font-weight: 600;
+  box-shadow: 0 6px 16px rgba(44, 112, 118, 0.28);
+  transition: transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
 }
 
 .error-state button:hover {
-  background: #1e5a4f;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(44, 112, 118, 0.32);
+}
+
+.error-state button:active {
+  transform: translateY(0) scale(0.97);
 }
 
 /* ============================================ */
@@ -99,22 +183,36 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .chart-section, .appointments-section {
-  background: #fff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
+  padding: 1.6rem 1.7rem;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19, 46, 46, 0.07));
+  border: 1px solid var(--ink-100, #ece7db);
+  opacity: 0;
+  animation: fadeInUp 0.55s var(--ease-smooth) 0.22s both;
+  transition: box-shadow var(--transition, 0.2s);
+}
+
+.appointments-section {
+  animation-delay: 0.3s;
+}
+
+.chart-section:hover, .appointments-section:hover, .alerts-section:hover {
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(19, 46, 46, 0.1));
 }
 
 .chart-section h3, .appointments-section h3, .alerts-section h3 {
   margin-top: 0;
-  margin-bottom: 1rem;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
+  margin-bottom: 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--teal-600, #205e63);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* ============================================ */
@@ -142,27 +240,40 @@
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  background-color: #f5f5f5;
-  border-radius: 4px;
+  background-color: var(--surface-sunken, #f6f3ec);
+  border-radius: var(--radius-xs, 6px);
+  overflow: hidden;
 }
 
 .bar {
   width: 70%;
-  background-color: #2c7a6b;
+  background: linear-gradient(180deg, var(--teal-300, #67a39f), var(--teal-600, #205e63));
+  background-size: 100% 200%;
   border-radius: 4px 4px 0 0;
-  transition: height 0.3s ease;
+  transition: height 0.6s var(--ease-out-back, ease), background-position 0.3s ease, filter 0.2s ease;
   min-height: 4px;
+}
+
+.chart-bar-item:hover .bar {
+  filter: brightness(1.12);
+  background-position: 0 20%;
 }
 
 .bar-label {
   margin-top: 0.5rem;
   font-size: 0.75rem;
-  color: #666;
+  color: var(--ink-500, #746e5f);
+  font-weight: 600;
+  transition: color var(--transition-fast, 0.15s);
+}
+
+.chart-bar-item:hover .bar-label {
+  color: var(--teal-600, #205e63);
 }
 
 .bar-value {
   font-size: 0.7rem;
-  color: #999;
+  color: var(--ink-400, #8f8b7d);
   margin-top: 0.25rem;
 }
 
@@ -177,42 +288,60 @@
 
 .appointments-table th {
   text-align: left;
-  padding: 0.75rem;
-  background: #f2e9dd;
-  font-weight: 600;
-  color: #333;
+  padding: 0.7rem 0.75rem;
+  background: var(--sand-100, #f8f2e8);
+  font-weight: 700;
+  color: var(--ink-700, #423e36);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-xs, 6px) var(--radius-xs, 6px) 0 0;
 }
 
 .appointments-table td {
   padding: 0.75rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--ink-100, #ece7db);
+  color: var(--ink-800, #2d2a24);
 }
 
 .appointments-table tr:last-child td {
   border-bottom: none;
 }
 
+.appointments-table tbody tr {
+  transition: background-color var(--transition-fast, 0.15s);
+  animation: fadeIn 0.4s ease both;
+}
+
+.appointments-table tbody tr:hover {
+  background-color: var(--teal-50, #eef6f5);
+}
+
 /* Grupos de citas */
 .citas-grupo {
   margin-bottom: 1.5rem;
+  animation: fadeInUp 0.4s var(--ease-smooth) both;
 }
 
 .citas-grupo h4 {
   margin: 0 0 0.75rem 0;
-  color: #2c7a6b;
+  color: var(--teal-500, #2c7076);
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* ============================================ */
 /* TABLA DE ALERTAS */
 /* ============================================ */
 .alerts-section {
-  background: #fff;
-  border-radius: 8px;
-  padding: 1.5rem;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
+  padding: 1.6rem 1.7rem;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19, 46, 46, 0.07));
+  border: 1px solid var(--ink-100, #ece7db);
   margin-top: 1.5rem;
+  opacity: 0;
+  animation: fadeInUp 0.55s var(--ease-smooth) 0.36s both;
 }
 
 .alerts-table {
@@ -223,19 +352,30 @@
 
 .alerts-table th {
   text-align: left;
-  padding: 0.75rem;
-  background: #f2e9dd;
-  font-weight: 600;
-  color: #333;
+  padding: 0.7rem 0.75rem;
+  background: var(--sand-100, #f8f2e8);
+  font-weight: 700;
+  color: var(--ink-700, #423e36);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .alerts-table td {
   padding: 0.75rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--ink-100, #ece7db);
 }
 
 .alerts-table tr:last-child td {
   border-bottom: none;
+}
+
+.alerts-table tbody tr {
+  transition: background-color var(--transition-fast, 0.15s);
+}
+
+.alerts-table tbody tr:hover {
+  background-color: var(--coral-100, #fbe3da);
 }
 
 /* ============================================ */
@@ -243,26 +383,29 @@
 /* ============================================ */
 .severidad-badge {
   display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
+  padding: 0.3rem 0.85rem;
+  border-radius: var(--radius-pill, 999px);
   font-size: 0.7rem;
-  font-weight: 600;
+  font-weight: 700;
   text-align: center;
+  letter-spacing: 0.02em;
+  animation: scaleIn 0.3s var(--ease-out-back) both;
 }
 
 .severidad-alta {
-  background-color: #ffebee;
-  color: #c62828;
+  background-color: var(--color-danger-bg, #fbe6e0);
+  color: var(--color-danger-dark, #ad3520);
+  animation: scaleIn 0.3s var(--ease-out-back) both, pulseSoft 2.4s ease-in-out 0.5s infinite;
 }
 
 .severidad-media {
-  background-color: #fff3e0;
-  color: #ef6c00;
+  background-color: var(--color-warning-bg, #fbeed9);
+  color: var(--color-warning, #b06a15);
 }
 
 .severidad-baja {
-  background-color: #e8f5e9;
-  color: #2e7d32;
+  background-color: var(--color-success-bg, #e3f1e5);
+  color: var(--color-success, #2f7a4f);
 }
 
 /* ============================================ */
@@ -270,10 +413,11 @@
 /* ============================================ */
 .no-data {
   text-align: center;
-  color: #999;
+  color: var(--ink-400, #8f8b7d);
   padding: 2rem;
   font-style: italic;
   font-size: 0.875rem;
+  animation: fadeIn 0.4s ease both;
 }
 
 /* ============================================ */
@@ -283,41 +427,45 @@
   .main-content {
     padding: 1rem;
   }
-  
+
+  .dashboard-header {
+    padding-left: 3rem;
+  }
+
   .content-row {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
-  
+
   .dashboard-container.menu-open .main-content {
     margin-left: 0;
   }
-  
+
   .stats-grid {
     gap: 0.75rem;
   }
-  
+
   .stat-card {
     padding: 1rem;
   }
-  
+
   .stat-card .value {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
   }
-  
+
   .chart-bars {
     height: 150px;
     gap: 0.5rem;
   }
-  
+
   .bar-container {
     height: 110px;
   }
-  
+
   .bar-label {
     font-size: 0.7rem;
   }
-  
+
   .appointments-table th,
   .appointments-table td,
   .alerts-table th,

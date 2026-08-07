@@ -1,8 +1,7 @@
-
 .configuration-wrapper {
   display: flex;
   min-height: 100vh;
-  background-color: #f5f5f5; /* Mismo fondo del dashboard */
+  background-color: var(--surface-page, #fbf8f2);
   transition: all 0.3s ease;
 }
 
@@ -21,7 +20,7 @@
 .configuration-container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
+  padding: 2rem 2.25rem 3rem;
 }
 
 /* HEADER */
@@ -30,17 +29,18 @@
 }
 
 .header h1 {
-  font-size: 1.8rem;
-  color: #222; /* Mismo color que h1 del dashboard */
+  font-size: 1.6rem;
+  color: var(--forest-600, #0f3d2c);
   margin-bottom: 1.5rem;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.01em;
 }
 
-/* NAVEGACIÓN POR PESTAÑAS - Estilo dashboard */
+/* NAVEGACIÓN POR PESTAÑAS */
 .nav-tabs {
   display: flex;
   gap: 0.5rem;
-  border-bottom: 1px solid #eee; /* Mismo borde del dashboard */
+  border-bottom: 1px solid var(--ink-100, #ece7db);
   padding-bottom: 0;
 }
 
@@ -48,61 +48,63 @@
   padding: 0.75rem 1.5rem;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #555; /* Mismo color que textos secundarios */
+  color: var(--ink-500, #746e5f);
   background: none;
   border: none;
   cursor: pointer;
-  border-radius: 8px 8px 0 0;
+  border-radius: var(--radius-sm, 8px) var(--radius-sm, 8px) 0 0;
   transition: all 0.2s;
   position: relative;
   margin-bottom: -1px;
 }
 
 .tab:hover {
-  color: #333;
-  background-color: #f2e9dd; /* Mismo color que headers de tablas */
+  color: var(--teal-600, #205e63);
+  background-color: var(--teal-50, #eef6f5);
 }
 
 .tab.active {
-  color: #d32f2f; /* ROJO del dashboard - mismo que btn-delete */
-  border-bottom: 3px solid #d32f2f; /* Línea roja */
+  color: var(--teal-500, #2c7076);
+  border-bottom: 3px solid var(--coral-500, #d97056);
   font-weight: 700;
   background-color: transparent;
 }
 
 /* CONTENIDO DE CONFIGURACIÓN */
 .configuration-content {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05); /* Misma sombra del dashboard */
-  padding: 2rem;
-  margin-top: 1.5rem;
+  background: transparent;
+  padding: 2rem 0 0;
+  margin-top: 0.5rem;
   animation: fadeIn 0.3s ease-in-out;
 }
 
-/* LISTA DE USUARIOS - Basado en la imagen */
+/* LISTA DE USUARIOS */
 .users-list {
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 8px;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
   overflow: hidden;
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19,46,46,0.07));
 }
 
 .users-list th {
-  background: #f2e9dd; /* Mismo color que headers de tablas */
+  background: var(--sand-100, #f8f2e8);
   padding: 1rem;
   text-align: left;
-  font-weight: 600;
-  color: #333;
-  border-bottom: 1px solid #eee;
+  font-weight: 700;
+  color: var(--ink-700, #423e36);
+  border-bottom: 1px solid var(--ink-100, #ece7db);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .users-list td {
   padding: 1rem;
   text-align: left;
-  border-bottom: 1px solid #eee;
-  color: #222;
+  border-bottom: 1px solid var(--ink-100, #ece7db);
+  color: var(--ink-800, #2d2a24);
 }
 
 .users-list tr:last-child td {
@@ -110,21 +112,22 @@
 }
 
 .users-list tr:hover {
-  background-color: #fafafa;
+  background-color: var(--teal-50, #eef6f5);
 }
 
-/* BOTÓN ACTUALIZAR - Mismo estilo que dashboard */
+/* BOTÓN ACTUALIZAR */
 .btn-actualizar,
 .btn-update {
-  background: #d32f2f; /* Rojo del dashboard */
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
   color: white;
   border: none;
   padding: 0.75rem 2rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(44, 112, 118, 0.28);
+  transition: transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -132,7 +135,8 @@
 
 .btn-actualizar:hover,
 .btn-update:hover {
-  background: #b71c1c;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(44, 112, 118, 0.32);
 }
 
 /* ACCIONES */
@@ -142,58 +146,58 @@
   justify-content: flex-end;
   margin-top: 1.5rem;
   padding-top: 1.5rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--ink-100, #ece7db);
 }
 
-/* CARD SIMPLE - Para otros contenidos */
+/* CARD SIMPLE */
 .config-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19,46,46,0.07));
   padding: 1.5rem;
   margin-bottom: 1rem;
 }
 
 .config-card h3 {
   margin: 0 0 1rem 0;
-  color: #222;
+  color: var(--ink-900, #201d18);
   font-size: 1.1rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
-/* FORMULARIOS - Estilo dashboard */
+/* FORMULARIOS */
 .form-row {
   display: flex;
   align-items: baseline;
   padding: 0.75rem 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--ink-100, #ece7db);
 }
 
 .form-label {
   flex: 0 0 150px;
   font-size: 0.95rem;
   font-weight: 600;
-  color: #333;
+  color: var(--ink-700, #423e36);
 }
 
 .form-value,
 .form-control {
   flex: 1;
   font-size: 1rem;
-  color: #555;
+  color: var(--ink-600, #5a5548);
 }
 
 .form-control {
   padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 1.5px solid var(--ink-200, #d8d3c4);
+  border-radius: var(--radius-xs, 6px);
   font-size: 0.95rem;
 }
 
 .form-control:focus {
   outline: none;
-  border-color: #d32f2f;
-  box-shadow: 0 0 0 2px rgba(211, 47, 47, 0.1);
+  border-color: var(--teal-500, #2c7076);
+  box-shadow: var(--shadow-focus, 0 0 0 4px rgba(44,112,118,0.16));
 }
 
 /* ANIMACIÓN */
@@ -209,42 +213,42 @@
 }
 
 /* ============================================
-   RESPONSIVE - Consistentes con dashboard
+   RESPONSIVE
    ============================================ */
 
 @media (max-width: 768px) {
   .main-content {
     margin-left: 60px;
   }
-  
+
   .menu-open .main-content {
     margin-left: 280px;
   }
-  
+
   .configuration-container {
     padding: 1rem;
   }
-  
+
   .tab {
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
   }
-  
+
   .configuration-content {
-    padding: 1.5rem;
+    padding-top: 1.5rem;
   }
-  
+
   .users-list th,
   .users-list td {
     padding: 0.75rem;
     font-size: 0.875rem;
   }
-  
+
   .form-row {
     flex-direction: column;
     gap: 0.25rem;
   }
-  
+
   .form-label {
     flex: none;
   }
@@ -254,30 +258,102 @@
   .main-content {
     margin-left: 0;
   }
-  
+
   .menu-open .main-content {
     margin-left: 0;
   }
-  
+
   .header h1 {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
   }
-  
+
   .nav-tabs {
     flex-wrap: wrap;
   }
-  
+
   .tab {
     flex: 1 1 auto;
     text-align: center;
   }
-  
-  .configuration-content {
-    padding: 1rem;
-  }
-  
+
   .btn-actualizar,
   .btn-update {
     width: 100%;
   }
+}
+
+/* ============================================================
+   REFINAMIENTO VISUAL — animaciones y micro-interacciones
+   (mismo lenguaje visual que dashboard / login / patient-form)
+
+   Nota: .configuration-wrapper / .main-content / .configuration-container /
+   .configuration-content son ancestros de los modales que abren
+   app-perfil y app-seguridad (position:fixed). A propósito no se les
+   añade aquí ninguna animación con transform y fill-mode "both",
+   para no crear un contexto de posicionamiento que rompiera esos
+   overlays. .header y .nav-tabs SÍ son seguros: viven fuera del
+   árbol de .configuration-content.
+   ============================================================ */
+.header {
+  animation: fadeInDown 0.5s var(--ease-smooth) both;
+}
+
+/* Subrayado animado con el degradado de marca, en flujo normal
+   (no requiere position/display en el h1 existente) */
+.header h1::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 4px;
+  margin-top: 0.6rem;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--gradient-hero);
+  background-size: 200% 100%;
+  transform-origin: left;
+  animation: gradientShift 5s ease-in-out infinite, underlineGrow 0.6s var(--ease-smooth) 0.2s both;
+}
+
+.nav-tabs {
+  animation: fadeIn 0.55s ease 0.1s both;
+}
+
+.tab:hover {
+  transform: translateY(-1px);
+}
+
+.tab:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* Pequeño "snap" al activar una pestaña — refuerza el cambio
+   de sección sin depender de un transform persistente */
+.tab.active {
+  animation: popIn 0.35s var(--ease-out-back, cubic-bezier(0.34, 1.56, 0.64, 1));
+}
+
+/* Elementos de tabla / tarjetas de configuración (progresivo) */
+.users-list tbody tr {
+  animation: fadeIn 0.4s ease both;
+}
+
+.btn-actualizar:active,
+.btn-update:active {
+  transform: translateY(0) scale(0.97);
+}
+
+.config-card {
+  transition: box-shadow var(--transition, 0.2s), transform var(--transition, 0.2s);
+}
+
+.config-card:hover {
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(19, 46, 46, 0.1));
+  transform: translateY(-2px);
+}
+
+.form-control {
+  transition: border-color var(--transition, 0.2s), box-shadow var(--transition, 0.2s);
+}
+
+.form-control:hover {
+  border-color: var(--ink-300, #b3ae9f);
 }

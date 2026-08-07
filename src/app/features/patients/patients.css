@@ -2,7 +2,9 @@
 .dashboard-container {
   position: relative;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--surface-page, #fbf8f2);
+  background-image: var(--gradient-mesh);
+  background-attachment: fixed;
 }
 
 .dashboard-container.menu-open .main-content {
@@ -17,7 +19,7 @@
 
 /*Contenido de pacientes*/
 .patients-container {
-  padding: 2rem;
+  padding: 2rem 2.25rem 3rem;
 }
 
 .header {
@@ -25,131 +27,176 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
+  padding-left: 3rem;
+  animation: fadeInDown 0.5s var(--ease-smooth) both;
 }
 
 .header h1 {
   margin: 0;
-  color: #222;
-  font-size: 1.8rem;
+  color: var(--forest-600, #0f3d2c);
+  font-size: 1.6rem;
+  font-weight: 800;
   text-align: center;
   flex: 1;
+  letter-spacing: -0.01em;
 }
 
 .patients-table {
   width: 100%;
-  border-collapse: collapse;
-  background: #e6e5e5;
-  border-radius: 8px;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19,46,46,0.07));
+  border: 1px solid var(--ink-100, #ece7db);
+  animation: fadeInUp 0.5s var(--ease-smooth) 0.08s both;
 }
 
 .patients-table th,
 .patients-table td {
-  padding: 1rem;
+  padding: 0.95rem 1rem;
   text-align: center;
-  border-bottom: 1px solid #e6e5e5;
+  border-bottom: 1px solid var(--ink-100, #ece7db);
+  transition: background-color var(--transition-fast, 0.15s);
 }
 
 /* Encabezados centrados */
 .patients-table th {
-  background: #e6e5e5;
-  font-weight: 600;
-  color: #333;
-  text-align: center; 
+  background: var(--sand-100, #f8f2e8);
+  font-weight: 700;
+  color: var(--ink-700, #423e36);
+  text-align: center;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.patients-table tr:last-child td {
+  border-bottom: none;
+}
+
+.patients-table tbody tr:hover td {
+  background: var(--teal-50, #eef6f5);
 }
 
 .patients-table th:last-child,
 .patients-table td:last-child {
-  text-align: center; 
+  text-align: center;
 }
 
 /*Botones en tabla*/
 .actions {
   display: flex;
   gap: 0.5rem;
-  justify-content: center; 
+  justify-content: center;
 }
 
 /* Botón Eliminar (en tabla) */
 .btn-delete,
 .app-button.variant-delete {
-  background: #67A39F;
+  background: var(--teal-300, #67a39f);
   color: white;
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   min-width: 80px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: background-color var(--transition, 0.2s), transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
 }
 
 .btn-delete:hover,
 .app-button.variant-delete:hover {
-  background: #548a82;
+  background: var(--teal-400, #4c8f8f);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(76, 143, 143, 0.35);
+}
+
+.btn-delete:active,
+.app-button.variant-delete:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: none;
 }
 
 /* Botón Actualizar (en tabla) */
 .btn-update,
 .app-button.variant-update {
-  background: #BDCAB3;
-  color: #222;
+  background: var(--sage-300, #bdcab3);
+  color: var(--forest-700, #0a2e22);
   border: none;
   padding: 0.5rem 1rem;
-  border-radius: 6px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   min-width: 80px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  transition: background-color var(--transition, 0.2s), transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
 }
 
 .btn-update:hover,
 .app-button.variant-update:hover {
-  background: #a8bfa0;
+  background: var(--sage-500, #8fa583);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(141, 165, 131, 0.35);
+}
+
+.btn-update:active,
+.app-button.variant-update:active {
+  transform: translateY(0) scale(0.97);
+  box-shadow: none;
 }
 
 .app-button.variant-primary {
-  background: #2C7076;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
   color: white;
   padding: 0.75rem 1.5rem;
-  border-radius: 6px;
-  font-weight: 600;
+  border-radius: var(--radius-sm, 8px);
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(44, 112, 118, 0.28);
+  transition: transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
 }
 
 .app-button.variant-primary:hover {
-  background: #225a60;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(44, 112, 118, 0.32);
+}
+
+.app-button.variant-primary:active {
+  transform: translateY(0) scale(0.97);
 }
 
 /*Formulario de paciente*/
 .patient-form .btn-primary {
-  background: #CAECFF;
-  color: #222;
+  background: var(--teal-100, #d7e9e7);
+  color: var(--forest-700, #0a2e22);
 }
 
 .patient-form .btn-update {
-  background: #2C7076; 
+  background: var(--teal-500, #2c7076);
   color: white;
 }
 
 .patient-form .btn-cancel {
-  background: #67A39F;
+  background: var(--teal-300, #67a39f);
   color: white;
 }
 
 .confirm-modal .btn-primary {
-  background: #BDCAB3;
-  color: #222;
+  background: var(--sage-300, #bdcab3);
+  color: var(--forest-700, #0a2e22);
 }
 
 .confirm-modal .btn-link {
-  background: #67A39F;
+  background: var(--teal-300, #67a39f);
   color: white;
   text-decoration: none;
 }
@@ -161,9 +208,9 @@
 
 .app-button:not(.btn-link) {
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm, 8px);
   padding: 0.5rem 1rem;
-  font-weight: 500;
+  font-weight: 600;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -171,24 +218,24 @@
 
 .patient-form button {
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm, 8px);
   padding: 0.75rem 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .patient-form .btn-cancel {
-  background: #67A39F;
+  background: var(--teal-300, #67a39f);
   color: white;
 }
 
 .patient-form .btn-save-registrar {
-  background: #CAECFF;
-  color: #222;
+  background: var(--teal-100, #d7e9e7);
+  color: var(--forest-700, #0a2e22);
 }
 
 .patient-form .btn-save-actualizar {
-  background: #2C7076;
+  background: var(--teal-500, #2c7076);
   color: white;
 }
 
@@ -200,6 +247,7 @@
     flex-direction: column;
     gap: 1rem;
     text-align: center;
+    padding-left: 0;
   }
   .header h1 {
     text-align: center;
@@ -210,53 +258,94 @@
   }
 }
 
-/* Agrega esto al final del CSS que ya tienes */
-
 .loading-state {
   text-align: center;
   padding: 3rem;
-  color: #888;
+  color: var(--ink-500, #746e5f);
   font-size: 1rem;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19,46,46,0.07));
+  border: 1px solid var(--ink-100, #ece7db);
+  animation: fadeInUp 0.4s var(--ease-smooth) both;
+}
+
+.loading-state::before {
+  content: '';
+  display: inline-block;
+  width: 34px;
+  height: 34px;
+  margin-bottom: 0.75rem;
+  border-radius: 50%;
+  border: 3px solid var(--teal-100, #d7e9e7);
+  border-top-color: var(--teal-500, #2c7076);
+  animation: spinSlow 0.75s linear infinite;
 }
 
 .empty-state {
   text-align: center;
   padding: 3rem 2rem;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  color: #777;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19,46,46,0.07));
+  border: 1px solid var(--ink-100, #ece7db);
+  color: var(--ink-500, #746e5f);
+  animation: fadeInUp 0.45s var(--ease-smooth) both;
+}
+
+.empty-state::before {
+  content: '🧑‍🤝‍🧑';
+  display: block;
+  font-size: 2.4rem;
+  line-height: 1;
+  margin-bottom: 0.85rem;
+  opacity: 0.85;
+  animation: floatY 4.5s ease-in-out infinite;
 }
 
 .empty-state p { margin: 0 0 0.5rem; }
-.empty-state strong { color: #2C7076; }
+.empty-state strong { color: var(--teal-500, #2c7076); }
 
 .api-error-alert {
-  background: #fee2e2;
-  border: 1px solid #ef4444;
-  border-radius: 8px;
+  background: var(--color-danger-bg, #fbe6e0);
+  border: 1px solid var(--color-danger-border, #eba792);
+  border-radius: var(--radius-sm, 8px);
   padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1rem;
+  animation: fadeInDown 0.4s var(--ease-smooth) both;
 }
 
 .api-error-alert p {
   margin: 0;
-  color: #dc2626;
+  color: var(--color-danger-dark, #ad3520);
   font-size: 0.9rem;
 }
 
 .btn-retry {
   background: none;
-  border: 1px solid #dc2626;
-  color: #dc2626;
+  border: 1px solid var(--color-danger, #d3492f);
+  color: var(--color-danger, #d3492f);
   padding: 0.4rem 1rem;
-  border-radius: 4px;
+  border-radius: var(--radius-xs, 6px);
   cursor: pointer;
   font-size: 0.85rem;
   white-space: nowrap;
+  transition: background-color var(--transition-fast, 0.15s), color var(--transition-fast, 0.15s), transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
+}
+
+.btn-retry:hover {
+  background: var(--color-danger, #d3492f);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(211, 73, 47, 0.28);
+}
+
+.btn-retry:active {
+  transform: translateY(0) scale(0.96);
+  box-shadow: none;
 }
 
 /* Badge para estadio Hoehn & Yahr */
@@ -266,13 +355,52 @@
   justify-content: center;
   width: 28px;
   height: 28px;
-  background: #2C7076;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
   color: white;
   border-radius: 50%;
   font-size: 0.8rem;
   font-weight: 700;
+  animation: scaleIn 0.35s var(--ease-out-back) both;
+  transition: transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
+}
+
+.patients-table tbody tr:hover .badge-estadio {
+  transform: scale(1.12);
+  box-shadow: 0 4px 10px rgba(44, 112, 118, 0.35);
 }
 
 .sin-dato {
-  color: #bbb;
+  color: var(--ink-300, #b3ae9f);
+  animation: fadeIn 0.4s ease both;
 }
+
+/* ============================================ */
+/* ENTRADA DE FILAS + ENCABEZADO DECORATIVO */
+/* ============================================ */
+.header h1 {
+  animation: fadeInUp 0.5s var(--ease-smooth) 0.08s both;
+}
+
+.header h1::after {
+  content: '';
+  display: block;
+  width: 46px;
+  height: 4px;
+  margin: 0.55rem auto 0;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--gradient-hero);
+  background-size: 200% 100%;
+  animation: gradientShift 5s ease-in-out infinite, underlineGrow 0.6s var(--ease-smooth) 0.2s both;
+}
+
+.patients-table tbody tr {
+  animation: fadeIn 0.4s ease both;
+}
+
+.patients-table tbody tr:nth-child(1) { animation-delay: 0.02s; }
+.patients-table tbody tr:nth-child(2) { animation-delay: 0.06s; }
+.patients-table tbody tr:nth-child(3) { animation-delay: 0.10s; }
+.patients-table tbody tr:nth-child(4) { animation-delay: 0.14s; }
+.patients-table tbody tr:nth-child(5) { animation-delay: 0.18s; }
+.patients-table tbody tr:nth-child(6) { animation-delay: 0.22s; }
+.patients-table tbody tr:nth-child(n+7) { animation-delay: 0.26s; }

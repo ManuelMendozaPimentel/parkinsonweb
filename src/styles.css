@@ -1,1 +1,344 @@
-/* You can add global styles to this file, and also import other style files */
+/* ============================================================
+   NEUROTRACK — SISTEMA DE DISEÑO
+   Paleta derivada del logo: teal (figura en movimiento),
+   verde bosque (trazo/acento), salvia (círculo de fondo),
+   coral (listón) y arena (fondo cálido).
+   ============================================================ */
+
+:root {
+  /* Teal — color primario de marca */
+  --teal-900: #0a2f31;
+  --teal-800: #123f42;
+  --teal-700: #19555a;
+  --teal-600: #205e63;
+  --teal-500: #2c7076; /* primario */
+  --teal-450: #357d83;
+  --teal-400: #4c8f8f;
+  --teal-300: #67a39f;
+  --teal-200: #9cc2bf;
+  --teal-100: #d7e9e7;
+  --teal-50:  #eef6f5;
+
+  /* Verde bosque — acento profundo del trazo del logo */
+  --forest-700: #0a2e22;
+  --forest-600: #0f3d2c;
+  --forest-500: #145039;
+  --forest-400: #1c6b4c;
+
+  /* Salvia — círculo de fondo del logo */
+  --sage-500: #8fa583;
+  --sage-400: #a6bd9a;
+  --sage-300: #bdcab3;
+  --sage-200: #d7e0cf;
+  --sage-100: #eef2e8;
+
+  /* Coral — listón del corredor del logo, acento cálido */
+  --coral-600: #c85a45;
+  --coral-500: #d97056;
+  --coral-400: #e6876b;
+  --coral-100: #fbe3da;
+
+  /* Arena / crema — fondo circular del logo */
+  --sand-300: #e9dcc4;
+  --sand-200: #f2e9dd;
+  --sand-100: #f8f2e8;
+  --sand-50:  #fbf8f2;
+
+  /* Neutros con temperatura cálida (afines a la arena) */
+  --ink-900: #201d18;
+  --ink-800: #2d2a24;
+  --ink-700: #423e36;
+  --ink-600: #5a5548;
+  --ink-500: #746e5f;
+  --ink-400: #8f8b7d;
+  --ink-300: #b3ae9f;
+  --ink-200: #d8d3c4;
+  --ink-100: #ece7db;
+  --ink-50:  #f6f3ec;
+
+  /* Semánticos */
+  --color-danger: #d3492f;
+  --color-danger-dark: #ad3520;
+  --color-danger-bg: #fbe6e0;
+  --color-danger-border: #eba792;
+  --color-success: #2f7a4f;
+  --color-success-bg: #e3f1e5;
+  --color-success-border: #9bcaa8;
+  --color-warning: #b06a15;
+  --color-warning-bg: #fbeed9;
+  --color-warning-border: #ecc584;
+  --color-info: #2a6ea3;
+  --color-info-bg: #e3f0fb;
+
+  /* Superficies */
+  --surface: #ffffff;
+  --surface-page: var(--sand-50);
+  --surface-sunken: var(--ink-50);
+
+  /* Vidrio / glass */
+  --glass-bg: rgba(255, 255, 255, 0.62);
+  --glass-bg-strong: rgba(255, 255, 255, 0.82);
+  --glass-border: rgba(255, 255, 255, 0.55);
+  --glass-blur: blur(18px);
+
+  /* Gradientes de marca (derivados del logo) */
+  --gradient-brand: linear-gradient(135deg, var(--teal-450) 0%, var(--teal-600) 55%, var(--forest-500) 100%);
+  --gradient-brand-soft: linear-gradient(135deg, var(--teal-50) 0%, var(--sage-100) 100%);
+  --gradient-warm: linear-gradient(135deg, var(--coral-400) 0%, var(--coral-600) 100%);
+  --gradient-hero: linear-gradient(120deg, var(--teal-600) 0%, var(--teal-400) 38%, var(--sage-400) 68%, var(--coral-400) 100%);
+  --gradient-mesh:
+    radial-gradient(circle at 14% 18%, rgba(217, 112, 86, 0.14), transparent 40%),
+    radial-gradient(circle at 85% 6%, rgba(143, 165, 131, 0.20), transparent 45%),
+    radial-gradient(circle at 88% 90%, rgba(44, 112, 118, 0.18), transparent 45%);
+  --gradient-text: linear-gradient(120deg, var(--teal-600), var(--forest-500) 45%, var(--coral-500));
+
+  /* Radios */
+  --radius-xs: 6px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+
+  /* Sombras — tintadas de teal para cohesión */
+  --shadow-xs: 0 1px 2px rgba(19, 46, 46, 0.06);
+  --shadow-sm: 0 2px 8px rgba(19, 46, 46, 0.07);
+  --shadow-md: 0 8px 24px rgba(19, 46, 46, 0.10);
+  --shadow-lg: 0 18px 45px rgba(19, 46, 46, 0.16);
+  --shadow-focus: 0 0 0 4px rgba(44, 112, 118, 0.16);
+  --shadow-focus-danger: 0 0 0 4px rgba(211, 73, 47, 0.14);
+  --shadow-glow-teal: 0 10px 30px -6px rgba(44, 112, 118, 0.45);
+  --shadow-glow-coral: 0 10px 26px -6px rgba(217, 112, 86, 0.48);
+  --shadow-float: 0 22px 50px -18px rgba(19, 46, 46, 0.35);
+
+  /* Tipografía */
+  --font-sans: 'Plus Jakarta Sans', 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Transiciones */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast: 150ms var(--ease);
+  --transition: 220ms var(--ease);
+  --transition-slow: 420ms var(--ease-smooth);
+}
+
+/* ============================================================
+   RESET LIGERO
+   ============================================================ */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--ink-800);
+  background-color: var(--surface-page);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+}
+
+/* Foco accesible y consistente en toda la app */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--teal-400);
+  outline-offset: 2px;
+  border-radius: var(--radius-xs);
+}
+
+::selection {
+  background: var(--teal-200);
+  color: var(--teal-900);
+}
+
+/* Scrollbar con identidad de marca (WebKit) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--teal-200);
+  border-radius: var(--radius-pill);
+  border: 2px solid var(--surface-page);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--teal-300);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--teal-200) transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* ============================================================
+   LIBRERÍA DE ANIMACIONES — disponible globalmente para
+   cualquier componente (los @keyframes no se encapsulan).
+   ============================================================ */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeInDown {
+  from { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-26px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(26px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.93); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes popIn {
+  0%   { opacity: 0; transform: scale(0.82); }
+  65%  { opacity: 1; transform: scale(1.035); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-10px); }
+}
+
+@keyframes floatSlow {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-16px) rotate(4deg); }
+}
+
+@keyframes pulseSoft {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(44, 112, 118, 0.32); }
+  50%      { box-shadow: 0 0 0 9px rgba(44, 112, 118, 0); }
+}
+
+@keyframes pulseCoral {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(217, 112, 86, 0.35); }
+  50%      { box-shadow: 0 0 0 8px rgba(217, 112, 86, 0); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -250% 0; }
+  100% { background-position: 250% 0; }
+}
+
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes spinSlow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes underlineGrow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes bounceIn {
+  0%   { opacity: 0; transform: scale(0.3); }
+  50%  { opacity: 1; transform: scale(1.06); }
+  70%  { transform: scale(0.94); }
+  100% { transform: scale(1); }
+}
+
+/* ============================================================
+   UTILIDADES DE ANIMACIÓN
+   Clases opcionales de refuerzo; la mayoría de las vistas
+   animan directamente sus propios selectores.
+   ============================================================ */
+.reveal-up {
+  animation: fadeInUp 0.6s var(--ease-smooth) both;
+}
+
+.reveal {
+  animation: fadeIn 0.5s ease both;
+}
+
+.reveal-scale {
+  animation: scaleIn 0.45s var(--ease-out-back) both;
+}
+
+.float {
+  animation: floatY 5s ease-in-out infinite;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+}
+
+.gradient-text {
+  background: var(--gradient-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Retraso escalonado reutilizable para listas/rejillas */
+.stagger > *       { animation-fill-mode: both; }
+.stagger > *:nth-child(1)  { animation-delay: 0.02s; }
+.stagger > *:nth-child(2)  { animation-delay: 0.08s; }
+.stagger > *:nth-child(3)  { animation-delay: 0.14s; }
+.stagger > *:nth-child(4)  { animation-delay: 0.20s; }
+.stagger > *:nth-child(5)  { animation-delay: 0.26s; }
+.stagger > *:nth-child(6)  { animation-delay: 0.32s; }
+.stagger > *:nth-child(7)  { animation-delay: 0.38s; }
+.stagger > *:nth-child(8)  { animation-delay: 0.44s; }
+.stagger > *:nth-child(n+9) { animation-delay: 0.5s; }
+
+/* Accesibilidad: respeta a quienes prefieren menos movimiento */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

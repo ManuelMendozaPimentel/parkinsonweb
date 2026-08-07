@@ -8,30 +8,73 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #f9f9f9;
-  padding: 1rem;
+  padding: 1.5rem;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 12% 12%, rgba(217, 112, 86, 0.10), transparent 42%),
+    radial-gradient(circle at 88% 88%, rgba(44, 112, 118, 0.16), transparent 45%),
+    linear-gradient(160deg, var(--sand-50, #fbf8f2) 0%, var(--sand-100, #f8f2e8) 55%, var(--teal-50, #eef6f5) 100%);
   /* ⚠️ position:relative ELIMINADO — rompía position:fixed de los modales */
+}
+
+/* Blobs decorativos flotantes — puramente visuales, no interfieren con el stacking de modales */
+.register-container::before,
+.register-container::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.register-container::before {
+  width: 320px;
+  height: 320px;
+  top: -110px;
+  left: -90px;
+  background: radial-gradient(circle, rgba(44, 112, 118, 0.15), transparent 70%);
+  animation: floatSlow 10s ease-in-out infinite;
+}
+
+.register-container::after {
+  width: 260px;
+  height: 260px;
+  bottom: -80px;
+  right: -70px;
+  background: radial-gradient(circle, rgba(217, 112, 86, 0.13), transparent 70%);
+  animation: floatSlow 8s ease-in-out infinite reverse;
 }
 
 /* =========================================
    TARJETA DE REGISTRO
    ========================================= */
 .register-card {
-  background: #f2e9dd;
-  border-radius: 12px;
-  padding: 2.5rem;
+  position: relative;
+  z-index: 1;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-xl, 24px);
+  padding: 2.75rem;
   width: 100%;
   max-width: 800px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  animation: fadeIn 0.5s ease-in-out;
+  box-shadow: var(--shadow-lg, 0 18px 45px rgba(19, 46, 46, 0.16));
+  border: 1px solid var(--sand-300, #e9dcc4);
+  animation: cardRise 0.55s var(--ease-smooth, cubic-bezier(0.22, 1, 0.36, 1)) both;
+}
+
+@keyframes cardRise {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .register-card h1 {
   text-align: center;
   margin-top: 0;
-  color: #222;
-  font-size: 1.8rem;
+  color: var(--forest-600, #0f3d2c);
+  font-size: 1.7rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   margin-bottom: 0.5rem;
+  animation: fadeInUp 0.5s var(--ease-smooth) 0.1s both;
 }
 
 .register-card app-logo {
@@ -56,12 +99,21 @@
   gap: 0.75rem;
 }
 
+.column app-input-field {
+  display: block;
+  animation: fadeInUp 0.5s var(--ease-smooth) both;
+}
+
+.column app-input-field:nth-of-type(1) { animation-delay: 0.16s; }
+.column app-input-field:nth-of-type(2) { animation-delay: 0.22s; }
+.column app-input-field:nth-of-type(3) { animation-delay: 0.28s; }
+
 /* =========================================
    MENSAJES DE ERROR
    ========================================= */
 .error-message {
-  color: #d32f2f;
-  font-size: 0.875rem;
+  color: var(--color-danger, #d3492f);
+  font-size: 0.82rem;
   margin: 0;
   min-height: 1.2rem;
   line-height: 1.2;
@@ -86,6 +138,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
+  animation: fadeIn 0.5s ease 0.4s both;
 }
 
 .checkbox-label {
@@ -94,23 +147,27 @@
   cursor: pointer;
   margin: 0;
   font-weight: normal;
+  color: var(--ink-600, #5a5548);
 }
 
 .checkbox-label input[type="checkbox"] {
   margin: 0;
   flex-shrink: 0;
   cursor: pointer;
+  accent-color: var(--teal-500, #2c7076);
+  width: 16px;
+  height: 16px;
 }
 
 .checkbox-label a {
-  color: #094130;
+  color: var(--forest-500, #145039);
   text-decoration: underline;
   cursor: pointer;
-  font-weight: normal;
+  font-weight: 600;
 }
 
 .checkbox-label a:hover {
-  color: #3a7060;
+  color: var(--teal-600, #205e63);
 }
 
 /* =========================================
@@ -121,6 +178,7 @@
   margin-top: 1rem;
   display: flex;
   justify-content: center;
+  animation: fadeInUp 0.5s var(--ease-smooth) 0.46s both;
 }
 
 button:disabled {
@@ -139,9 +197,9 @@ button:disabled {
    ALERTA DE ERROR DE API
    ========================================= */
 .api-error-alert {
-  background-color: #fee2e2;
-  border: 1px solid #ef4444;
-  border-radius: 8px;
+  background-color: var(--color-danger-bg, #fbe6e0);
+  border: 1px solid var(--color-danger-border, #eba792);
+  border-radius: var(--radius-sm, 8px);
   padding: 12px 16px;
   margin-top: 1rem;
   text-align: center;
@@ -149,7 +207,7 @@ button:disabled {
 }
 
 .api-error-alert p {
-  color: #dc2626;
+  color: var(--color-danger-dark, #ad3520);
   margin: 0;
   font-size: 14px;
   font-weight: 500;
@@ -159,45 +217,49 @@ button:disabled {
    MODAL DE VERIFICACIÓN
    ========================================= */
 .verification-modal-content {
-  background: white;
-  padding: 2.5rem 2rem;
-  border-radius: 12px;
+  background: var(--surface, #fff);
+  padding: 2.75rem 2.25rem;
+  border-radius: var(--radius-lg, 18px);
   text-align: center;
   max-width: 450px;
   width: 90vw;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-  animation: zoomIn 0.3s ease-out;
+  box-shadow: var(--shadow-lg, 0 18px 45px rgba(19, 46, 46, 0.16));
+  animation: zoomIn 0.35s var(--ease-out-back, cubic-bezier(0.34, 1.56, 0.64, 1)) both;
 }
 
 .modal-icon {
   font-size: 3rem;
   margin-bottom: 0.5rem;
+  display: inline-block;
+  animation: floatY 3s ease-in-out infinite;
 }
 
 .verification-modal-content h2 {
-  color: #2c7a6b;
+  color: var(--forest-500, #145039);
   margin-top: 0;
   margin-bottom: 1rem;
   font-size: 1.6rem;
+  font-weight: 800;
 }
 
 .verification-modal-content p {
-  color: #444;
+  color: var(--ink-600, #5a5548);
   font-size: 0.95rem;
   line-height: 1.5;
   margin-bottom: 0.5rem;
 }
 
 .email-highlight {
-  background-color: #f0f9f8;
-  color: #094130;
+  background-color: var(--teal-50, #eef6f5);
+  color: var(--forest-600, #0f3d2c);
   padding: 10px 16px;
-  border-radius: 6px;
+  border-radius: var(--radius-sm, 8px);
   font-weight: bold;
   font-size: 1rem;
   display: inline-block;
   margin: 15px 0 25px 0;
-  border: 1px solid #d1fae5;
+  border: 1px solid var(--teal-100, #d7e9e7);
+  animation: scaleIn 0.4s var(--ease-out-back, cubic-bezier(0.34, 1.56, 0.64, 1)) 0.15s both;
 }
 
 /* Input del código */
@@ -211,22 +273,23 @@ button:disabled {
   font-size: 28px;
   text-align: center;
   letter-spacing: 8px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
+  border: 2px solid var(--ink-200, #d8d3c4);
+  border-radius: var(--radius-md, 12px);
   outline: none;
   transition: all 0.3s;
   font-weight: bold;
-  color: #222;
-  background-color: #fff;
+  color: var(--ink-900, #201d18);
+  background-color: var(--surface, #fff);
 }
 
 .code-input:focus {
-  border-color: #2c7a6b;
-  box-shadow: 0 0 0 3px rgba(44, 122, 107, 0.1);
+  border-color: var(--forest-500, #145039);
+  box-shadow: 0 0 0 4px rgba(20, 80, 57, 0.14);
+  transform: translateY(-1px);
 }
 
 .code-input:disabled {
-  background-color: #f5f5f5;
+  background-color: var(--ink-50, #f6f3ec);
   cursor: not-allowed;
 }
 
@@ -241,7 +304,7 @@ button:disabled {
 .btn {
   padding: 10px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-weight: 600;
   font-size: 0.95rem;
@@ -249,21 +312,23 @@ button:disabled {
 }
 
 .btn-primary {
-  background-color: #2c7a6b;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--forest-500, #145039));
   color: white;
+  box-shadow: 0 6px 16px rgba(20, 80, 57, 0.28);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background-color: #1e5c50;
+  transform: translateY(-1px);
+  box-shadow: 0 10px 20px rgba(20, 80, 57, 0.32);
 }
 
 .btn-secondary {
-  background-color: #e5e7eb;
-  color: #374151;
+  background-color: var(--ink-100, #ece7db);
+  color: var(--ink-700, #423e36);
 }
 
 .btn-secondary:hover:not(:disabled) {
-  background-color: #d1d5db;
+  background-color: var(--ink-200, #d8d3c4);
 }
 
 .btn:disabled {
@@ -275,7 +340,7 @@ button:disabled {
 .resend-link {
   margin-top: 20px;
   font-size: 14px;
-  color: #666;
+  color: var(--ink-500, #746e5f);
 }
 
 .resend-link p {
@@ -286,7 +351,7 @@ button:disabled {
 .btn-link {
   background: none;
   border: none;
-  color: #2c7a6b;
+  color: var(--forest-500, #145039);
   text-decoration: underline;
   cursor: pointer;
   font-size: 14px;
@@ -296,7 +361,7 @@ button:disabled {
 }
 
 .btn-link:hover:not(:disabled) {
-  color: #094130;
+  color: var(--teal-600, #205e63);
 }
 
 .btn-link:disabled {

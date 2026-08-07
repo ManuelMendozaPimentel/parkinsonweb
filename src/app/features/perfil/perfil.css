@@ -1,5 +1,3 @@
-/* Mantiene todos los estilos originales y agrega los nuevos */
-
 .perfil-container {
   background-color: transparent;
   padding: 0;
@@ -8,49 +6,51 @@
 .perfil-card {
   max-width: 800px;
   margin: 0 auto;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19,46,46,0.07));
+  border: 1px solid var(--ink-100, #ece7db);
   overflow: hidden;
 }
 
 .perfil-header {
-  background: #f2e9dd;
-  padding: 1.5rem 2rem;
+  background: linear-gradient(135deg, var(--sand-200, #f2e9dd), var(--sand-100, #f8f2e8));
+  padding: 1.75rem 2rem;
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--sand-300, #e9dcc4);
 }
 
 .avatar {
   width: 64px;
   height: 64px;
-  background: #d32f2f;
-  border-radius: 8px;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
+  border-radius: var(--radius-md, 12px);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 6px 16px rgba(44, 112, 118, 0.3);
 }
 
 .avatar-text {
   color: white;
   font-size: 1.5rem;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .perfil-header h2 {
   margin: 0 0 0.25rem;
-  color: #222;
-  font-size: 1.5rem;
-  font-weight: 700;
+  color: var(--forest-600, #0f3d2c);
+  font-size: 1.4rem;
+  font-weight: 800;
 }
 
 .codigo-vinculacion {
   margin: 0;
   font-size: 0.8rem;
-  color: #888;
+  color: var(--ink-400, #8f8b7d);
   font-family: monospace;
   letter-spacing: 0.05em;
 }
@@ -65,62 +65,63 @@
 .info-row {
   display: flex;
   padding: 1rem 0;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--ink-100, #ece7db);
 }
 
 .info-row:last-child { border-bottom: none; }
 
 .label {
   flex: 0 0 160px;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 600;
-  color: #333;
+  color: var(--ink-700, #423e36);
 }
 
 .value {
   flex: 1;
   font-size: 1rem;
-  color: #555;
+  color: var(--ink-800, #2d2a24);
 }
 
 .value.cedula {
   font-family: monospace;
-  color: #888;
+  color: var(--ink-400, #8f8b7d);
 }
 
 .action-container {
   padding: 1.5rem 2rem;
-  background: white;
-  border-top: 1px solid #eee;
+  background: var(--surface, #fff);
+  border-top: 1px solid var(--ink-100, #ece7db);
   display: flex;
   justify-content: flex-end;
 }
 
 .btn-actualizar {
-  background: #d32f2f;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
   color: white;
   border: none;
   padding: 0.75rem 2rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.3s ease;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(44, 112, 118, 0.28);
+  transition: transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
 }
 
-.btn-actualizar:hover { background: #b71c1c; }
+.btn-actualizar:hover { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(44, 112, 118, 0.32); }
 
 /* ── Estados ── */
 .loading-state {
   text-align: center;
   padding: 3rem;
-  color: #888;
+  color: var(--ink-400, #8f8b7d);
 }
 
 .api-error-alert {
-  background: #fee2e2;
-  border: 1px solid #ef4444;
-  border-radius: 8px;
+  background: var(--color-danger-bg, #fbe6e0);
+  border: 1px solid var(--color-danger-border, #eba792);
+  border-radius: var(--radius-sm, 8px);
   padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
@@ -130,40 +131,42 @@
 
 .api-error-alert p {
   margin: 0;
-  color: #dc2626;
+  color: var(--color-danger-dark, #ad3520);
   font-size: 0.9rem;
 }
 
 .btn-retry {
   background: none;
-  border: 1px solid #dc2626;
-  color: #dc2626;
+  border: 1px solid var(--color-danger, #d3492f);
+  color: var(--color-danger, #d3492f);
   padding: 0.4rem 1rem;
-  border-radius: 4px;
+  border-radius: var(--radius-xs, 6px);
   cursor: pointer;
   font-size: 0.85rem;
   white-space: nowrap;
+  transition: background-color 0.15s, color 0.15s;
 }
+.btn-retry:hover { background: var(--color-danger, #d3492f); color: white; }
 
 /* ── Modal ── */
 .modal-content {
-  background: white;
-  border-radius: 12px;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
   padding: 2rem;
   width: 90vw;
   max-width: 520px;
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-lg, 0 18px 45px rgba(19,46,46,0.16));
 }
 
 .modal-content h2 {
   margin: 0 0 1.5rem;
-  color: #222;
+  color: var(--ink-900, #201d18);
   font-size: 1.4rem;
   font-weight: 700;
   padding-bottom: 1rem;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid var(--ink-100, #ece7db);
 }
 
 .modal-form {
@@ -181,21 +184,21 @@
 .field-group label {
   font-size: 0.85rem;
   font-weight: 600;
-  color: #333;
+  color: var(--ink-700, #423e36);
 }
 
 .field-note {
   font-weight: 400;
-  color: #aaa;
+  color: var(--ink-300, #b3ae9f);
   font-size: 0.78rem;
 }
 
 .form-input {
-  padding: 0.6rem 0.85rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid var(--ink-200, #d8d3c4);
+  border-radius: var(--radius-sm, 8px);
   font-size: 0.95rem;
-  color: #222;
+  color: var(--ink-900, #201d18);
   transition: border-color 0.2s;
   width: 100%;
   box-sizing: border-box;
@@ -203,13 +206,13 @@
 
 .form-input:focus {
   outline: none;
-  border-color: #d32f2f;
-  box-shadow: 0 0 0 2px rgba(211,47,47,0.1);
+  border-color: var(--teal-500, #2c7076);
+  box-shadow: var(--shadow-focus, 0 0 0 4px rgba(44,112,118,0.16));
 }
 
 .form-input:disabled {
-  background: #f5f5f5;
-  color: #aaa;
+  background: var(--surface-sunken, #f6f3ec);
+  color: var(--ink-300, #b3ae9f);
   cursor: not-allowed;
 }
 
@@ -221,21 +224,21 @@
 
 .modal-error {
   margin-top: 1rem;
-  background: #fee2e2;
-  border: 1px solid #ef4444;
-  border-radius: 6px;
+  background: var(--color-danger-bg, #fbe6e0);
+  border: 1px solid var(--color-danger-border, #eba792);
+  border-radius: var(--radius-xs, 6px);
   padding: 0.75rem 1rem;
-  color: #dc2626;
+  color: var(--color-danger-dark, #ad3520);
   font-size: 0.875rem;
 }
 
 .modal-success {
   margin-top: 1rem;
-  background: #dcfce7;
-  border: 1px solid #4ade80;
-  border-radius: 6px;
+  background: var(--color-success-bg, #e3f1e5);
+  border: 1px solid var(--color-success-border, #9bcaa8);
+  border-radius: var(--radius-xs, 6px);
   padding: 0.75rem 1rem;
-  color: #16a34a;
+  color: var(--color-success, #2f7a4f);
   font-size: 0.875rem;
 }
 
@@ -245,35 +248,257 @@
   justify-content: flex-end;
   margin-top: 1.5rem;
   padding-top: 1.25rem;
-  border-top: 1px solid #eee;
+  border-top: 1px solid var(--ink-100, #ece7db);
 }
 
 .btn-cancelar {
   background: transparent;
-  border: 1px solid #ddd;
-  color: #555;
+  border: 1.5px solid var(--ink-200, #d8d3c4);
+  color: var(--ink-600, #5a5548);
   padding: 0.7rem 1.5rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-size: 0.875rem;
-  font-weight: 500;
+  font-weight: 600;
   transition: all 0.2s;
 }
 
-.btn-cancelar:hover:not(:disabled) { background: #f5f5f5; }
+.btn-cancelar:hover:not(:disabled) { background: var(--ink-50, #f6f3ec); }
 
 .btn-guardar {
-  background: #d32f2f;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
   color: white;
   border: none;
   padding: 0.7rem 1.5rem;
-  border-radius: 4px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-size: 0.875rem;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  font-weight: 700;
+  box-shadow: 0 6px 16px rgba(44, 112, 118, 0.28);
+  transition: transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
 }
 
-.btn-guardar:hover:not(:disabled) { background: #b71c1c; }
+.btn-guardar:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 10px 20px rgba(44, 112, 118, 0.32); }
 .btn-guardar:disabled,
-.btn-cancelar:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-cancelar:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; transform: none; }
+
+/* ============================================================
+   REFINAMIENTO VISUAL — animaciones y micro-interacciones
+   (mismo lenguaje visual que dashboard / login / patient-form)
+   ============================================================ */
+
+/* Entrada de la vista al montarse o volver a esta pestaña.
+   Se define un keyframe propio (solo opacidad, sin transform)
+   en vez de reutilizar el "fadeIn" global: este contenedor es
+   ancestro de app-modal-overlay, y como los @keyframes no se
+   encapsulan por componente en Angular, cualquier otro "fadeIn"
+   con transform definido en otra hoja de estilos podría terminar
+   aplicándose aquí y crear un contexto de posicionamiento que
+   rompería el position:fixed del overlay del modal. */
+@keyframes rootFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.perfil-container {
+  animation: rootFadeIn 0.4s ease both;
+}
+
+/* Estados de carga / error */
+.loading-state {
+  animation: fadeInUp 0.45s var(--ease-smooth) both;
+}
+
+.loading-state::before {
+  content: '';
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  margin-bottom: 0.75rem;
+  border-radius: 50%;
+  border: 3px solid var(--teal-100, #d7e9e7);
+  border-top-color: var(--teal-500, #2c7076);
+  animation: spinSlow 0.7s linear infinite;
+}
+
+.loading-state p {
+  margin: 0;
+}
+
+.api-error-alert {
+  animation: fadeInDown 0.4s var(--ease-smooth) both;
+}
+
+.btn-retry {
+  transition: background-color var(--transition, 0.2s), color var(--transition, 0.2s), transform var(--transition-fast, 0.15s);
+}
+
+.btn-retry:hover {
+  transform: translateY(-1px);
+}
+
+.btn-retry:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* Tarjeta principal */
+.perfil-card {
+  animation: fadeInUp 0.5s var(--ease-smooth) both;
+  transition: box-shadow var(--transition, 0.2s);
+}
+
+.perfil-card:hover {
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(19, 46, 46, 0.1));
+}
+
+/* Acento decorativo flotante en el encabezado, contenido dentro
+   de su propia caja (no interfiere con el overflow del modal) */
+.perfil-header {
+  position: relative;
+  overflow: hidden;
+}
+
+.perfil-header::after {
+  content: '';
+  position: absolute;
+  top: -45%;
+  right: -6%;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(217, 112, 86, 0.16), transparent 70%);
+  pointer-events: none;
+  animation: floatSlow 10s ease-in-out infinite;
+}
+
+.avatar {
+  transition: transform var(--transition, 0.2s), box-shadow var(--transition, 0.2s);
+  animation: popIn 0.5s var(--ease-out-back, cubic-bezier(0.34, 1.56, 0.64, 1)) 0.1s both;
+}
+
+.avatar:hover {
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: var(--shadow-glow-teal, 0 10px 30px -6px rgba(44, 112, 118, 0.45));
+}
+
+.perfil-header h2 {
+  animation: fadeInUp 0.5s var(--ease-smooth) 0.15s both;
+}
+
+.codigo-vinculacion {
+  background: var(--teal-50, #eef6f5);
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-sm, 8px);
+  animation: fadeIn 0.5s ease 0.25s both;
+}
+
+/* Filas de información */
+.perfil-info .info-row {
+  animation: fadeIn 0.4s ease both;
+  transition: background-color var(--transition-fast, 0.15s), padding-left var(--transition-fast, 0.15s);
+}
+
+.perfil-info .info-row:hover {
+  background-color: var(--surface-sunken, #f6f3ec);
+  padding-left: 0.5rem;
+}
+
+.perfil-info .info-row:nth-child(1) { animation-delay: 0.06s; }
+.perfil-info .info-row:nth-child(2) { animation-delay: 0.1s; }
+.perfil-info .info-row:nth-child(3) { animation-delay: 0.14s; }
+.perfil-info .info-row:nth-child(4) { animation-delay: 0.18s; }
+.perfil-info .info-row:nth-child(5) { animation-delay: 0.22s; }
+.perfil-info .info-row:nth-child(6) { animation-delay: 0.26s; }
+.perfil-info .info-row:nth-child(7) { animation-delay: 0.3s; }
+
+.value.cedula {
+  transition: color var(--transition-fast, 0.15s);
+}
+
+.info-row:hover .value.cedula {
+  color: var(--ink-600, #5a5548);
+}
+
+.action-container {
+  animation: fadeIn 0.4s ease 0.35s both;
+}
+
+.btn-actualizar:active {
+  transform: translateY(0) scale(0.97);
+}
+
+/* ============================================================
+   MODAL — editar perfil
+   Los elementos internos animan; el pop-in del cuadro del modal
+   ya lo resuelve modal-overlay.css (.modal-wrapper).
+   ============================================================ */
+.modal-content h2::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 0.9em;
+  margin-right: 0.55rem;
+  vertical-align: -0.05em;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--gradient-brand, var(--teal-500));
+}
+
+.field-group {
+  animation: fadeInUp 0.35s var(--ease-smooth) both;
+}
+
+.modal-form .field-group:nth-child(1) { animation-delay: 0.05s; }
+.modal-form .field-group:nth-child(2) { animation-delay: 0.09s; }
+.modal-form .field-group:nth-child(3) { animation-delay: 0.13s; }
+.modal-form .field-group:nth-child(4) { animation-delay: 0.17s; }
+.modal-form .field-group:nth-child(5) { animation-delay: 0.21s; }
+.modal-form .field-group:nth-child(6) { animation-delay: 0.25s; }
+
+.field-group label {
+  transition: color var(--transition-fast, 0.15s);
+}
+
+.field-group:focus-within label {
+  color: var(--teal-600, #205e63);
+}
+
+.form-input {
+  transition: border-color var(--transition, 0.2s), box-shadow var(--transition, 0.2s), transform var(--transition, 0.2s);
+}
+
+.form-input:hover:not(:disabled) {
+  border-color: var(--ink-300, #b3ae9f);
+}
+
+.form-input:focus {
+  transform: translateY(-1px);
+}
+
+@keyframes modalErrorShake {
+  0%   { opacity: 0; transform: translateY(-10px); }
+  45%  { opacity: 1; transform: translateY(0); }
+  55%  { transform: translateX(-4px); }
+  70%  { transform: translateX(3px); }
+  85%  { transform: translateX(-2px); }
+  100% { transform: translateX(0); }
+}
+
+.modal-error {
+  animation: modalErrorShake 0.5s var(--ease-smooth) both;
+}
+
+.modal-success {
+  animation: fadeInDown 0.35s var(--ease-smooth) both;
+}
+
+.modal-actions {
+  animation: fadeIn 0.4s ease 0.15s both;
+}
+
+.btn-cancelar:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.btn-guardar:active:not(:disabled) {
+  transform: translateY(0) scale(0.97);
+}

@@ -1,88 +1,179 @@
 .dashboard-container {
   display: flex;
   min-height: 100vh;
-  background-color: #f5f5f5;
+  background-color: var(--surface-page, #fbf8f2);
+  background-image: var(--gradient-mesh);
+  background-attachment: fixed;
   transition: all 0.3s ease;
 }
 
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: 2rem 2.25rem 3rem;
   transition: margin-left 0.3s ease;
 }
 
 .dashboard-container.menu-open .main-content {
-  margin-left: 250px; /* ajusta si tu sidebar es otro ancho */
+  margin-left: 250px;
 }
 
 /* Header */
 .page-header {
   margin-bottom: 2rem;
+  padding-left: 3rem;
+  animation: fadeInDown 0.5s var(--ease-smooth) both;
 }
 
 .page-header h1 {
+  position: relative;
+  display: inline-block;
   margin: 0;
-  font-size: 1.6rem;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--forest-600, #0f3d2c);
+  letter-spacing: -0.01em;
+}
+
+.page-header h1::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 46px;
+  height: 4px;
+  border-radius: var(--radius-pill, 999px);
+  background: var(--gradient-hero);
+  background-size: 200% 100%;
+  animation: gradientShift 5s ease-in-out infinite, underlineGrow 0.6s var(--ease-smooth) 0.15s both;
 }
 
 /* Lista */
 .alerts-list {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
+}
+
+/* Estado vacío — solo aparece cuando no hay tarjetas de alerta */
+.alerts-list:empty::before {
+  content: 'No hay alertas registradas.';
+  display: block;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--ink-400, #8f8b7d);
+  font-style: italic;
+  font-size: 0.9rem;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
+  border: 1px dashed var(--ink-200, #d8d3c4);
+  animation: fadeIn 0.4s ease both;
 }
 
 /* Tarjeta */
 .alert-card {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  background: #e0e0e0;
-  padding: 1.2rem;
-  border-radius: 16px;
-  transition: 0.2s ease;
+  gap: 1.1rem;
+  background: var(--surface, #fff);
+  border: 1px solid var(--ink-100, #ece7db);
+  border-left: 4px solid var(--coral-500, #d97056);
+  padding: 1.25rem 1.4rem;
+  border-radius: var(--radius-lg, 18px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(19,46,46,0.07));
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  opacity: 0;
+  animation: fadeInUp 0.45s var(--ease-smooth) both;
 }
 
 .alert-card:hover {
   transform: translateY(-2px);
-  background: #d5d5d5;
+  box-shadow: var(--shadow-md, 0 8px 24px rgba(19,46,46,0.1)), var(--shadow-glow-coral);
 }
 
+/* Entrada escalonada de tarjetas */
+.alert-card:nth-child(1) { animation-delay: 0.04s; }
+.alert-card:nth-child(2) { animation-delay: 0.10s; }
+.alert-card:nth-child(3) { animation-delay: 0.16s; }
+.alert-card:nth-child(4) { animation-delay: 0.22s; }
+.alert-card:nth-child(5) { animation-delay: 0.28s; }
+.alert-card:nth-child(6) { animation-delay: 0.34s; }
+.alert-card:nth-child(7) { animation-delay: 0.40s; }
+.alert-card:nth-child(n+8) { animation-delay: 0.46s; }
+
 .icon {
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--coral-100, #fbe3da);
+  color: var(--coral-600, #c85a45);
+  border-radius: 50%;
+  transition: transform 0.2s ease;
+  animation: scaleIn 0.3s var(--ease-out-back) both;
+}
+
+.alert-card:hover .icon {
+  transform: scale(1.1);
+}
+
+/* La primera alerta de la lista se resalta con el mismo lenguaje que
+   .severidad-alta en dashboard.css (scaleIn + pulso coral infinito),
+   ya que aquí no existen clases de severidad por elemento. */
+.alert-card:first-child .icon {
+  background: var(--gradient-warm);
+  color: #fff;
+  animation: scaleIn 0.3s var(--ease-out-back) both, pulseCoral 2.6s ease-in-out 0.6s infinite;
 }
 
 .alert-content h3 {
   margin: 0;
   font-size: 1rem;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--ink-900, #201d18);
 }
 
 .alert-content p {
   margin: 0.3rem 0 0 0;
-  font-size: 0.95rem;
-  color: #333;
+  font-size: 0.92rem;
+  color: var(--ink-600, #5a5548);
 }
 
 /* Botón */
 .btn-container {
   display: flex;
   justify-content: center;
-  margin-top: 3rem;
+  margin-top: 2.5rem;
 }
 
 .btn-actualizar {
-  background-color: #2f6f6f;
+  background: linear-gradient(135deg, var(--teal-450, #357d83), var(--teal-600, #205e63));
+  background-size: 200% 200%;
   color: white;
   border: none;
   padding: 0.9rem 3rem;
-  border-radius: 14px;
+  border-radius: var(--radius-md, 12px);
   font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.2s ease;
+  box-shadow: 0 8px 20px rgba(44, 112, 118, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  opacity: 0;
+  animation: fadeInUp 0.5s var(--ease-smooth) 0.5s both, gradientShift 6s ease-in-out infinite;
 }
 
 .btn-actualizar:hover {
-  background-color: #265c5c;
-  transform: scale(1.03);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 26px rgba(44, 112, 118, 0.36), var(--shadow-glow-teal);
+}
+
+.btn-actualizar:active {
+  transform: translateY(0) scale(0.97);
+}
+
+@media (max-width: 768px) {
+  .main-content { padding: 1rem; }
+  .page-header { padding-left: 0; }
 }

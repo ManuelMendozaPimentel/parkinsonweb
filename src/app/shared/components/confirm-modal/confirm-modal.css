@@ -1,21 +1,41 @@
 .modal-content {
-  background: white;
-  border-radius: 8px;
-  padding: 2rem;
+  position: relative;
+  background: var(--surface, #fff);
+  border-radius: var(--radius-lg, 18px);
+  padding: 2.25rem 2rem;
   max-width: 400px;
   width: 100%;
+  box-shadow: var(--shadow-lg, 0 18px 45px rgba(19, 46, 46, 0.16));
+  overflow: hidden;
+}
+
+.modal-content::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-hero, linear-gradient(90deg, var(--teal-500), var(--coral-500)));
+  background-size: 200% 100%;
+  animation: gradientShift 5s ease-in-out infinite;
 }
 
 .modal-content h3 {
   margin-top: 0;
   text-align: center;
-  color: #222;
+  color: var(--ink-900, #201d18);
+  font-size: 1.2rem;
+  font-weight: 700;
+  animation: fadeInUp 0.4s var(--ease-smooth) 0.05s both;
 }
 
 .message {
   text-align: center;
-  color: #555;
+  color: var(--ink-600, #5a5548);
   margin: 1rem 0;
+  line-height: 1.5;
+  animation: fadeInUp 0.4s var(--ease-smooth) 0.1s both;
 }
 
 .modal-actions {
@@ -23,12 +43,15 @@
   gap: 0.75rem;
   justify-content: center;
   margin-top: 1.5rem;
+  animation: fadeInUp 0.4s var(--ease-smooth) 0.15s both;
 }
 
 .btn {
-  padding: 0.75rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+  padding: 0.8rem 1.6rem;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-sm, 8px);
   cursor: pointer;
   font-weight: 600;
   min-width: 100px;
@@ -36,24 +59,36 @@
   align-items: center;
   justify-content: center;
   text-decoration: none;
+  transition: background-color var(--transition, 0.2s), transform var(--transition-fast, 0.15s), box-shadow var(--transition, 0.2s);
 }
 
-/* Cancelar*/
+.btn:active {
+  transform: scale(0.96);
+}
+
+/* Cancelar */
 .btn-cancel {
-  background: #67A39F;
+  background: var(--teal-300, #67a39f);
   color: white;
+  box-shadow: 0 4px 12px rgba(103, 163, 159, 0.35);
 }
 
 .btn-cancel:hover {
-  background: #548a82;
+  background: var(--teal-400, #4c8f8f);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(103, 163, 159, 0.4);
 }
 
-/* Confirmar*/
+/* Confirmar */
 .btn-confirm {
-  background: #BDCAB3;
-  color: #222;
+  background: var(--sage-300, #bdcab3);
+  color: var(--forest-700, #0a2e22);
+  box-shadow: 0 4px 12px rgba(141, 165, 131, 0.3);
 }
 
 .btn-confirm:hover {
-  background: #a8bfa0;
+  background: var(--sage-500, #8fa583);
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(141, 165, 131, 0.4);
 }
