@@ -44,6 +44,7 @@
 
           @if (pacientes.length > 0) {
             <!-- Resumen rápido -->
+                        <!-- Resumen rápido -->
             <div class="resumen-cards">
               <div class="card-resumen">
                 <h3>Total Pacientes Evaluados</h3>
@@ -51,15 +52,15 @@
               </div>
               <div class="card-resumen riesgo-alto-bg">
                 <h3>Riesgo Alto</h3>
-                <p class="valor">{{ pacientes.filter(p => p.nivel_riesgo === 'ALTO').length }}</p>
+                <p class="valor">{{ getContadorRiesgo('ALTO') }}</p> <!-- ✅ CORRECTO -->
               </div>
               <div class="card-resumen riesgo-medio-bg">
                 <h3>Riesgo Medio</h3>
-                <p class="valor">{{ pacientes.filter(p => p.nivel_riesgo === 'MEDIO').length }}</p>
+                <p class="valor">{{ getContadorRiesgo('MEDIO') }}</p> <!-- ✅ CORRECTO -->
               </div>
               <div class="card-resumen riesgo-bajo-bg">
                 <h3>Riesgo Bajo</h3>
-                <p class="valor">{{ pacientes.filter(p => p.nivel_riesgo === 'BAJO').length }}</p>
+                <p class="valor">{{ getContadorRiesgo('BAJO') }}</p> <!-- ✅ CORRECTO -->
               </div>
             </div>
 
