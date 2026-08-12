@@ -172,12 +172,3 @@
   filter: saturate(1) brightness(1.4);
 }
 
-/* Iconos por ruta — puramente decorativos, vía atributo estático routerLink */
-.nav-item[routerLink="/dashboard"]::before      { content: "🏠"; }
-.nav-item[routerLink="/patients"]::before       { content: "🧑‍🤝‍🧑"; }
-.nav-item[routerLink="/consultas"]::before      { content: "📋"; }
-.nav-item[routerLink="/citas"]::before          { content: "📅"; }
-.nav-item[routerLink="/reportes"]::before       { content: "📊"; }
-.nav-item[routerLink="/alertas"]::before        { content: "🔔"; }
-.nav-item[routerLink="/grafica"]::before        { content: "📈"; }
-.nav-item[routerLink="/configuration"]::before  { content: "⚙️"; }
