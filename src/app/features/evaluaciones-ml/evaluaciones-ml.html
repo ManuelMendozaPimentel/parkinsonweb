@@ -1,0 +1,256 @@
+<div class="dashboard-container" [class.menu-open]="isMenuOpen">
+  <app-sidebar-menu (menuToggle)="onMenuToggle($event)"></app-sidebar-menu>
+
+  <main class="main-content">
+    
+    <!-- VISTA 1: LISTA DE PACIENTES -->
+    @if (vistaActual === 'lista') {
+      <div class="evaluaciones-container">
+        
+        <div class="header">
+          <h1>🧠 Evaluaciones de Machine Learning</h1>
+          <p class="subtitle">Resultados de predicciones del modelo Random Forest</p>
+        </div>
+
+        <!-- Estado de carga -->
+        @if (loading) {
+          <div class="loading-state">
+            <p>Cargando evaluaciones...</p>
+          </div>
+        }
+
+        <!-- Error -->
+        @if (apiError && !loading) {
+          <div class="api-error-alert">
+            <p>❌ {{ apiError }}</p>
+            <button class="btn-retry" (click)="cargarPacientes()">Reintentar</button>
+          </div>
+        }
+
+        <!-- Contenido -->
+        @if (!loading && !apiError) {
+          
+          @if (pacientes.length === 0) {
+            <div class="empty-state">
+              <h2>No hay evaluaciones disponibles</h2>
+              <p>Los pacientes aparecerán aquí después de que se realice su primera evaluación con el modelo ML.</p>
+              <p><strong>Para generar una evaluación:</strong></p>
+              <ol>
+                <li>El paciente debe realizar las pruebas desde la app móvil</li>
+                <li>O envía una petición POST a <code>/api/predict</code> con los datos del smartwatch</li>
+              </ol>
+            </div>
+          }
+
+          @if (pacientes.length > 0) {
+            <!-- Resumen rápido -->
+            <div class="resumen-cards">
+              <div class="card-resumen">
+                <h3>Total Pacientes Evaluados</h3>
+                <p class="valor">{{ pacientes.length }}</p>
+              </div>
+              <div class="card-resumen riesgo-alto-bg">
+                <h3>Riesgo Alto</h3>
+                <p class="valor">{{ pacientes.filter(p => p.nivel_riesgo === 'ALTO').length }}</p>
+              </div>
+              <div class="card-resumen riesgo-medio-bg">
+                <h3>Riesgo Medio</h3>
+                <p class="valor">{{ pacientes.filter(p => p.nivel_riesgo === 'MEDIO').length }}</p>
+              </div>
+              <div class="card-resumen riesgo-bajo-bg">
+                <h3>Riesgo Bajo</h3>
+                <p class="valor">{{ pacientes.filter(p => p.nivel_riesgo === 'BAJO').length }}</p>
+              </div>
+            </div>
+
+            <!-- Tabla de pacientes -->
+            <table class="evaluaciones-table">
+              <thead>
+                <tr>
+                  <th>Paciente</th>
+                  <th>Total Evaluaciones</th>
+                  <th>Última Evaluación</th>
+                  <th>Última Predicción</th>
+                  <th>Probabilidad</th>
+                  <th>Nivel de Riesgo</th>
+                  <th>Acción</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (paciente of pacientes; track paciente.paciente_id) {
+                  <tr>
+                    <td>
+                      <div class="paciente-info">
+                        <strong>{{ paciente.paciente_nombre }}</strong>
+                        <small>{{ paciente.correo }}</small>
+                      </div>
+                    </td>
+                    <td>{{ paciente.total_evaluaciones }}</td>
+                    <td>{{ formatFecha(paciente.ultima_evaluacion) }}</td>
+                    <td>
+                      <span [class]="getPrediccionClass(paciente.ultima_prediccion)">
+                        {{ getPrediccionLabel(paciente.ultima_prediccion) }}
+                      </span>
+                    </td>
+                    <td>
+                      <div class="probabilidad-bar">
+                        <div class="bar-fill" 
+                             [style.width.%]="paciente.ultima_probabilidad"
+                             [style.background]="getSemafaroColor(paciente.ultima_probabilidad)">
+                        </div>
+                        <span>{{ paciente.ultima_probabilidad | number:'1.0-1' }}%</span>
+                      </div>
+                    </td>
+                    <td>
+                      <span class="badge-riesgo" [class]="getNivelRiesgoClass(paciente.nivel_riesgo)">
+                        {{ paciente.nivel_riesgo }}
+                      </span>
+                    </td>
+                    <td class="actions">
+                      <button class="btn-ver" (click)="verDetalle(paciente)">
+                         Ver Evaluación
+                      </button>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        }
+      </div>
+    }
+
+    <!-- VISTA 2: DETALLE DEL PACIENTE -->
+    @if (vistaActual === 'detalle' && pacienteSeleccionado) {
+      <div class="detalle-container">
+        
+        <div class="header">
+          <button class="btn-volver" (click)="volverALista()">
+            ← Volver a la lista
+          </button>
+          <h1>📊 Detalle de Evaluaciones</h1>
+          <h2>{{ pacienteSeleccionado.paciente_nombre }}</h2>
+        </div>
+
+        <!-- Carga de detalle -->
+        @if (loadingDetalle) {
+          <div class="loading-state">
+            <p>Cargando detalle del paciente...</p>
+          </div>
+        }
+
+        <!-- Contenido del detalle -->
+        @if (!loadingDetalle && detalleEvaluaciones) {
+          
+          <!-- Info del paciente -->
+          <div class="paciente-card">
+            <h3>Información del Paciente</h3>
+            <div class="info-grid">
+              <div><strong>Edad:</strong> {{ detalleEvaluaciones.data.paciente.edad }} años</div>
+              <div><strong>Correo:</strong> {{ detalleEvaluaciones.data.paciente.correo }}</div>
+              <div><strong>Teléfono:</strong> {{ detalleEvaluaciones.data.paciente.telefono }}</div>
+              <div><strong>Total Evaluaciones:</strong> {{ detalleEvaluaciones.data.analisis?.total_evaluaciones || 0 }}</div>
+            </div>
+          </div>
+
+          <!-- Análisis agregado -->
+          @if (detalleEvaluaciones.data.analisis) {
+            <div class="analisis-card">
+              <h3> Análisis Agregado</h3>
+              
+              <div class="metricas-grid">
+                <div class="metrica-item">
+                  <span class="label">Promedio Probabilidad Parkinson</span>
+                  <span class="valor">{{ detalleEvaluaciones.data.analisis.promedio_probabilidad | number:'1.0-1' }}%</span>
+                </div>
+                <div class="metrica-item">
+                  <span class="label">Evaluaciones Parkinson</span>
+                  <span class="valor parkinson">{{ detalleEvaluaciones.data.analisis.evaluaciones_parkinson }}</span>
+                </div>
+                <div class="metrica-item">
+                  <span class="label">Evaluaciones Sano</span>
+                  <span class="valor sano">{{ detalleEvaluaciones.data.analisis.evaluaciones_sano }}</span>
+                </div>
+                <div class="metrica-item">
+                  <span class="label">Nivel de Riesgo Actual</span>
+                  <span class="valor" [class]="getNivelRiesgoClass(detalleEvaluaciones.data.analisis.nivel_riesgo_actual)">
+                    {{ detalleEvaluaciones.data.analisis.nivel_riesgo_actual }}
+                  </span>
+                </div>
+              </div>
+
+              @if (detalleEvaluaciones.data.analisis.recomendacion) {
+                <div class="recomendacion-box">
+                  <h4>💡 Recomendación del Sistema</h4>
+                  <p>{{ detalleEvaluaciones.data.analisis.recomendacion }}</p>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- Historial de evaluaciones -->
+          <div class="historial-section">
+            <h3>📋 Historial de Evaluaciones</h3>
+            
+            @if (detalleEvaluaciones.data.historial.length === 0) {
+              <p class="no-data">No hay evaluaciones registradas para este paciente.</p>
+            }
+
+            @for (evaluacion of detalleEvaluaciones.data.historial; track evaluacion.id) {
+              <div class="evaluacion-card">
+                <div class="evaluacion-header">
+                  <div class="fecha">
+                    <strong>📅 {{ formatFecha(evaluacion.fecha) }}</strong>
+                  </div>
+                  <div class="prediccion-badge" [class]="getPrediccionClass(evaluacion.prediccion)">
+                    {{ evaluacion.prediccion_label }}
+                  </div>
+                </div>
+
+                <div class="evaluacion-content">
+                  <div class="semaphore">
+                    <div class="semaphore-circle" 
+                         [style.background]="getSemafaroColor(evaluacion.probabilidad_parkinson)">
+                    </div>
+                    <div class="semaphore-text">
+                      <span class="percentage">{{ evaluacion.probabilidad_parkinson | number:'1.0-1' }}%</span>
+                      <span class="label">Probabilidad Parkinson</span>
+                    </div>
+                  </div>
+
+                  <div class="metrics-detail">
+                    <div class="metric-row">
+                      <span>Confianza:</span>
+                      <strong>{{ evaluacion.confianza | number:'1.0-1' }}%</strong>
+                    </div>
+                    <div class="metric-row">
+                      <span>Probabilidad Sano:</span>
+                      <strong>{{ evaluacion.probabilidad_sano | number:'1.0-1' }}%</strong>
+                    </div>
+                    <div class="metric-row">
+                      <span>Tiempo Ejecución:</span>
+                      <strong>{{ evaluacion.tiempo_ejecucion_ms }} ms</strong>
+                    </div>
+                    <div class="metric-row">
+                      <span>Modelo:</span>
+                      <strong>{{ evaluacion.modelo_version }}</strong>
+                    </div>
+                    <div class="metric-row">
+                      <span>Threshold:</span>
+                      <strong>{{ evaluacion.threshold_usado }}</strong>
+                    </div>
+                    <div class="metric-row">
+                      <span>Features:</span>
+                      <strong>{{ evaluacion.features_enviadas }}</strong>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+  </main>
+</div>

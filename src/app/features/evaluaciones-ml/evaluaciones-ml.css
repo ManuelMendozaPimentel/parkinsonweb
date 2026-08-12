@@ -1,0 +1,458 @@
+/* Contenedor principal */
+.evaluaciones-container, .detalle-container {
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #e0e0e0;
+}
+
+.header h1 {
+  color: #2c3e50;
+  margin-bottom: 5px;
+  font-size: 2em;
+}
+
+.header h2 {
+  color: #34495e;
+  font-size: 1.5em;
+  margin: 10px 0;
+}
+
+.subtitle {
+  color: #7f8c8d;
+  font-size: 1.1em;
+}
+
+.btn-volver {
+  background: #95a5a6;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-bottom: 15px;
+  transition: background 0.3s;
+}
+
+.btn-volver:hover {
+  background: #7f8c8d;
+}
+
+/* Cards de resumen */
+.resumen-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.card-resumen {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.card-resumen h3 {
+  font-size: 0.9em;
+  color: #7f8c8d;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.card-resumen .valor {
+  font-size: 2.5em;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.riesgo-alto-bg {
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+}
+
+.riesgo-alto-bg h3, .riesgo-alto-bg .valor {
+  color: white;
+}
+
+.riesgo-medio-bg {
+  background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+  color: white;
+}
+
+.riesgo-medio-bg h3, .riesgo-medio-bg .valor {
+  color: white;
+}
+
+.riesgo-bajo-bg {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+  color: white;
+}
+
+.riesgo-bajo-bg h3, .riesgo-bajo-bg .valor {
+  color: white;
+}
+
+/* Tabla */
+.evaluaciones-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.evaluaciones-table th {
+  background: #3498db;
+  color: white;
+  padding: 15px;
+  text-align: left;
+  font-weight: 600;
+}
+
+.evaluaciones-table td {
+  padding: 15px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.evaluaciones-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.paciente-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.paciente-info strong {
+  color: #2c3e50;
+  margin-bottom: 3px;
+}
+
+.paciente-info small {
+  color: #7f8c8d;
+  font-size: 0.85em;
+}
+
+/* Barra de probabilidad */
+.probabilidad-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.probabilidad-bar .bar-fill {
+  height: 8px;
+  border-radius: 4px;
+  flex: 1;
+  max-width: 100px;
+  transition: width 0.3s;
+}
+
+/* Badges */
+.badge-riesgo {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.85em;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.riesgo-alto {
+  background: #dc3545;
+  color: white;
+}
+
+.riesgo-medio {
+  background: #ffc107;
+  color: #333;
+}
+
+.riesgo-bajo {
+  background: #28a745;
+  color: white;
+}
+
+.prediccion-parkinson {
+  background: #dc3545;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+.prediccion-sano {
+  background: #28a745;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+/* Botones */
+.btn-ver {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.btn-ver:hover {
+  background: #2980b9;
+}
+
+/* Estados */
+.loading-state, .empty-state, .api-error-alert {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.empty-state h2 {
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.empty-state ol {
+  text-align: left;
+  max-width: 500px;
+  margin: 20px auto;
+  line-height: 1.8;
+}
+
+.empty-state code {
+  background: #f4f4f4;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+.btn-retry {
+  background: #3498db;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 15px;
+}
+
+/* Detalle del paciente */
+.paciente-card, .analisis-card, .historial-section {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  margin-bottom: 25px;
+}
+
+.paciente-card h3, .analisis-card h3, .historial-section h3 {
+  color: #2c3e50;
+  margin-bottom: 20px;
+  font-size: 1.5em;
+  border-bottom: 2px solid #3498db;
+  padding-bottom: 10px;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 15px;
+}
+
+.info-grid div {
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+/* Métricas */
+.metricas-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 20px;
+  margin-bottom: 25px;
+}
+
+.metrica-item {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.metrica-item .label {
+  font-size: 0.9em;
+  color: #7f8c8d;
+  margin-bottom: 8px;
+}
+
+.metrica-item .valor {
+  font-size: 1.8em;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.metrica-item .valor.parkinson {
+  color: #dc3545;
+}
+
+.metrica-item .valor.sano {
+  color: #28a745;
+}
+
+.recomendacion-box {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.recomendacion-box h4 {
+  margin-bottom: 10px;
+  font-size: 1.2em;
+}
+
+.recomendacion-box p {
+  line-height: 1.6;
+  font-size: 1.05em;
+}
+
+/* Historial de evaluaciones */
+.evaluacion-card {
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  transition: border-color 0.3s;
+}
+
+.evaluacion-card:hover {
+  border-color: #3498db;
+}
+
+.evaluacion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ecf0f1;
+}
+
+.fecha strong {
+  color: #2c3e50;
+  font-size: 1.1em;
+}
+
+.prediccion-badge {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.9em;
+}
+
+.evaluacion-content {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 20px;
+}
+
+/* Semáforo */
+.semaphore {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: #f8f9fa;
+  border-radius: 10px;
+}
+
+.semaphore-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 4px solid white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.semaphore-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.semaphore-text .percentage {
+  font-size: 2em;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.semaphore-text .label {
+  font-size: 0.9em;
+  color: #7f8c8d;
+}
+
+/* Métricas detalle */
+.metrics-detail {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  background: #f8f9fa;
+  border-radius: 6px;
+}
+
+.metric-row span:first-child {
+  color: #7f8c8d;
+}
+
+.metric-row strong {
+  color: #2c3e50;
+  font-weight: 600;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .evaluacion-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .metrics-detail {
+    grid-template-columns: 1fr;
+  }
+  
+  .metricas-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.no-data {
+  text-align: center;
+  color: #7f8c8d;
+  padding: 40px;
+  font-style: italic;
+}
