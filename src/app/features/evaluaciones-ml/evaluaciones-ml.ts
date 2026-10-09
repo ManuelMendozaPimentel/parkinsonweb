@@ -133,7 +133,7 @@ export class EvaluacionesMl implements OnInit {
   }
 
   getSemafaroColor(probabilidad: number): string {
-    if (probabilidad >= 70) return '#dc3545'; // Rojo
+    if (probabilidad >= 64) return '#dc3545'; // Rojo
     if (probabilidad >= 50) return '#ffc107'; // Amarillo
     return '#28a745'; // Verde
   }
