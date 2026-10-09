@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidebarMenu } from '../../shared/components/sidebar-menu/sidebar-menu';
 import { DashboardService, DashboardResumenResponse, AlertaDetallada, CitaAgrupada } from '../../services/dashboard';
+import { MensajesService } from '../../services/mensajes';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,11 +30,19 @@ export class Dashboard implements OnInit {
   
   // Alertas
   alertas: AlertaDetallada[] = [];
+  mensajesNoLeidos = 0;
+
+  get alertasPendientes(): number {
+    return this.alertas.length + this.mensajesNoLeidos;
+  }
   
+  constructor(
+    private dashboardService: DashboardService,
+    private mensajesService: MensajesService
+  ) {}
+
   // Actividad para gráfica
   actividadReciente: { dia: string; consultas: number }[] = [];
-
-  constructor(private dashboardService: DashboardService) {}
 
   ngOnInit(): void {
     this.cargarDashboard();
@@ -90,6 +99,11 @@ export class Dashboard implements OnInit {
       complete: () => {
         this.loading = false;
       }
+    });
+
+    this.mensajesService.contarNoLeidos().subscribe({
+      next: (total) => this.mensajesNoLeidos = total,
+      error: (err) => console.error('Error cargando mensajes no leídos:', err)
     });
   }
   

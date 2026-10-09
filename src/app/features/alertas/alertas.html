@@ -8,27 +8,115 @@
 
     <header class="page-header">
       <h1>Alertas</h1>
+      <span class="contador-no-leidos" *ngIf="noLeidos > 0">{{ noLeidos }} sin leer</span>
     </header>
 
-    <div class="alerts-list">
+    <!-- FILTROS -->
+    <section class="filtros-bar">
+      <div class="filtro">
+        <label for="f-estado">Estado</label>
+        <select id="f-estado"
+                [ngModel]="filtroEstado"
+                (ngModelChange)="filtroEstado = $event; onFiltroChange()">
+          <option value="pendientes">Pendientes</option>
+          <option value="no_leidos">No leídos</option>
+          <option value="respondidos">Respondidos</option>
+          <option value="todos">Todos (historial)</option>
+        </select>
+      </div>
 
-      <div class="alert-card" *ngFor="let alerta of alertas">
+      <div class="filtro">
+        <label for="f-motivo">Motivo</label>
+        <select id="f-motivo"
+                [ngModel]="filtroMotivo"
+                (ngModelChange)="filtroMotivo = $event; onFiltroChange()">
+          <option value="">Todos los motivos</option>
+          <option *ngFor="let motivo of MOTIVOS" [value]="motivo">{{ motivo }}</option>
+        </select>
+      </div>
 
-        <div class="icon">
-          ⚠
-        </div>
+      <div class="filtro">
+        <label for="f-paciente">Paciente</label>
+        <select id="f-paciente"
+                [ngModel]="filtroPaciente"
+                (ngModelChange)="filtroPaciente = $event; onFiltroChange()">
+          <option [ngValue]="null">Todos los pacientes</option>
+          <option *ngFor="let p of pacientes" [ngValue]="p.id">{{ p.nombre }}</option>
+        </select>
+      </div>
+
+      <button type="button" class="btn-limpiar" *ngIf="hayFiltros" (click)="limpiarFiltros()">
+        Limpiar filtros
+      </button>
+    </section>
+
+    <p class="resumen-resultados" *ngIf="!cargando && !error">
+      {{ total }} {{ total === 1 ? 'mensaje' : 'mensajes' }}
+    </p>
+
+    <!-- CARGANDO -->
+    <div class="estado-carga" *ngIf="cargando">
+      <p>Cargando mensajes...</p>
+    </div>
+
+    <!-- ERROR -->
+    <div class="estado-error" *ngIf="error && !cargando">
+      <p>{{ error }}</p>
+      <button type="button" class="btn-secundario" (click)="cargarMensajes()">Reintentar</button>
+    </div>
+
+    <!-- VACÍO -->
+    <div class="estado-vacio" *ngIf="!cargando && !error && mensajes.length === 0">
+      <p>{{ hayFiltros ? 'No hay mensajes con estos filtros.' : 'No hay mensajes pendientes. 🎉' }}</p>
+    </div>
+
+    <!-- LISTA -->
+    <div class="alerts-list" *ngIf="!cargando && !error && mensajes.length > 0">
+
+      <div class="alert-card mensaje-card"
+           *ngFor="let m of mensajes; trackBy: trackById"
+           [class.no-leido]="!m.leido"
+           role="button"
+           tabindex="0"
+           (click)="abrirMensaje(m)"
+           (keydown.enter)="abrirMensaje(m)">
+
+        <div class="icon">✉</div>
 
         <div class="alert-content">
-          <h3>{{ alerta.paciente }}</h3>
-          <p>{{ alerta.mensaje }}</p>
+          <h3>
+            {{ m.paciente_nombre }}
+            <span class="punto-nuevo" *ngIf="!m.leido" title="Sin leer"></span>
+          </h3>
+          <p>{{ m.motivo }}</p>
+
+          <div class="chips" *ngIf="m.sintomas.length > 0">
+            <span class="chip-sintoma" *ngFor="let s of m.sintomas">{{ s }}</span>
+          </div>
+
+          <p class="detalle-corto" *ngIf="m.detalles">“{{ m.detalles }}”</p>
+        </div>
+
+        <div class="alert-meta">
+          <span class="severidad-badge" [ngClass]="getSeveridadClass(m)">{{ getSeveridad(m) }}</span>
+          <span class="fecha">{{ formatearFecha(m.created_at) }}</span>
+          <span class="estado-chip respondido" *ngIf="m.respondido">✓ Respondido</span>
         </div>
 
       </div>
 
     </div>
 
-    <div class="btn-container">
-      <button class="btn-actualizar" (click)="actualizar()">
+    <!-- PAGINACIÓN -->
+    <div class="cargar-mas" *ngIf="!cargando && !error && nextOffset !== null">
+      <button type="button" class="btn-secundario" (click)="cargarMas()" [disabled]="cargandoMas">
+        {{ cargandoMas ? 'Cargando...' : 'Cargar más' }}
+      </button>
+    </div>
+
+    <!-- BOTÓN FIJO -->
+    <div class="btn-container btn-fijo">
+      <button class="btn-actualizar" (click)="actualizar()" [disabled]="cargando">
         Actualizar
       </button>
     </div>
@@ -36,3 +124,116 @@
   </main>
 
 </div>
+
+<!-- MODAL -->
+<div class="modal-overlay" *ngIf="modalAbierto" (click)="cerrarModal()">
+  <div class="modal"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="modal-titulo"
+       (click)="$event.stopPropagation()">
+
+    <header class="modal-header">
+      <div>
+        <h2 id="modal-titulo">{{ mensajeSeleccionado?.paciente_nombre }}</h2>
+        <p class="modal-sub">
+          {{ mensajeSeleccionado?.motivo }} · {{ formatearFecha(mensajeSeleccionado?.created_at) }}
+        </p>
+      </div>
+      <button type="button" class="modal-cerrar" (click)="cerrarModal()" aria-label="Cerrar">✕</button>
+    </header>
+
+    <div class="modal-body">
+
+      <div class="estado-carga" *ngIf="cargandoDetalle">
+        <p>Cargando mensaje...</p>
+      </div>
+
+      <div class="estado-error" *ngIf="errorDetalle && !cargandoDetalle">
+        <p>{{ errorDetalle }}</p>
+        <button type="button" class="btn-secundario" (click)="cargarDetalle()">Reintentar</button>
+      </div>
+
+      <ng-container *ngIf="detalle && !cargandoDetalle">
+
+        <section class="modal-seccion info-grid">
+          <div>
+            <span class="etiqueta">Severidad</span>
+            <span class="severidad-badge" [ngClass]="getSeveridadClass(detalle)">{{ getSeveridad(detalle) }}</span>
+          </div>
+          <div>
+            <span class="etiqueta">Desde cuándo</span>
+            <span>{{ detalle.desde_cuando || 'No indicado' }}</span>
+          </div>
+          <div>
+            <span class="etiqueta">Teléfono</span>
+            <a *ngIf="detalle.paciente_telefono; else sinDato" [href]="'tel:' + detalle.paciente_telefono">
+              {{ detalle.paciente_telefono }}
+            </a>
+          </div>
+          <div>
+            <span class="etiqueta">Correo</span>
+            <a *ngIf="detalle.paciente_correo; else sinDato" [href]="'mailto:' + detalle.paciente_correo">
+              {{ detalle.paciente_correo }}
+            </a>
+          </div>
+        </section>
+
+        <section class="modal-seccion" *ngIf="detalle.sintomas.length > 0">
+          <span class="etiqueta">Síntomas</span>
+          <div class="chips">
+            <span class="chip-sintoma" *ngFor="let s of detalle.sintomas">{{ s }}</span>
+          </div>
+        </section>
+
+        <section class="modal-seccion">
+          <span class="etiqueta">Conversación</span>
+          <div class="conversacion">
+            <div class="burbuja paciente">
+              <p>{{ detalle.detalles || 'El paciente no agregó detalles.' }}</p>
+              <span class="burbuja-fecha">{{ formatearFecha(detalle.created_at) }}</span>
+            </div>
+
+            <div class="burbuja doctor" *ngFor="let r of detalle.respuestas">
+              <p>{{ r.texto }}</p>
+              <span class="burbuja-fecha">
+                {{ formatearFecha(r.created_at) }}<span *ngIf="r.leido_paciente"> · Visto</span>
+              </span>
+            </div>
+          </div>
+        </section>
+
+      </ng-container>
+    </div>
+
+    <footer class="modal-footer" *ngIf="detalle && !cargandoDetalle">
+      <textarea
+        [(ngModel)]="textoRespuesta"
+        maxlength="2000"
+        rows="3"
+        placeholder="Escribe tu respuesta al paciente... (Ctrl + Enter para enviar)"
+        [disabled]="enviando"
+        (keydown.control.enter)="enviarRespuesta()"></textarea>
+
+      <div class="modal-footer-fila">
+        <span class="contador-caracteres">{{ textoRespuesta.length }}/{{ MAX_RESPUESTA }}</span>
+        <p class="error-envio" *ngIf="errorEnvio">{{ errorEnvio }}</p>
+      </div>
+
+      <div class="modal-acciones">
+        <button type="button" class="btn-secundario" (click)="verHistorialPaciente()">
+          Ver historial de este paciente
+        </button>
+        <button type="button"
+                class="btn-enviar"
+                (click)="enviarRespuesta()"
+                [disabled]="enviando || !textoRespuesta.trim()">
+          {{ enviando ? 'Enviando...' : 'Enviar respuesta' }}
+        </button>
+      </div>
+    </footer>
+
+  </div>
+</div>
+
+<ng-template #sinDato><span>No registrado</span></ng-template>
